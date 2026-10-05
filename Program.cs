@@ -12,8 +12,6 @@ class Program
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             window.Closed += (o, e) => window.Close();
-
-
             Clock clock = new Clock();
             while (window.IsOpen)
             {
@@ -21,7 +19,9 @@ class Program
 
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f);
+                // TODO UPDATE
                 window.Clear();
+                // TODO RENDER
                 window.Display();
             }
         }
