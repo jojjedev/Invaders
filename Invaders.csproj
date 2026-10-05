@@ -7,4 +7,32 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="assets\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CSFML" Version="2.5.0" />
+      <PackageReference Include="SFML.Net" Version="2.5.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Remove="assets/*.txt" />
+        <EmbeddedResource Include="assets/*.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="assets/*.png" />
+        <EmbeddedResource Include="assets/*.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="assets/*.ttf" />
+        <EmbeddedResource Include="assets/*.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
