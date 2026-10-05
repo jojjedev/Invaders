@@ -9,6 +9,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        // TODO Fixa inladdning av textures.
+        
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             window.Closed += (o, e) => window.Close();
