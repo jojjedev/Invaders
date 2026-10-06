@@ -9,11 +9,18 @@ public sealed class SceneLoader
     public SceneLoader()
     {
         _gui = new GUI();
+        
     }
 
     public void HandleSceneLoad(Scene scene)
     {
-        if (_nextScene == "") return;
-        
+        //if (_nextScene == "") return;
+        scene.Clear();
+        scene.Spawn(new Background());
+        _nextScene = "";
     }
+
+    public void Load(string scene) => _nextScene = scene;
+
+    public void Reload() => _nextScene = _currentScene;
 }

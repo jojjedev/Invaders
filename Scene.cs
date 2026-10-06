@@ -1,12 +1,20 @@
-﻿namespace Invaders;
+﻿using SFML.Graphics;
+using SFML.System;
 
-public class Scene
+namespace Invaders;
+
+public sealed class Scene
 {
-    private AssetManager _assetManager;
     private List<Entity> _entities;
+    public readonly AssetManager Assets;
+    public readonly SceneLoader Loader;
+    public readonly EventManager Events;
     public Scene()
     {
-        _assetManager = new AssetManager();
+        _entities = new List<Entity>();
+        Assets = new AssetManager();
+        Loader = new SceneLoader();
+        Events = new EventManager();
     }
 
     public void Spawn(Entity entity)
@@ -27,6 +35,30 @@ public class Scene
             }
         }
     }
-    public void UpdateAll(){}
-    public void RenderAll(){}
+
+    public void UpdateAll(float dt)
+    {
+        Loader.HandleSceneLoad(this);
+        for (int i = _entities.Count - 1; i >= 0; i--)
+        {
+            Entity entity = _entities[i];
+            entity.Update(this, dt);
+        }
+
+        for (int i = 0; i < _entities.Count; i++)
+        {
+            Entity entity = _entities[i];
+            if (entity.Dead) _entities.RemoveAt(i);
+            else i++;
+        }
+        Events.CheckEvent(this);
+    }
+
+    public void RenderAll(RenderTarget target)
+    {
+        for (int i = 0; i < _entities.Count; i++)
+        {
+            _entities[i].Render(target);
+        }
+    }
 }

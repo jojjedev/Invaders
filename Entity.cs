@@ -25,7 +25,10 @@ public class Entity
     public virtual bool DontClearOnLoad { get; set; }
     public virtual bool Invulnerable { get; set; }
 
-    public virtual void Create(Scene scene){}
+    public virtual void Create(Scene scene)
+    {
+        _sprite.Texture = scene.Assets.LoadTexture(textureName);
+    }
     public virtual void Destroy(Scene scene){}
     
     public virtual void Update(Scene scene, float dt){}

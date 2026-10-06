@@ -1,6 +1,6 @@
 ﻿namespace Invaders;
 
-public sealed class EnemyShip
+public sealed class EnemyShip : Ship
 {
     
 }

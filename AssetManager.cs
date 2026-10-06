@@ -5,9 +5,15 @@ namespace Invaders;
 public class AssetManager
 {
     private readonly string _assetPath = "assets";
-    private readonly Dictionary<string, Texture> _textures = new Dictionary<string, Texture>();
-    private readonly Dictionary<string, Font> _fonts = new Dictionary<string, Font>();
+    private readonly Dictionary<string, Texture> _textures;
+    private readonly Dictionary<string, Font> _fonts;
 
+
+    public AssetManager()
+    {
+        _textures = new Dictionary<string, Texture>();
+        _fonts = new Dictionary<string, Font>();
+    }
     public Texture LoadTexture(string name)
     {
         if (_textures.TryGetValue(name, out Texture found)) return found;

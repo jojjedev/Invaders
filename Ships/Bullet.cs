@@ -1,6 +1,6 @@
 ﻿namespace Invaders;
 
-public class Bullet
+public class ullet
 {
     
 }
