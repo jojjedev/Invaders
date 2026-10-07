@@ -5,7 +5,8 @@ namespace Invaders;
 
 public abstract class Scene
 {
-    private List<Entity> _entities;
+    protected List<Entity> _entities;
+    protected GUI _gui;
     public readonly AssetManager Assets;
     public readonly SceneLoader Loader;
     public readonly EventManager Events;
@@ -15,6 +16,7 @@ public abstract class Scene
         Loader = new SceneLoader();
         Events = new EventManager();
         _entities = new List<Entity>();
+        _gui = new GUI();
     }
 
     public virtual void Spawn(Entity entity)
@@ -54,7 +56,7 @@ public abstract class Scene
         Events.CheckEvent(this);
     }
 
-    public void RenderAll(RenderTarget target)
+    public virtual void RenderAll(RenderTarget target)
     {
         for (int i = 0; i < _entities.Count; i++)
         {

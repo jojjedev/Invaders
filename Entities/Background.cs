@@ -19,7 +19,7 @@ public sealed class Background : Entity
     public override void Update(Scene scene, float dt)
     {
         _timer += dt;
-        if (_timer >= 0.1f)
+        if (_timer >= 1f/144f)
         {
             yPosition++;
             _timer = 0;

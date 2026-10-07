@@ -25,8 +25,6 @@ public sealed class SceneLoader
     {
         if (_nextScene == Waiting) return;
         scene.Clear();
-        Create(_nextScene, out Scene created);
-        Console.WriteLine($"{_nextScene}");
         _nextScene = Waiting;
     }
 
