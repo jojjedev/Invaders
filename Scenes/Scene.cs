@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace Invaders;
 
-public sealed class Scene
+public abstract class Scene
 {
     private List<Entity> _entities;
     public readonly AssetManager Assets;
@@ -11,19 +11,20 @@ public sealed class Scene
     public readonly EventManager Events;
     public Scene()
     {
-        _entities = new List<Entity>();
         Assets = new AssetManager();
         Loader = new SceneLoader();
         Events = new EventManager();
+
+        _entities = new List<Entity>();
     }
 
-    public void Spawn(Entity entity)
+    protected virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);
         entity.Create(this);
     }
 
-    public void Clear()
+    protected virtual void Clear()
     {
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
