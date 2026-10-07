@@ -11,7 +11,7 @@ class Program
     static void Main(string[] args)
     {
         // TODO Fixa inladdning av textures.
-        
+        SceneManager sceneManager = new SceneManager();
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             /*window.Resized += (o, e) =>
@@ -28,11 +28,10 @@ class Program
                 window.DispatchEvents();
 
                 float dt = clock.Restart().AsSeconds();
-                
                 dt = MathF.Min(dt, 0.01f); 
-                
+                sceneManager._currentScene.UpdateAll(dt);
                 window.Clear();
-                
+                sceneManager._currentScene.RenderAll(window);
                 window.Display();
             }
         }

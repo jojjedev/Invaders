@@ -14,17 +14,16 @@ public abstract class Scene
         Assets = new AssetManager();
         Loader = new SceneLoader();
         Events = new EventManager();
-
         _entities = new List<Entity>();
     }
 
-    protected virtual void Spawn(Entity entity)
+    public virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);
         entity.Create(this);
     }
 
-    protected virtual void Clear()
+    public virtual void Clear()
     {
         for (int i = _entities.Count - 1; i >= 0; i--)
         {

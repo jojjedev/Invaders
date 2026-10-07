@@ -1,4 +1,6 @@
-﻿namespace Invaders;
+﻿using static Invaders.SceneName;
+
+namespace Invaders;
 
 public sealed class SceneLoader
 {
@@ -12,16 +14,20 @@ public sealed class SceneLoader
         _gui = new GUI();
         loaders = new Dictionary<SceneName, Func<Scene>>
         {
-            { SceneName.Home, () => new HomeScene() },
-            { SceneName.Game, () => new GameScene() },
-            { SceneName.Scoreboard, () => new ScoreboardScene() }
+            { Home, () => new HomeScene() },
+            { Game, () => new GameScene() },
+            { Scoreboard, () => new ScoreboardScene() }
 
         };
     }
 
     public void HandleSceneLoad(Scene scene)
     {
-       
+        if (_nextScene == Waiting) return;
+        scene.Clear();
+        Create(_nextScene, out Scene created);
+        Console.WriteLine($"{_nextScene}");
+        _nextScene = Waiting;
     }
 
     private bool Create(SceneName name, out Scene created)

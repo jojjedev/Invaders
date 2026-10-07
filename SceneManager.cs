@@ -3,9 +3,10 @@ namespace Invaders;
 
 public class SceneManager
 {
-    private Scene _currentScene;
+    public Scene _currentScene;
     public SceneManager()
     {
+        _currentScene = new HomeScene(); // TODO Känns inte som detta är rätt.
         LoadScene(Home);
     }
 
@@ -21,4 +22,5 @@ public enum SceneName
     Home,
     Scoreboard,
     Game,
+    Waiting,
 }
