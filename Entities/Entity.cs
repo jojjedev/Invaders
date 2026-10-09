@@ -8,13 +8,18 @@ public class Entity
     private readonly string textureName;
     protected readonly Sprite _sprite;
     public bool Dead;
-
+    
     protected Entity(string textureName)
     {
         this.textureName = textureName;
         _sprite = new Sprite();
     }
 
+    public Color Color
+    {
+        get => _sprite.Color;
+        set => _sprite.Color = value;
+    }
     public Vector2f Position
     {
         get => _sprite.Position;

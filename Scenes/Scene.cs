@@ -3,32 +3,36 @@ using SFML.System;
 
 namespace Invaders;
 
-public sealed class Scene
+public abstract class Scene
 {
-    private List<Entity> _entities;
+    protected List<Entity> _entities;
     public readonly AssetManager Assets;
     public readonly SceneLoader Loader;
     public readonly EventManager Events;
+    protected Background _background;
+    private SceneName _sceneName;
     public Scene()
     {
-        _entities = new List<Entity>();
         Assets = new AssetManager();
         Loader = new SceneLoader();
         Events = new EventManager();
+        _entities = new List<Entity>();
+        _background = new Background();
+        Spawn(_background);
     }
-
-    public void Spawn(Entity entity)
+    
+    public virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);
         entity.Create(this);
     }
 
-    public void Clear()
+    public virtual void Clear()
     {
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
             Entity entity = _entities[i];
-            if (entity.DontClearOnLoad)
+            if (!entity.DontClearOnLoad)
             {
                 _entities.RemoveAt(i);
                 entity.Destroy(this);
@@ -36,9 +40,9 @@ public sealed class Scene
         }
     }
 
-    public void UpdateAll(float dt)
+    public virtual void UpdateAll(float dt)
     {
-        Loader.HandleSceneLoad(this);
+
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
             Entity entity = _entities[i];
@@ -51,10 +55,9 @@ public sealed class Scene
             if (entity.Dead) _entities.RemoveAt(i);
             else i++;
         }
-        Events.CheckEvent(this);
     }
 
-    public void RenderAll(RenderTarget target)
+    public virtual void RenderAll(RenderTarget target)
     {
         for (int i = 0; i < _entities.Count; i++)
         {
