@@ -23,4 +23,5 @@ public enum SceneName
     Scoreboard,
     Game,
     Waiting,
+    Quit,
 }

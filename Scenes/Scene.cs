@@ -38,7 +38,7 @@ public abstract class Scene
         }
     }
 
-    public void UpdateAll(float dt)
+    public virtual void UpdateAll(float dt)
     {
         Loader.HandleSceneLoad(this);
         for (int i = _entities.Count - 1; i >= 0; i--)
