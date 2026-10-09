@@ -29,9 +29,9 @@ class Program
 
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f); 
-                sceneManager._currentScene.UpdateAll(dt);
+                sceneManager.CurrentScene.UpdateAll(dt);
                 window.Clear();
-                sceneManager._currentScene.RenderAll(window);
+                sceneManager.CurrentScene.RenderAll(window);
                 window.Display();
             }
         }

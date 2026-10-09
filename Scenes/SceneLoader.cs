@@ -1,45 +1,44 @@
-﻿using static Invaders.SceneName;
+﻿using SFML.Window;
+using static Invaders.SceneName;
 
 namespace Invaders;
 
 public sealed class SceneLoader
 {
-    private GUI _gui;
-    private SceneName _currentScene;
-    private SceneName _nextScene;
+    private SceneName _currentScene = Waiting;
+    private SceneName _nextScene = Waiting;
     private Dictionary<SceneName, Func<Scene>> loaders;
-
     public SceneLoader()
     {
-        _gui = new GUI();
         loaders = new Dictionary<SceneName, Func<Scene>>
         {
             { Home, () => new HomeScene() },
             { Game, () => new GameScene() },
             { Scoreboard, () => new ScoreboardScene() }
-
         };
     }
 
+    private void OnSceneChange(SceneName sceneName)
+    {
+        Create(sceneName, out Scene created);
+        created.Loader.Load(sceneName);
+    }
     public void HandleSceneLoad(Scene scene)
     {
         if (_nextScene == Waiting) return;
         scene.Clear();
         _nextScene = Waiting;
     }
-
-    private bool Create(SceneName name, out Scene created)
+    private void Create(SceneName name, out Scene created)
     {
         if (loaders.TryGetValue(name, out Func<Scene> loader))
         {
             created = loader();
-            return true;
+            return ;
         }
 
         created = null;
-        return false;
     }
-    
     
     public void Load(SceneName sceneName)
     {

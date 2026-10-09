@@ -6,19 +6,21 @@ namespace Invaders;
 public abstract class Scene
 {
     protected List<Entity> _entities;
-    protected GUI _gui;
     public readonly AssetManager Assets;
     public readonly SceneLoader Loader;
     public readonly EventManager Events;
+    protected Background _background;
+    private SceneName _sceneName;
     public Scene()
     {
         Assets = new AssetManager();
         Loader = new SceneLoader();
         Events = new EventManager();
         _entities = new List<Entity>();
-        _gui = new GUI();
+        _background = new Background();
+        Spawn(_background);
     }
-
+    
     public virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);
@@ -30,7 +32,7 @@ public abstract class Scene
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
             Entity entity = _entities[i];
-            if (entity.DontClearOnLoad)
+            if (!entity.DontClearOnLoad)
             {
                 _entities.RemoveAt(i);
                 entity.Destroy(this);
@@ -40,7 +42,7 @@ public abstract class Scene
 
     public virtual void UpdateAll(float dt)
     {
-        Loader.HandleSceneLoad(this);
+
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
             Entity entity = _entities[i];
@@ -53,7 +55,6 @@ public abstract class Scene
             if (entity.Dead) _entities.RemoveAt(i);
             else i++;
         }
-        Events.CheckEvent(this);
     }
 
     public virtual void RenderAll(RenderTarget target)

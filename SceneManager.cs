@@ -3,16 +3,16 @@ namespace Invaders;
 
 public class SceneManager
 {
-    public Scene _currentScene;
+    public Scene CurrentScene = new HomeScene();
     public SceneManager()
     {
-        _currentScene = new HomeScene(); // TODO Känns inte som detta är rätt.
         LoadScene(Home);
+        CurrentScene.Events.SceneChange += LoadScene;
     }
 
     public void LoadScene(SceneName sceneName)
     {
-        _currentScene.Loader.Load(sceneName);
+        CurrentScene.Loader.Load(sceneName);
     }
     
 }
