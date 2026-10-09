@@ -7,10 +7,10 @@ public sealed class SceneLoader
 {
     private SceneName _currentScene = Waiting;
     private SceneName _nextScene = Waiting;
-    private Dictionary<SceneName, Func<Scene>> loaders;
+    private Dictionary<SceneName, Func<Scene>> _loaders;
     public SceneLoader()
     {
-        loaders = new Dictionary<SceneName, Func<Scene>>
+        _loaders = new Dictionary<SceneName, Func<Scene>>
         {
             { Home, () => new HomeScene() },
             { Game, () => new GameScene() },
@@ -31,7 +31,7 @@ public sealed class SceneLoader
     }
     private void Create(SceneName name, out Scene created)
     {
-        if (loaders.TryGetValue(name, out Func<Scene> loader))
+        if (_loaders.TryGetValue(name, out Func<Scene> loader))
         {
             created = loader();
             return ;

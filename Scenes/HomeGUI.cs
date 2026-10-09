@@ -7,9 +7,6 @@ namespace Invaders;
 
 public class HomeGUI : GUI
 {
-    private Text _newGame;
-    private Text _scoreboard;
-    private Text _quit;
     private List<Text> _texts;
     private uint _defaultCharacterSize = 45;
     private Color _defaultColor = new Color(100,100,100);
@@ -24,12 +21,9 @@ public class HomeGUI : GUI
     {
         uint CharacterSize = _defaultCharacterSize;
         Color color = _defaultColor;
-        _newGame = CreateText(scene, "New Game", CharacterSize, color);
-        _texts.Add(_newGame);
-        _scoreboard = CreateText(scene, "Scoreboard", CharacterSize, color);
-        _texts.Add(_scoreboard);
-        _quit = CreateText(scene, "Quit", CharacterSize, color);
-        _texts.Add(_quit);
+        _texts.Add(CreateText(scene, "New Game", CharacterSize, color));
+        _texts.Add(CreateText(scene, "Scoreboard", CharacterSize, color));
+        _texts.Add(CreateText(scene, "Quit", CharacterSize, color));
         _currentTarget = 0;
         Target();
     }
