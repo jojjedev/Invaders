@@ -13,7 +13,6 @@ public sealed class Background : Entity
     {
         _sprite.TextureRect = _backgroundRect;
         _sprite.Origin = new Vector2f(128, 128);
-        DontClearOnLoad = true;
     }
 
     

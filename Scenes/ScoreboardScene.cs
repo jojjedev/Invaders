@@ -7,7 +7,6 @@ namespace Invaders;
 
 public class ScoreboardScene : Scene
 {
-    private bool _keyPressed;
     private ScoreboardGUI _gui;
     public ScoreboardScene() : base()
     {
@@ -15,22 +14,11 @@ public class ScoreboardScene : Scene
         _background.Color = new Color(64, 173, 115);
         Spawn(_background);
         Spawn(_gui);
-        Console.WriteLine(_entities);
-    }
-    private void IsUpOrDownPressed()
-    {
-        if (Keyboard.IsKeyPressed(Down) ||
-            Keyboard.IsKeyPressed(S) ||
-            Keyboard.IsKeyPressed(Up) ||
-            Keyboard.IsKeyPressed(W))
-        {
-            _keyPressed = true;
-        }
-        else _keyPressed = false;
     }
 
     protected override void LoadNextScene(int target)
     {
+        Clear();
         switch (target)
         {
             case 1:
@@ -43,7 +31,6 @@ public class ScoreboardScene : Scene
     }
     public override void UpdateAll(float dt)
     {
-        base.UpdateAll(dt);
         if (!_keyPressed)
         {
             _gui.UpdateTarget();
@@ -51,5 +38,7 @@ public class ScoreboardScene : Scene
         if (Keyboard.IsKeyPressed(Enter)) LoadNextScene(_gui.Target());
         
         IsUpOrDownPressed();
+        base.UpdateAll(dt);
+
     }
 }

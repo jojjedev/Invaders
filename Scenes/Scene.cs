@@ -1,16 +1,22 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
+using static SFML.Window.Keyboard.Key;
+
 
 namespace Invaders;
 
 public abstract class Scene
 {
     protected List<Entity> _entities;
+    
     public readonly AssetManager Assets;
     public readonly SceneLoader Loader;
     public readonly EventManager Events;
     protected Background _background;
+    protected bool _keyPressed;
     private SceneName _sceneName;
+
     public Scene()
     {
         Assets = new AssetManager();
@@ -20,6 +26,18 @@ public abstract class Scene
         _background = new Background();
     }
     protected virtual void LoadNextScene(int target){}
+    protected virtual void IsUpOrDownPressed()
+    {
+        if (Keyboard.IsKeyPressed(Down) ||
+            Keyboard.IsKeyPressed(S) ||
+            Keyboard.IsKeyPressed(Up) ||
+            Keyboard.IsKeyPressed(W) ||
+            Keyboard.IsKeyPressed(Enter))
+        {
+            _keyPressed = true;
+        }
+        else _keyPressed = false;
+    }
     public virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);

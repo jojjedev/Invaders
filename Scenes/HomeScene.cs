@@ -10,7 +10,6 @@ namespace Invaders;
 
 public class HomeScene : Scene
 {
-    private bool _keyPressed;
     private HomeGUI _gui;
     public HomeScene()
     {
@@ -38,21 +37,10 @@ public class HomeScene : Scene
                 break;
         }
     }
-    private void IsUpOrDownPressed()
-    {
-        if (Keyboard.IsKeyPressed(Down) ||
-             Keyboard.IsKeyPressed(S) ||
-             Keyboard.IsKeyPressed(Up) ||
-             Keyboard.IsKeyPressed(W))
-        {
-            _keyPressed = true;
-        }
-        else _keyPressed = false;
-    }
+    
     
     public override void UpdateAll(float dt)
     {
-        base.UpdateAll(dt);
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
             Entity entity = _entities[i];
@@ -74,6 +62,7 @@ public class HomeScene : Scene
             LoadNextScene(_gui.Target());
         }
         IsUpOrDownPressed();
-        
+        base.UpdateAll(dt);
+
     }
 }
