@@ -7,6 +7,7 @@ public class ScoreboardScene : Scene
     public ScoreboardScene() : base()
     {
         _background.Color = Color.Green;
-        Console.WriteLine(_entities.Count);
+        Spawn(_background);
+        Console.WriteLine(_entities);
     }
 }

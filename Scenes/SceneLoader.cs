@@ -18,11 +18,13 @@ public sealed class SceneLoader
         };
     }
 
-    private void OnSceneChange(SceneName sceneName)
+    public void SceneChange(Scene scene, SceneName sceneName)
     {
+        scene.Clear();
         Create(sceneName, out Scene created);
         created.Loader.Load(sceneName);
     }
+    
     public void HandleSceneLoad(Scene scene)
     {
         if (_nextScene == Waiting) return;
@@ -40,7 +42,7 @@ public sealed class SceneLoader
         created = null;
     }
     
-    public void Load(SceneName sceneName)
+    private void Load(SceneName sceneName)
     {
         _nextScene = sceneName;
     }

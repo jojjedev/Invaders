@@ -30,6 +30,7 @@ class Program
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f); 
                 sceneManager.CurrentScene.UpdateAll(dt);
+                if (sceneManager.GameState != 1) window.Close();
                 window.Clear();
                 sceneManager.CurrentScene.RenderAll(window);
                 window.Display();

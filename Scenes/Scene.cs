@@ -18,7 +18,6 @@ public abstract class Scene
         Events = new EventManager();
         _entities = new List<Entity>();
         _background = new Background();
-        Spawn(_background);
     }
     
     public virtual void Spawn(Entity entity)
@@ -40,9 +39,19 @@ public abstract class Scene
         }
     }
 
+    public void ClearAll()
+    {
+        for (int i = 0; i < _entities.Count; i++)
+        {
+            _entities[i].DontClearOnLoad = false;
+        }
+        Clear();
+    }
+    
+
     public virtual void UpdateAll(float dt)
     {
-
+        Loader.HandleSceneLoad(this);
         for (int i = _entities.Count - 1; i >= 0; i--)
         {
             Entity entity = _entities[i];
@@ -55,6 +64,7 @@ public abstract class Scene
             if (entity.Dead) _entities.RemoveAt(i);
             else i++;
         }
+        Events.CheckSceneNameEvent();
     }
 
     public virtual void RenderAll(RenderTarget target)

@@ -6,15 +6,15 @@ public delegate void ChangeSceneEvent(SceneName sceneName);
 public delegate void ValueChangedEvent(Scene scene, int amount);
 public sealed class EventManager
 {
-    private int _healthLost;
-    private int _sceneChange;
+    private int _healthLost = 0;
+    private SceneName _newScene = SceneName.Waiting;
     public event ValueChangedEvent LoseHealth;
     public event ChangeSceneEvent SceneChange;
 
     public void PublishLoseHealth(int amount) => _healthLost += amount;
-    public void PublishSceneChange(SceneName sceneName) => _sceneChange++;
+    public void PublishSceneChange(SceneName sceneName) => _newScene = sceneName;
 
-    /*public void CheckEvent(Scene scene)
+    public void CheckEvent(Scene scene)
     {
         if (_healthLost != 0)
         {
@@ -22,14 +22,14 @@ public sealed class EventManager
             _healthLost = 0;
         }
         
-    }*/
+    }
 
-    public void CheckSceneNameEvent(SceneName sceneName)
+    public void CheckSceneNameEvent()
     {
-        if (_sceneChange != 0)
+        if (_newScene != SceneName.Waiting)
         {
-            SceneChange?.Invoke(sceneName);
-            _sceneChange = 0;
+            SceneChange?.Invoke(_newScene);
+            _newScene = SceneName.Waiting;
         }
     }
 }

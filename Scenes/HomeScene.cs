@@ -15,7 +15,9 @@ public class HomeScene : Scene
     public HomeScene()
     {
         _gui = new HomeGUI(this);
+        Spawn(_background);
         Spawn(_gui);
+
     }
     private void LoadNextScene(int target)
     {
@@ -23,15 +25,15 @@ public class HomeScene : Scene
         switch (target)
         {
             case 0:
-                Loader.Load(Game);
+                //Loader.SceneChange(this, Game);
                 Events.PublishSceneChange(Game);
                 break;
             case 1:
-                Loader.Load(Scoreboard);
+                //Loader.SceneChange(this, Scoreboard);
                 Events.PublishSceneChange(Scoreboard);
                 break;
             case 2:
-                Loader.Load(Quit);
+                //Loader.SceneChange(this,Quit);
                 Events.PublishSceneChange(Quit);
                 break;
         }
@@ -69,7 +71,6 @@ public class HomeScene : Scene
         }
         if (Keyboard.IsKeyPressed(Enter))
         {
-            //TODO Trigga event för att ladda ny scene från SceneManager
             LoadNextScene(_gui.Target());
         }
         IsUpOrDownPressed();
