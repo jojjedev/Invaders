@@ -19,7 +19,7 @@ public class HomeScene : Scene
         Spawn(_gui);
 
     }
-    private void LoadNextScene(int target)
+    protected override void LoadNextScene(int target)
     {
         Clear();
         switch (target)

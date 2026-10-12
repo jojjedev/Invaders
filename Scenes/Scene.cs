@@ -19,7 +19,7 @@ public abstract class Scene
         _entities = new List<Entity>();
         _background = new Background();
     }
-    
+    protected virtual void LoadNextScene(int target){}
     public virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);

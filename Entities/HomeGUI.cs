@@ -7,11 +7,6 @@ namespace Invaders;
 
 public class HomeGUI : GUI
 {
-    private List<Text> _texts;
-    private uint _defaultCharacterSize = 45;
-    private Color _defaultColor = new Color(100,100,100);
-    private int _currentTarget;
-    
     public HomeGUI(HomeScene scene) : base()
     {
         _texts = new List<Text>();
@@ -27,14 +22,8 @@ public class HomeGUI : GUI
         _currentTarget = 0;
         Target();
     }
-    public int Target()
-    {
-        Text target = _texts[_currentTarget];
-        target.CharacterSize = 50;
-        target.FillColor = Color.White;
-        return _texts.IndexOf(target);
-    }
-    public void UpdateTarget()
+    
+    public override void UpdateTarget()
     {
         if (Keyboard.IsKeyPressed(Down) || Keyboard.IsKeyPressed(S))
         {
