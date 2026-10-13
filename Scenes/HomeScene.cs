@@ -24,15 +24,12 @@ public sealed class HomeScene : Scene, IKeyCheck
         switch (target)
         {
             case 0:
-                //Loader.SceneChange(this, Game);
                 Events.PublishSceneChange(Game);
                 break;
             case 1:
-                //Loader.SceneChange(this, Scoreboard);
                 Events.PublishSceneChange(Scoreboard);
                 break;
             case 2:
-                //Loader.SceneChange(this,Quit);
                 Events.PublishSceneChange(Quit);
                 break;
         }
@@ -60,8 +57,6 @@ public sealed class HomeScene : Scene, IKeyCheck
         {
             LoadNextScene(_gui.Target());
         }
-
         IsAnyKeyPressed();
-
     }
 }
