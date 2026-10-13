@@ -6,41 +6,33 @@ public sealed class SceneManager
 {
     public Scene CurrentScene;
     public int GameState = 1; // TODO: Kolla över om det behöver vara en int
+    private readonly Dictionary<SceneName, Func<Scene>> _loaders;
+
     public SceneManager()
     {
-        CurrentScene = new HomeScene();
+        _loaders = new Dictionary<SceneName, Func<Scene>>
+        {
+            { Home, () => new HomeScene() },
+            { Game, () => new GameScene() },
+            { Scoreboard, () => new ScoreboardScene() },
+            { Waiting, () => CurrentScene},
+            { Quit,  () =>
+                {
+                    GameState = 0;
+                    CurrentScene?.ClearAll();
+                    return CurrentScene;
+                }
+            }
+        };
+        CurrentScene = _loaders[Home].Invoke();
         CurrentScene.Events.SceneChange += LoadScene;
     }
 
     private void LoadScene(SceneName sceneName)
     {
-        switch (sceneName)
-        {
-            case Home :
-                CurrentScene.Events.SceneChange -= LoadScene;
-                CurrentScene = new HomeScene();
-                CurrentScene.Events.SceneChange += LoadScene;
-                break;
-            case Scoreboard:
-                CurrentScene.Events.SceneChange -= LoadScene;
-                CurrentScene = new ScoreboardScene(); 
-                CurrentScene.Events.SceneChange += LoadScene;
-
-                break;
-            case Game:
-                CurrentScene.Events.SceneChange -= LoadScene;
-                CurrentScene = new GameScene();
-                CurrentScene.Events.SceneChange += LoadScene;
-                break;
-            case Waiting:
-                break;
-            case Quit:
-                GameState--;
-                //TODO: Kalla på funktioner som sparar score i txt fil.
-                CurrentScene.Events.SceneChange -= LoadScene;
-                CurrentScene.ClearAll();
-                break;
-        }
+        CurrentScene.Events.SceneChange -= LoadScene;
+        CurrentScene = _loaders[sceneName].Invoke();
+        CurrentScene.Events.SceneChange += LoadScene;
     }
     
 }
