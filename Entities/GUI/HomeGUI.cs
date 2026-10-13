@@ -5,21 +5,21 @@ using static SFML.Window.Keyboard.Key;
 
 namespace Invaders;
 
-public class HomeGUI : GUI
+public sealed class HomeGUI : GUI
 {
     public HomeGUI(HomeScene scene) : base()
     {
-        _texts = new List<Text>();
+        Texts = new List<Text>();
         CreateObjects(scene);
     }
     private void CreateObjects(HomeScene scene)
     {
-        uint CharacterSize = _defaultCharacterSize;
-        Color color = _defaultColor;
-        _texts.Add(CreateText(scene, "New Game", CharacterSize, color));
-        _texts.Add(CreateText(scene, "Scoreboard", CharacterSize, color));
-        _texts.Add(CreateText(scene, "Quit", CharacterSize, color));
-        _currentTarget = 0;
+        uint CharacterSize = DefaultCharacterSize;
+        Color color = DefaultColor;
+        Texts.Add(CreateText(scene, "New Game", CharacterSize, color));
+        Texts.Add(CreateText(scene, "Scoreboard", CharacterSize, color));
+        Texts.Add(CreateText(scene, "Quit", CharacterSize, color));
+        CurrentTarget = 0;
         Target();
     }
     
@@ -27,18 +27,18 @@ public class HomeGUI : GUI
     {
         if (Keyboard.IsKeyPressed(Down) || Keyboard.IsKeyPressed(S))
         {
-            _texts[_currentTarget].CharacterSize = _defaultCharacterSize;
-            _texts[_currentTarget].FillColor = _defaultColor;
-            _currentTarget++;
-            if (_currentTarget == _texts.Count) _currentTarget = 0;
+            Texts[CurrentTarget].CharacterSize = DefaultCharacterSize;
+            Texts[CurrentTarget].FillColor = DefaultColor;
+            CurrentTarget++;
+            if (CurrentTarget == Texts.Count) CurrentTarget = 0;
             Target();
         }
         if (Keyboard.IsKeyPressed(Up) || Keyboard.IsKeyPressed(W))
         {
-            _texts[_currentTarget].CharacterSize = _defaultCharacterSize;
-            _texts[_currentTarget].FillColor = _defaultColor;
-            _currentTarget--;
-            if (_currentTarget == -1) _currentTarget = _texts.Count - 1;
+            Texts[CurrentTarget].CharacterSize = DefaultCharacterSize;
+            Texts[CurrentTarget].FillColor = DefaultColor;
+            CurrentTarget--;
+            if (CurrentTarget == -1) CurrentTarget = Texts.Count - 1;
             Target();
         }
 
@@ -46,9 +46,9 @@ public class HomeGUI : GUI
 
     public override void Render(RenderTarget target)
     {
-        for (int i = 0; i < _texts.Count; i++)
+        for (int i = 0; i < Texts.Count; i++)
         {
-            Text text = _texts[i];
+            Text text = Texts[i];
             FloatRect bounds = text.GetGlobalBounds();
             text.Origin = new Vector2f(bounds.Width * 0.5f, bounds.Height * 0.5f);
             text.Position = new Vector2f(256, 512 + 2f * bounds.Height * (i - 1));

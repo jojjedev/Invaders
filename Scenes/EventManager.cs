@@ -14,7 +14,7 @@ public sealed class EventManager
     public void PublishLoseHealth(int amount) => _healthLost += amount;
     public void PublishSceneChange(SceneName sceneName) => _newScene = sceneName;
 
-    public void CheckEvent(Scene scene)
+    public void CheckLoseHealthEvent(Scene scene)
     {
         if (_healthLost != 0)
         {

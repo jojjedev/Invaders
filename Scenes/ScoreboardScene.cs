@@ -5,17 +5,16 @@ using static SFML.Window.Keyboard.Key;
 
 namespace Invaders;
 
-public class ScoreboardScene : Scene
+public sealed class ScoreboardScene : Scene, IKeyCheck
 {
     private ScoreboardGUI _gui;
     public ScoreboardScene() : base()
     {
         _gui = new ScoreboardGUI(this);
-        _background.Color = new Color(64, 173, 115);
-        Spawn(_background);
+        Background.Color = new Color(64, 173, 115);
+        Spawn(Background);
         Spawn(_gui);
     }
-
     protected override void LoadNextScene(int target)
     {
         Clear();
@@ -29,15 +28,27 @@ public class ScoreboardScene : Scene
                 break;
         }
     }
+    public void IsAnyKeyPressed()
+    {
+        if (Keyboard.IsKeyPressed(Down) ||
+            Keyboard.IsKeyPressed(S) ||
+            Keyboard.IsKeyPressed(Up) ||
+            Keyboard.IsKeyPressed(W) ||
+            Keyboard.IsKeyPressed(Enter))
+        {
+            KeyPressed = true;
+        }
+        else KeyPressed = false;
+    }
     public override void UpdateAll(float dt)
     {
-        if (!_keyPressed)
+        if (!KeyPressed)
         {
             _gui.UpdateTarget();
         }
-        if (Keyboard.IsKeyPressed(Enter) && _timer > 0.5f) LoadNextScene(_gui.Target());
+        if (Keyboard.IsKeyPressed(Enter) && Timer > 0.5f) LoadNextScene(_gui.Target());
         
-        IsUpOrDownPressed();
+        IsAnyKeyPressed();
         base.UpdateAll(dt);
 
     }

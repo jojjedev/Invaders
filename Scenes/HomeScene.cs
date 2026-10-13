@@ -8,13 +8,13 @@ using static Invaders.SceneName;
 
 namespace Invaders;
 
-public class HomeScene : Scene
+public sealed class HomeScene : Scene, IKeyCheck
 {
     private HomeGUI _gui;
     public HomeScene()
     {
         _gui = new HomeGUI(this);
-        Spawn(_background);
+        Spawn(Background);
         Spawn(_gui);
 
     }
@@ -37,20 +37,31 @@ public class HomeScene : Scene
                 break;
         }
     }
-    
-    
+    public void IsAnyKeyPressed()
+    {
+        if (Keyboard.IsKeyPressed(Down) ||
+            Keyboard.IsKeyPressed(S) ||
+            Keyboard.IsKeyPressed(Up) ||
+            Keyboard.IsKeyPressed(W) ||
+            Keyboard.IsKeyPressed(Enter))
+        {
+            KeyPressed = true;
+        }
+        else KeyPressed = false;
+    }
     public override void UpdateAll(float dt)
     {
         base.UpdateAll(dt);
-        if (!_keyPressed)
+        if (!KeyPressed)
         {
             _gui.UpdateTarget();
         }
-        if (Keyboard.IsKeyPressed(Enter) && _timer > 0.5f)
+        if (Keyboard.IsKeyPressed(Enter) && Timer > 0.5f)
         {
             LoadNextScene(_gui.Target());
         }
-        IsUpOrDownPressed();
+
+        IsAnyKeyPressed();
 
     }
 }

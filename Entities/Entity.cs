@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace Invaders;
 
-public class Entity
+public abstract class Entity
 {
     private readonly string textureName;
     protected readonly Sprite _sprite;
@@ -34,7 +34,7 @@ public class Entity
     {
         _sprite.Texture = scene.Assets.LoadTexture(textureName);
     }
-    public virtual void Destroy(Scene scene){}
+    public virtual void Destroy(Scene scene){} //TODO Behöver definieras
     
     public virtual void Update(Scene scene, float dt){}
     public virtual void Render(RenderTarget target)

@@ -7,15 +7,15 @@ using static SFML.Window.Keyboard.Key;
 
 namespace Invaders;
 
-public class ScoreboardGUI : GUI
+public sealed class ScoreboardGUI : GUI
 {
     private Dictionary<Text, Text[]> _scores;
     private Color _scoreColor;
     public ScoreboardGUI(ScoreboardScene scene) : base()
     {
-        _texts = new List<Text>();
+        Texts = new List<Text>();
         _scores = new Dictionary<Text, Text[]>();
-        _defaultCharacterSize = 32;
+        DefaultCharacterSize = 32;
         _scoreColor = new Color(168, 154, 226);
         CreateScoreboard(scene);
     }
@@ -26,18 +26,18 @@ public class ScoreboardGUI : GUI
         FloatRect titleBounds = title.GetGlobalBounds();
         title.Origin = new Vector2f(titleBounds.Width * 0.5f, titleBounds.Height * 0.5f);
         title.Position = new Vector2f(256, titleBounds.Height * 2f);
-        _texts.Add(title);
-        Text newGame = CreateText(scene, "New Game", 40, _defaultColor);
-        _texts.Add(newGame); // Index 1
-        Text back = CreateText(scene, "Back", 40, _defaultColor);
-        _texts.Add(back); // Index 2
-        _currentTarget = 1; // Sätter target på "Back" by default.
+        Texts.Add(title);
+        Text newGame = CreateText(scene, "New Game", 40, DefaultColor);
+        Texts.Add(newGame); // Index 1
+        Text back = CreateText(scene, "Back", 40, DefaultColor);
+        Texts.Add(back); // Index 2
+        CurrentTarget = 1; // Sätter target på "Back" by default.
         Target();
     }
 
     private void CreateScoreboard(ScoreboardScene scene)
     {
-        uint characterSize = _defaultCharacterSize;
+        uint characterSize = DefaultCharacterSize;
         CreateTitleAndBack(scene);
         for (int i = 1; i <= 10; i++)
         {
@@ -52,8 +52,8 @@ public class ScoreboardGUI : GUI
     {
         Text[] playerScore = new Text[]
         {
-            CreateText(scene, name, _defaultCharacterSize, _scoreColor),             
-            CreateText(scene, score, _defaultCharacterSize, _scoreColor)
+            CreateText(scene, name, DefaultCharacterSize, _scoreColor),             
+            CreateText(scene, score, DefaultCharacterSize, _scoreColor)
 
         };
         return playerScore;
@@ -61,10 +61,10 @@ public class ScoreboardGUI : GUI
 
     public override int Target()
     {
-        Text target = _texts[_currentTarget];
+        Text target = Texts[CurrentTarget];
         target.CharacterSize = 45;
         target.FillColor = Color.White;
-        return _texts.IndexOf(target);
+        return Texts.IndexOf(target);
     }
 
     public override void UpdateTarget()
@@ -74,9 +74,9 @@ public class ScoreboardGUI : GUI
             Keyboard.IsKeyPressed(Up) || 
             Keyboard.IsKeyPressed(W))
         {
-            _texts[_currentTarget].CharacterSize = 40;
-            _texts[_currentTarget].FillColor = _defaultColor;
-            _currentTarget = _currentTarget == 1 ? _currentTarget = 2 : _currentTarget = 1;
+            Texts[CurrentTarget].CharacterSize = 40;
+            Texts[CurrentTarget].FillColor = DefaultColor;
+            CurrentTarget = CurrentTarget == 1 ? CurrentTarget = 2 : CurrentTarget = 1;
             Target();
         }
         
@@ -114,10 +114,10 @@ public class ScoreboardGUI : GUI
         {
             if (i == 0)
             {
-                target.Draw(_texts[0]);
+                target.Draw(Texts[0]);
                 continue;
             }
-            Text text = _texts[i];
+            Text text = Texts[i];
             FloatRect bounds = text.GetGlobalBounds();
             text.Origin = new Vector2f(bounds.Width * 0.5f, bounds.Height * 0.5f);
             text.Position = new Vector2f(256, 800 + 2f * bounds.Height * i);

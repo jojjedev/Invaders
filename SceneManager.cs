@@ -2,7 +2,7 @@
 using SFML.Window;
 namespace Invaders;
 
-public class SceneManager
+public sealed class SceneManager
 {
     public Scene CurrentScene;
     public int GameState = 1;
@@ -12,7 +12,7 @@ public class SceneManager
         CurrentScene.Events.SceneChange += LoadScene;
     }
 
-    public void LoadScene(SceneName sceneName)
+    private void LoadScene(SceneName sceneName)
     {
         switch (sceneName)
         {

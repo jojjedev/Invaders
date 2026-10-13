@@ -17,18 +17,12 @@ public sealed class SceneLoader
             { Scoreboard, () => new ScoreboardScene() }
         };
     }
-
-    public void SceneChange(Scene scene, SceneName sceneName)
-    {
-        scene.Clear();
-        Create(sceneName, out Scene created);
-        created.Loader.Load(sceneName);
-    }
-    
     public void HandleSceneLoad(Scene scene)
     {
         if (_nextScene == Waiting) return;
         scene.Clear();
+        
+        // TODO: Kanske behövs i GameScene, annars ta bort.
         _nextScene = Waiting;
     }
     private void Create(SceneName name, out Scene created)

@@ -4,13 +4,13 @@ using SFML.System;
 
 namespace Invaders;
 
-public class GUI : Entity
+public abstract class GUI : Entity
 {
-    protected List<Text> _texts;
-    protected int _currentTarget;
-    protected uint _defaultCharacterSize = 45;
-    protected  Color _defaultColor = new Color(100,100,100);
-    public GUI() : base("sheet")
+    protected List<Text> Texts;
+    protected int CurrentTarget;
+    protected uint DefaultCharacterSize = 45;
+    protected  Color DefaultColor = new Color(100,100,100);
+    protected GUI() : base("sheet")
     {
         _sprite.Position = new Vector2f(600, 0);
     }
@@ -31,10 +31,10 @@ public class GUI : Entity
     }
     public virtual int Target()
     {
-        Text target = _texts[_currentTarget];
+        Text target = Texts[CurrentTarget];
         target.CharacterSize = 50;
         target.FillColor = Color.White;
-        return _texts.IndexOf(target);
+        return Texts.IndexOf(target);
     }
 
     
