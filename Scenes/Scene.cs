@@ -40,7 +40,7 @@ public abstract class Scene
         }
         else _keyPressed = false;
     }
-    public virtual void Spawn(Entity entity)
+    protected virtual void Spawn(Entity entity)
     {
         _entities.Add(entity);
         entity.Create(this);
