@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="giANrS42ZCe-TATYYwZ0">
-    <mxGraphModel dx="5115" dy="3550" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#ffffff, #121212)" math="0" shadow="0">
+    <mxGraphModel dx="4024" dy="2945" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" background="light-dark(#ffffff, #121212)" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -555,7 +555,7 @@
         <mxCell id="99zHsYwvqkhw7dN95Hny-32" edge="1" parent="1" source="EFnJ2dO3YnVtgz93LX6h-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=block;endFill=1;endSize=12;labelBackgroundColor=none;fontColor=default;" target="99zHsYwvqkhw7dN95Hny-22">
           <mxGeometry relative="1" x="0.0087" as="geometry" />
         </mxCell>
-        <mxCell id="EFnJ2dO3YnVtgz93LX6h-10" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;rounded=0;" value="GUI" vertex="1">
+        <mxCell id="EFnJ2dO3YnVtgz93LX6h-10" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;rounded=0;" value="&lt;i&gt;GUI&lt;/i&gt;" vertex="1">
           <mxGeometry height="216" width="246" x="-1085" y="-33" as="geometry" />
         </mxCell>
         <mxCell id="EFnJ2dO3YnVtgz93LX6h-11" parent="EFnJ2dO3YnVtgz93LX6h-10" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;labelBackgroundColor=none;rounded=0;" value="# Texts: List&amp;lt;Text&amp;gt;" vertex="1">
