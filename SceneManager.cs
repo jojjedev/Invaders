@@ -5,7 +5,7 @@ namespace Invaders;
 public sealed class SceneManager
 {
     public Scene CurrentScene;
-    public int GameState = 1;
+    public int GameState = 1; // TODO: Kolla över om det behöver vara en int
     public SceneManager()
     {
         CurrentScene = new HomeScene();
