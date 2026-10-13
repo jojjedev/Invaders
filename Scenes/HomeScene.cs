@@ -41,28 +41,16 @@ public class HomeScene : Scene
     
     public override void UpdateAll(float dt)
     {
-        for (int i = _entities.Count - 1; i >= 0; i--)
-        {
-            Entity entity = _entities[i];
-            entity.Update(this, dt);
-        }
-
-        for (int i = 0; i < _entities.Count; i++)
-        {
-            Entity entity = _entities[i];
-            if (entity.Dead) _entities.RemoveAt(i);
-            else i++;
-        }
+        base.UpdateAll(dt);
         if (!_keyPressed)
         {
             _gui.UpdateTarget();
         }
-        if (Keyboard.IsKeyPressed(Enter))
+        if (Keyboard.IsKeyPressed(Enter) && _timer > 0.5f)
         {
             LoadNextScene(_gui.Target());
         }
         IsUpOrDownPressed();
-        base.UpdateAll(dt);
 
     }
 }

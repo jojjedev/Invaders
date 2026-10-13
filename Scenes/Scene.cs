@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using System.Reflection.Metadata.Ecma335;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using static SFML.Window.Keyboard.Key;
@@ -16,8 +17,9 @@ public abstract class Scene
     protected Background _background;
     protected bool _keyPressed;
     private SceneName _sceneName;
+    protected float _timer;
 
-    public Scene()
+    protected Scene()
     {
         Assets = new AssetManager();
         Loader = new SceneLoader();
@@ -83,6 +85,7 @@ public abstract class Scene
             else i++;
         }
         Events.CheckSceneNameEvent();
+        _timer += dt;
     }
 
     public virtual void RenderAll(RenderTarget target)

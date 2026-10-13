@@ -35,7 +35,7 @@ public class ScoreboardScene : Scene
         {
             _gui.UpdateTarget();
         }
-        if (Keyboard.IsKeyPressed(Enter)) LoadNextScene(_gui.Target());
+        if (Keyboard.IsKeyPressed(Enter) && _timer > 0.5f) LoadNextScene(_gui.Target());
         
         IsUpOrDownPressed();
         base.UpdateAll(dt);
