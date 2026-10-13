@@ -11,9 +11,9 @@ class Program
     static void Main(string[] args)
     {
         // TODO Fixa inladdning av textures.
-        SceneManager sceneManager = new SceneManager();
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
+            SceneManager sceneManager = new SceneManager();
             window.Closed += (o, e) => window.Close();
             window.SetFramerateLimit(60);
             Clock clock = new Clock();
