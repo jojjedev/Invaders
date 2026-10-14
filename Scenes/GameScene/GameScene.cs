@@ -7,7 +7,7 @@ public sealed class GameScene : Scene
     private GameGUI _gui;
     public GameScene()
     {
-        Background.Color = Color.Cyan;
+        Background.SetColor(Color.Cyan);
         _gui = new GameGUI();
         Spawn(Background);
         Spawn(_gui);

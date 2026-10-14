@@ -8,7 +8,7 @@ using static Invaders.SceneName;
 
 namespace Invaders;
 
-public sealed class HomeScene : Scene, IKeyCheck
+public sealed class HomeScene : Scene
 {
     private HomeGUI _gui;
     public HomeScene()
@@ -24,7 +24,7 @@ public sealed class HomeScene : Scene, IKeyCheck
         switch (target)
         {
             case 0:
-                Events.PublishSceneChange(Game);
+                Events.PublishSceneChange(SceneName.Game);
                 break;
             case 1:
                 Events.PublishSceneChange(Scoreboard);

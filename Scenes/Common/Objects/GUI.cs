@@ -4,16 +4,12 @@ using SFML.System;
 
 namespace Invaders;
 
-public abstract class GUI : Entity
+public abstract class GUI : IOnScreenObject
 {
     protected List<Text> Texts;
     protected int CurrentTarget;
     protected uint DefaultCharacterSize = 45;
     protected  Color DefaultColor = new Color(100,100,100);
-    protected GUI() : base("sheet")
-    {
-        _sprite.Position = new Vector2f(600, 0);
-    }
 
     protected virtual Text CreateText(Scene scene, string text, uint characterSize, Color color)
     {
@@ -25,10 +21,7 @@ public abstract class GUI : Entity
         return newText;
     }
 
-    public virtual void UpdateTarget()
-    {
-        
-    }
+    public virtual void UpdateTarget() { }
     public virtual int Target()
     {
         Text target = Texts[CurrentTarget];
@@ -37,5 +30,10 @@ public abstract class GUI : Entity
         return Texts.IndexOf(target);
     }
 
-    
+    public bool Dead { get; set; }
+    public bool DontClearOnLoad { get; set; }
+    public virtual void Create(Scene scene) { }
+    public virtual void Destroy(Scene scene) { }
+    public virtual void Update(Scene scene, float dt) { }
+    public virtual void Render(RenderTarget target) { }
 }

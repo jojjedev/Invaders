@@ -2,7 +2,7 @@
 
 public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamageable
 {
-    protected Ship() : base("test")
+    protected Ship() : base("sheet")
     {
         
     }

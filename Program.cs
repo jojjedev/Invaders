@@ -13,7 +13,7 @@ class Program
         // TODO Fixa inladdning av textures.
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
-            SceneManager sceneManager = new SceneManager();
+            Game game = new Game();
             window.Closed += (o, e) => window.Close();
             window.SetFramerateLimit(60);
             Clock clock = new Clock();
@@ -23,10 +23,10 @@ class Program
                 window.DispatchEvents();
                 float dt = clock.Restart().AsSeconds();
                 dt = MathF.Min(dt, 0.01f); 
-                sceneManager.CurrentScene.UpdateAll(dt);
-                if (sceneManager.GameState != 1) window.Close();
+                game.CurrentScene.UpdateAll(dt);
+                if (game.GameState != 1) window.Close();
                 window.Clear();
-                sceneManager.CurrentScene.RenderAll(window);
+                game.CurrentScene.RenderAll(window);
                 window.Display();
             }
         }

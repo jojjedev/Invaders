@@ -2,18 +2,18 @@
 using SFML.Window;
 namespace Invaders;
 
-public sealed class SceneManager
+public sealed class Game
 {
     public Scene CurrentScene;
     public int GameState = 1; // TODO: Kolla över om det behöver vara en int
     private readonly Dictionary<SceneName, Func<Scene>> _loaders;
 
-    public SceneManager()
+    public Game()
     {
         _loaders = new Dictionary<SceneName, Func<Scene>>
         {
             { Home, () => new HomeScene() },
-            { Game, () => new GameScene() },
+            { SceneName.Game, () => new GameScene() },
             { Scoreboard, () => new ScoreboardScene() },
             { Waiting, () => CurrentScene},
             { Quit,  () =>
