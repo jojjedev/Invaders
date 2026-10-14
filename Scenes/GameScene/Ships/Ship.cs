@@ -12,26 +12,27 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
 
     public virtual void Move()
     {
-        throw new NotImplementedException();
+        //TODO: Generell funktion för att uppdatera position som kan ärvas till barnklasserna
     }
 
     public virtual void Explode()
     {
-        throw new NotImplementedException();
+        //TODO Ladda in Sprite för explosion på skeppets position
     }
 
     public virtual void Shoot()
     {
-        throw new NotImplementedException();
+        //TODO Skapa två instanser av Bullet ifrån skeppets position. Insp från Dodgemania
     }
 
     public virtual void DealDamage(IDamageable other)
     {
-        throw new NotImplementedException();
+        //TODO Ifall träff, kalla på denna. Tar bort HP från motståndare
     }
+
 
     public virtual void TakeDamage(int amount)
     {
-        throw new NotImplementedException();
+        //TODO Minska HP, om <= 0. Kalla på slutgiltig funktion och Destroy().
     }
 }
