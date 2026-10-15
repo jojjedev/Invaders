@@ -1,30 +1,48 @@
-﻿namespace Invaders;
+﻿using SFML.Graphics;
+using SFML.System;
 
-public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamageable
+namespace Invaders;
+
+public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamageable, IInteractable
 {
-    protected Ship() : base("sheet")
-    {
-        
-    }
+    private Vector2f _spawnPosition;
+    private float _originalSpeed;
+    protected float Speed;
+    protected Vector2f Direction;
+    // Constructor
+    protected Ship() : base("sheet") { }
+    
+    // Properties
     public int Health { get; set; }
     public int Damage { get; set; }
     public bool IsDestroyed { get; set; }
-
-    public virtual void Move()
+    public bool Invulnerable { get; set; }
+    public virtual Vector2f Position
     {
-        //TODO: Generell funktion för att uppdatera position som kan ärvas till barnklasserna
+        get => Sprite.Position;
+        set => Sprite.Position = value;
+    }
+    public virtual FloatRect Bounds => Sprite.GetGlobalBounds();
+
+    // Methods
+    public override void Create(Scene scene)
+    {
+        base.Create(scene);
+        _spawnPosition = Position;
+        _originalSpeed = Speed;
     }
 
-    public virtual void Explode()
+    public virtual void Move() { }
+
+    public void CollisionCheck(IInteractable other)
     {
-        //TODO Ladda in Sprite för explosion på skeppets position
+        //TODO: Kollisionscheck mellan Skepp och Bullet.
     }
 
     public virtual void Shoot()
     {
         //TODO Skapa två instanser av Bullet ifrån skeppets position. Insp från Dodgemania
     }
-
     public virtual void DealDamage(IDamageable other)
     {
         //TODO Ifall träff, kalla på denna. Tar bort HP från motståndare
@@ -34,5 +52,10 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     public virtual void TakeDamage(int amount)
     {
         //TODO Minska HP, om <= 0. Kalla på slutgiltig funktion och Destroy().
+    }
+
+    public virtual void Explode()
+    {
+        //TODO Ladda in Sprite för explosion på skeppets position
     }
 }

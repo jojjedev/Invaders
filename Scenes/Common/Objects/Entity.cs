@@ -16,7 +16,10 @@ public abstract class Entity : IOnScreenObject
     public bool Dead { get; set; }
     public bool DontClearOnLoad { get; set; }
 
-    public virtual void Create(Scene scene) { }
+    public virtual void Create(Scene scene) 
+    {
+        Sprite.Texture = scene.Assets.LoadTexture(TextureName);
+    }
 
     public virtual void Destroy(Scene scene) { }
 

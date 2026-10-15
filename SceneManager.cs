@@ -2,18 +2,18 @@
 using SFML.Window;
 namespace Invaders;
 
-public sealed class Game
+public sealed class SceneManager
 {
     public Scene CurrentScene;
     public int GameState = 1; // TODO: Kolla över om det behöver vara en int
     private readonly Dictionary<SceneName, Func<Scene>> _loaders;
 
-    public Game()
+    public SceneManager()
     {
         _loaders = new Dictionary<SceneName, Func<Scene>>
         {
             { Home, () => new HomeScene() },
-            { SceneName.Game, () => new GameScene() },
+            { Game, () => new GameScene() },
             { Scoreboard, () => new ScoreboardScene() },
             { Waiting, () => CurrentScene},
             { Quit,  () =>
@@ -24,7 +24,8 @@ public sealed class Game
                 }
             }
         };
-        CurrentScene = _loaders[Home].Invoke();
+        // Decides starting Screen
+        CurrentScene = _loaders[Game].Invoke(); 
         CurrentScene.Events.SceneChange += LoadScene;
     }
 

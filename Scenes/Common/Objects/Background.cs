@@ -19,10 +19,6 @@ public sealed class Background : Entity
     {
         Sprite.Color = color;
     }
-    public override void Create(Scene scene)
-    {
-        Sprite.Texture = scene.Assets.LoadTexture(TextureName);
-    }
     public override void Update(Scene scene, float dt)
     {
         _timer += dt;
