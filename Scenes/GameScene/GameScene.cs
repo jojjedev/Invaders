@@ -22,4 +22,17 @@ public sealed class GameScene : Scene
     {
         //TODO: Stoppa alla rörelser, ladda in ruta med text så spelare kan skriva in sitt namn.
     }
+    public IEnumerable<IInteractable> CollisionCheck(FloatRect bounds)
+    {
+        int lastObjOnTeamPlayer = InteractableEntities[Team.Player].Count - 1;
+        for (int i = lastObjOnTeamPlayer; i >= 0; i--)
+        {
+            IInteractable entity = InteractableEntities[Team.Player][i];
+            if (entity.dead) continue;
+            if (entity.Bounds.Intersects(bounds))
+            {
+                yield return entity;
+            }
+        }
+    }
 }

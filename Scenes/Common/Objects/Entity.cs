@@ -13,7 +13,7 @@ public abstract class Entity : IOnScreenObject
         this.TextureName = textureName;
         Sprite = new Sprite();
     }
-    public bool Dead { get; set; }
+    public virtual bool Dead { get; set; }
     public bool DontClearOnLoad { get; set; }
 
     public virtual void Create(Scene scene) 

@@ -13,6 +13,7 @@ public abstract class Scene
     public readonly SceneLoader Loader;
     public readonly EventManager Events;
     protected List<IOnScreenObject> Objects;
+    public Dictionary<Team, List<IInteractable>> InteractableEntities;
     protected Background Background;
     protected bool KeyPressed;
     protected float Timer;
@@ -45,7 +46,7 @@ public abstract class Scene
             }
         }
     }
-
+    
     public void ClearAll()
     {
         for (int i = 0; i < Objects.Count; i++)

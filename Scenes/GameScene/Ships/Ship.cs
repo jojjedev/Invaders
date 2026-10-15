@@ -17,6 +17,7 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     public int Damage { get; set; }
     public bool IsDestroyed { get; set; }
     public bool Invulnerable { get; set; }
+    protected Team Affiliation { get; set; }
     public virtual Vector2f Position
     {
         get => Sprite.Position;
@@ -28,16 +29,18 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     public override void Create(Scene scene)
     {
         base.Create(scene);
+        if (!scene.InteractableEntities.ContainsKey(Affiliation))
+        {
+            scene.InteractableEntities.Add(Affiliation, new List<IInteractable>());
+        }
+        scene.InteractableEntities[Affiliation].Add(this);
         _spawnPosition = Position;
         _originalSpeed = Speed;
     }
 
-    public virtual void Move() { }
+    public virtual void Move(float dt) { }
 
-    public void CollisionCheck(IInteractable other)
-    {
-        //TODO: Kollisionscheck mellan Skepp och Bullet.
-    }
+    
 
     public virtual void Shoot()
     {
