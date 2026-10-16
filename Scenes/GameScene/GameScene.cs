@@ -5,10 +5,12 @@ namespace Invaders;
 
 public sealed class GameScene : Scene
 {
+    
     private PlayerShip _player;
     private GameGUI _gui;
     public GameScene()
     {
+        InteractableEntities = new Dictionary<Team, List<Entity>>();
         Background.SetColor(Color.Cyan);
         _gui = new GameGUI();
         _player = new PlayerShip();
@@ -21,18 +23,5 @@ public sealed class GameScene : Scene
     private void OnGameOver(Scene scene)
     {
         //TODO: Stoppa alla rörelser, ladda in ruta med text så spelare kan skriva in sitt namn.
-    }
-    public IEnumerable<IInteractable> CollisionCheck(FloatRect bounds)
-    {
-        int lastObjOnTeamPlayer = InteractableEntities[Team.Player].Count - 1;
-        for (int i = lastObjOnTeamPlayer; i >= 0; i--)
-        {
-            IInteractable entity = InteractableEntities[Team.Player][i];
-            if (entity.dead) continue;
-            if (entity.Bounds.Intersects(bounds))
-            {
-                yield return entity;
-            }
-        }
     }
 }

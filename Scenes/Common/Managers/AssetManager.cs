@@ -16,7 +16,7 @@ public class AssetManager
     }
     public Texture LoadTexture(string name)
     {
-        if (_textures.TryGetValue(name, out Texture found)) return found;
+        if (_textures.TryGetValue(name, out Texture? found)) return found;
         Texture texture = new Texture($"{_assetPath}/{name}.png");
         _textures.Add(name,texture);
         return texture;
@@ -24,7 +24,7 @@ public class AssetManager
 
     public Font LoadFont(string name)
     {
-        if (_fonts.TryGetValue(name, out Font found)) return found;
+        if (_fonts.TryGetValue(name, out Font? found)) return found;
         Font font = new Font($"{_assetPath}/{name}.ttf");
         _fonts.Add(name, font);
         return font;

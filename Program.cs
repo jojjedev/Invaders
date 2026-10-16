@@ -11,10 +11,6 @@ class Program
 {
     static void Main(string[] args)
     {
-
-        string file = "assets/sheet_info.txt";
-        int row = 0;
-        int col = 0;
         // TODO Fixa inladdning av textures.
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {

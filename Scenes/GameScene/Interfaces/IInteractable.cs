@@ -5,7 +5,7 @@ namespace Invaders;
 public interface IInteractable
 {
     public bool Invulnerable { get; set; }
-    public FloatRect Bounds { get;}
+    public Team Affiliation { get; set; }
 }
 
 public enum Team

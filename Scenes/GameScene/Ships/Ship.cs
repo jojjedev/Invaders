@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using static Invaders.Constants;
 
 namespace Invaders;
 
@@ -17,35 +18,44 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     public int Damage { get; set; }
     public bool IsDestroyed { get; set; }
     public bool Invulnerable { get; set; }
-    protected Team Affiliation { get; set; }
-    public virtual Vector2f Position
-    {
-        get => Sprite.Position;
-        set => Sprite.Position = value;
-    }
-    public virtual FloatRect Bounds => Sprite.GetGlobalBounds();
-
+    public Team Affiliation { get; set; }
     // Methods
     public override void Create(Scene scene)
     {
         base.Create(scene);
         if (!scene.InteractableEntities.ContainsKey(Affiliation))
         {
-            scene.InteractableEntities.Add(Affiliation, new List<IInteractable>());
+            scene.InteractableEntities.Add(Affiliation, new List<Entity>());
         }
         scene.InteractableEntities[Affiliation].Add(this);
         _spawnPosition = Position;
         _originalSpeed = Speed;
     }
 
+    protected override void OnCollision(Scene scene)
+    {
+        base.OnCollision(scene);
+        
+    }
+
     public virtual void Move(float dt) { }
 
-    
-
-    public virtual void Shoot()
+    public bool IsOutOfBounds()
     {
-        //TODO Skapa två instanser av Bullet ifrån skeppets position. Insp från Dodgemania
+        return Position.X > SCREEN_WIDTH + Bounds.Width ||
+               Position.X < 0 - Bounds.Width ||
+               Position.Y > SCREEN_HEIGHT + Bounds.Height ||
+               Position.Y < 0 - Bounds.Height;
     }
+
+    public virtual void Shoot(Scene scene, Ship ship)
+    {
+        Bullet leftShot = new Bullet(ship, Side.Left);
+        Bullet rightShot = new Bullet(ship, Side.Right);
+        scene.Spawn(leftShot);
+        scene.Spawn(rightShot);
+    }
+    
     public virtual void DealDamage(IDamageable other)
     {
         //TODO Ifall träff, kalla på denna. Tar bort HP från motståndare
