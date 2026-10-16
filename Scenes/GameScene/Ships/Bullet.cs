@@ -17,11 +17,13 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
             { Team.Enemy, () => Sprite.TextureRect = EnemyBulletRect }
         };
         TeamTexture[ship.Affiliation].Invoke();
-        SetSpawnStats(ship, side);
         Affiliation = ship.Affiliation;
+        Rotation = ship.Rotation;
+        SetSpawnStats(ship, side);
     }
     public bool Invulnerable { get; set; }
     public Team Affiliation { get; set; }
+    public override int Rotation { get; set; }
 
     public override void Create(Scene scene)
     {
@@ -42,14 +44,10 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
     private void SetSpawnStats(Ship ship, Side side)
     {
         Sprite.Origin = new Vector2f(Bounds.Width * 0.5f, Bounds.Height * 0.5f);
-        Sprite.Rotation = ship.Rotation;
-        _direction = new Vector2f(
-            MathF.Cos((Sprite.Rotation - 90) * Single.Pi / 180f),
-            MathF.Sin((Sprite.Rotation - 90) * Single.Pi / 180f));
-        
+        Sprite.Rotation = Rotation;
         Vector2f offset = new Vector2f(
-            _direction.X * ship.Bounds.Width / 3.5f,
-            _direction.Y * ship.Bounds.Height / 3.5f
+            MathF.Cos(Sprite.Rotation  * Single.Pi / 180f) * ship.Bounds.Width / 3.5f,
+            MathF.Sin(Sprite.Rotation  * Single.Pi / 180f) * ship.Bounds.Height / 3.5f
             );
         switch (side)
         {
@@ -68,7 +66,7 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         }
 
         _speed = 500;
-
+        _direction = new Vector2f(MathF.Cos((Rotation - 90) * Single.Pi / 180f), MathF.Sin((Rotation - 90) * Single.Pi / 180f));
     }
 
     public void Move(float dt)
@@ -92,7 +90,7 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
     {
         Move(dt);
         base.Update(scene, dt);
-        if (!IsOutOfBounds())
+        if (IsOutOfBounds())
         {
             Console.WriteLine("True");
             Destroy(scene);

@@ -132,7 +132,7 @@ public abstract class Scene
         rectangle.OutlineThickness = 1;
         rectangle.FillColor = Color.Transparent;
         
-        target.Draw(rectangle);
+        if (!e.Dead)target.Draw(rectangle);
         
     }
 }

@@ -10,7 +10,11 @@ public sealed class GameScene : Scene
     private GameGUI _gui;
     public GameScene()
     {
-        InteractableEntities = new Dictionary<Team, List<Entity>>();
+        InteractableEntities = new Dictionary<Team, List<Entity>>()
+        {
+            { Team.Enemy , new List<Entity>() },
+            { Team.Player, new List<Entity>() } 
+        };
         Background.SetColor(Color.Cyan);
         _gui = new GameGUI();
         _player = new PlayerShip();

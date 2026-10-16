@@ -31,14 +31,18 @@ public abstract class Entity : IOnScreenObject
 
     public virtual void Destroy(Scene scene)
     {
+        Dead = true;
     }
 
     protected virtual void OnCollision(Scene scene){}
     public virtual void Update(Scene scene, float dt)
     {
-        foreach (Entity found in scene.CollisionCheck(Bounds))
+        foreach (Entity e in scene.InteractableEntities[Team.Enemy])
         {
-            found.OnCollision(scene);
+            foreach (Entity playerEntity in scene.CollisionCheck(e.Bounds))
+            {
+                playerEntity.OnCollision(scene);
+            }
         }
     }
 
