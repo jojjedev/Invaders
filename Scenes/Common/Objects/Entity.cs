@@ -5,14 +5,14 @@ namespace Invaders;
 
 public abstract class Entity : IOnScreenObject
 {
-    protected string TextureName;
-    protected Sprite Sprite;
-
+    private readonly string _textureName;
     protected Entity(string textureName)
     {
-        this.TextureName = textureName;
+        this._textureName = textureName;
         Sprite = new Sprite();
     }
+
+    public Sprite Sprite { get; set; }
     public virtual bool Dead { get; set; }
     public bool DontClearOnLoad { get; set; }
     public virtual Vector2f Position
@@ -20,13 +20,14 @@ public abstract class Entity : IOnScreenObject
         get => Sprite.Position;
         set => Sprite.Position = value;
     }    
-    public virtual FloatRect Bounds => Sprite.GetLocalBounds();
+    public virtual FloatRect LocalBounds => Sprite.GetLocalBounds();
+    public virtual FloatRect GlobalBounds => Sprite.Transform.TransformRect(LocalBounds);
     public virtual int Rotation { get; set; }
     
 
     public virtual void Create(Scene scene) 
     {
-        Sprite.Texture = scene.Assets.LoadTexture(TextureName);
+        Sprite.Texture = scene.Assets.LoadTexture(_textureName);
     }
 
     public virtual void Destroy(Scene scene)
@@ -39,7 +40,7 @@ public abstract class Entity : IOnScreenObject
     {
         foreach (Entity e in scene.InteractableEntities[Team.Enemy])
         {
-            foreach (Entity playerEntity in scene.CollisionCheck(e.Bounds))
+            foreach (Entity playerEntity in scene.CollisionCheck(e.LocalBounds))
             {
                 playerEntity.OnCollision(scene);
             }

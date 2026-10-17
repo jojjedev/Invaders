@@ -43,11 +43,11 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
 
     private void SetSpawnStats(Ship ship, Side side)
     {
-        Sprite.Origin = new Vector2f(Bounds.Width * 0.5f, Bounds.Height * 0.5f);
+        Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, LocalBounds.Height * 0.5f);
         Sprite.Rotation = Rotation;
         Vector2f offset = new Vector2f(
-            MathF.Cos(Sprite.Rotation  * Single.Pi / 180f) * ship.Bounds.Width / 3.5f,
-            MathF.Sin(Sprite.Rotation  * Single.Pi / 180f) * ship.Bounds.Height / 3.5f
+            MathF.Cos(Sprite.Rotation  * Single.Pi / 180f) * ship.LocalBounds.Width / 3.5f,
+            MathF.Sin(Sprite.Rotation  * Single.Pi / 180f) * ship.LocalBounds.Height / 3.5f
             );
         switch (side)
         {
@@ -65,7 +65,7 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
                 break;
         }
 
-        _speed = 500;
+        _speed = 1000;
         _direction = new Vector2f(MathF.Cos((Rotation - 90) * Single.Pi / 180f), MathF.Sin((Rotation - 90) * Single.Pi / 180f));
     }
 
@@ -80,10 +80,10 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
 
     public bool IsOutOfBounds()
     {
-        return Position.X > SCREEN_WIDTH + Bounds.Width ||
-               Position.X < 0 - Bounds.Width ||
-               Position.Y > SCREEN_HEIGHT + Bounds.Height ||
-               Position.Y < 0 - Bounds.Height;
+        return Position.X > SCREEN_WIDTH + LocalBounds.Width ||
+               Position.X < 0 - LocalBounds.Width ||
+               Position.Y > SCREEN_HEIGHT + LocalBounds.Height ||
+               Position.Y < 0 - LocalBounds.Height;
     }
 
     public override void Update(Scene scene, float dt)

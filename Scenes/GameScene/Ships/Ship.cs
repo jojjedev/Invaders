@@ -8,7 +8,6 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
 {
     private Vector2f _spawnPosition;
     private float _originalSpeed;
-    protected float Speed;
     protected Vector2f Direction;
     // Constructor
     protected Ship() : base("sheet") { }
@@ -16,6 +15,9 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     // Properties
     public int Health { get; set; }
     public int Damage { get; set; }
+    public float Speed { get; set; }
+    protected float ShotCooldown { get; set; }
+    protected float ShootTimer { get; set; }
     public bool IsDestroyed { get; set; }
     public bool Invulnerable { get; set; }
     public Team Affiliation { get; set; }
@@ -40,12 +42,13 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
 
     public virtual void Move(float dt) { }
 
-    public bool IsOutOfBounds()
+    public virtual bool IsOutOfBounds()
     {
-        return Position.X > SCREEN_WIDTH + Bounds.Width ||
-               Position.X < 0 - Bounds.Width ||
-               Position.Y > SCREEN_HEIGHT + Bounds.Height ||
-               Position.Y < 0 - Bounds.Height;
+        return
+            GlobalBounds.Intersects(new FloatRect(SCREEN_WIDTH, 0, 1, SCREEN_HEIGHT)) ||
+            GlobalBounds.Intersects(new FloatRect(-1, 0, 1, SCREEN_HEIGHT)) ||
+            GlobalBounds.Intersects(new FloatRect(0, SCREEN_HEIGHT, 1, SCREEN_WIDTH)) ||
+            GlobalBounds.Intersects(new FloatRect(0, -1, 1, SCREEN_WIDTH));
     }
 
     public virtual void Shoot(Scene scene, Ship ship)
@@ -54,6 +57,7 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
         Bullet rightShot = new Bullet(ship, Side.Right);
         scene.Spawn(leftShot);
         scene.Spawn(rightShot);
+        ShootTimer = 0; 
     }
     
     public virtual void DealDamage(IDamageable other)

@@ -28,4 +28,10 @@ public sealed class GameScene : Scene
     {
         //TODO: Stoppa alla rörelser, ladda in ruta med text så spelare kan skriva in sitt namn.
     }
+
+    public override void UpdateAll(float dt)
+    {
+        base.UpdateAll(dt);
+        Events.CheckLoseHealthEvent(this);
+    }
 }

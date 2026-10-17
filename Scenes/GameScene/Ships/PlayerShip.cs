@@ -9,22 +9,25 @@ namespace Invaders;
 public sealed class PlayerShip : Ship
 {
     private float _invulnTimer;
-
-    private int _startHealth;
+    private readonly PlayerShipHandler _handler;
+    private readonly int _startHealth;
+    private bool _spacePressed;
     // Debug
+
     public PlayerShip()
     {
         Sprite.TextureRect = BluePlayerShipRect;
-        Sprite.Origin = new Vector2f(Bounds.Width * 0.5f, Bounds.Height * 0.5f);
+        Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, LocalBounds.Height * 0.5f);
         Sprite.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f);
         Sprite.Rotation = Rotation;
         _startHealth = 3;
         Health = 3;
+        ShotCooldown = 0.5f;
+        _handler = new PlayerShipHandler();
     }
-    
+
     public override void Create(Scene scene)
     {
-        
         Affiliation = Team.Player;
         Health = _startHealth;
         Speed = 400;
@@ -37,13 +40,11 @@ public sealed class PlayerShip : Ship
         base.Destroy(scene);
         scene.Events.LoseHealth -= OnLoseHealth;
     }
-    
-    // EVENTS
-    private void OnLoseHealth(Scene scene, int amount)
+
+    private void OnLoseHealth(Scene scene,int amount)
     {
         Invulnerable = true;
         _invulnTimer = 0;
-        Sprite.Color = new Color(255, 255, 255, 100);
     }
 
     protected override void OnCollision(Scene scene)
@@ -57,41 +58,38 @@ public sealed class PlayerShip : Ship
         }
         else scene.Events.PublishLoseHealth(1);
     }
+    
 
-    // MOVEMENT
-    private void Rotate()
+    private void InvulnCheck()
     {
-        if (Keyboard.IsKeyPressed(Left)) Rotation -= 2;
-        if (Keyboard.IsKeyPressed(Right)) Rotation += 2;
-        Sprite.Rotation = Rotation;
-    }
-    public override void Move(float dt)
-    {
-        int x = 0;
-        int y = 0;
-        if (Keyboard.IsKeyPressed(A)) x--;
-        if (Keyboard.IsKeyPressed(D)) x++;
-        if (Keyboard.IsKeyPressed(W)) y--;
-        if (Keyboard.IsKeyPressed(S)) y++;
-        Rotate();
-        if (x != 0 || y != 0) ChangeDirection(x,y,dt);
-        if (!IsOutOfBounds()) ;
-    }
-    private void ChangeDirection(float x, float y, float dt)
-    {
-        Vector2f newPos = Position; // TODO: Implementera likt Dodgemania
-        Vector2f velocity = new Vector2f(x, y) / MathF.Sqrt(x*x + y*y) * Speed;
-        newPos += velocity * dt;
-        Position = newPos;
+        Invulnerable = !(_invulnTimer > 1f);
+        if (Invulnerable) Sprite.Color = new Color(100, 100, 100);
+        else Sprite.Color = new Color(255, 255, 255);
     }
 
+    public override void Shoot(Scene scene, Ship ship)
+    {
+        base.Shoot(scene, ship);
+        _spacePressed = true;
+    }
 
     public override void Update(Scene scene, float dt)
     {
         base.Update(scene, dt);
-        Move(dt);
-        if (Keyboard.IsKeyPressed(Space)) Shoot(scene, this);
-        
+        _handler.Move(this, dt);
+        if (Keyboard.IsKeyPressed(Space) && (ShootTimer > ShotCooldown || !_spacePressed))
+        {
+            Shoot(scene, this);
+        }
+        if (!Keyboard.IsKeyPressed(Space)) _spacePressed = false;
+        if (Invulnerable) InvulnCheck();
+
+        if (Sprite.Transform.TransformRect(LocalBounds).Intersects(new FloatRect(SCREEN_WIDTH, 0, 1, SCREEN_HEIGHT)))
+        {
+            Console.WriteLine("Utanför höger");
+        }
+        _invulnTimer += dt;
+        ShootTimer += dt;
     }
 
     public override void Render(RenderTarget target)
