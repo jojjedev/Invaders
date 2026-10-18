@@ -73,7 +73,7 @@ public abstract class Scene
         {
             Entity entity = InteractableEntities[Team.Player][i];
             if (entity.Dead) continue;
-            if (entity.LocalBounds.Intersects(bounds))
+            if (entity.GlobalBounds.Intersects(bounds))
             {
                 yield return entity;
             }
@@ -108,20 +108,24 @@ public abstract class Scene
         // DEBUG
         if (DEBUG)
         {
-            foreach (Team team in InteractableEntities.Keys)
-            {
-                foreach (Entity entity in InteractableEntities[team])
-                {
-                    if (entity is IInteractable)
-                    {
-                        DebugShowHitboxes(entity, target);
-                    }
-                }
-            }
-        };
+            Debug(target);
+        }
     }
 
-
+    private void Debug(RenderTarget target)
+    {
+        foreach (Team team in InteractableEntities.Keys)
+        {
+            foreach (Entity entity in InteractableEntities[team])
+            {
+                if (entity is IInteractable)
+                {
+                    DebugShowHitboxes(entity, target);
+                }
+            }
+        }
+    }
+    
     public void DebugShowHitboxes(Entity e, RenderTarget target)
     {
         RectangleShape rectangle = new RectangleShape(new Vector2f(e.LocalBounds.Width, e.LocalBounds.Height));

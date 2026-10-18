@@ -49,6 +49,7 @@ public sealed class PlayerShip : Ship
 
     protected override void OnCollision(Scene scene)
     {
+        if (Invulnerable) return;
         Health--;
         if (Health <= 0)
         {
@@ -57,6 +58,7 @@ public sealed class PlayerShip : Ship
             Destroy(scene);
         }
         else scene.Events.PublishLoseHealth(1);
+        Console.WriteLine(Health);
     }
     
 
@@ -83,13 +85,10 @@ public sealed class PlayerShip : Ship
         }
         if (!Keyboard.IsKeyPressed(Space)) _spacePressed = false;
         if (Invulnerable) InvulnCheck();
-
-        if (Sprite.Transform.TransformRect(LocalBounds).Intersects(new FloatRect(SCREEN_WIDTH, 0, 1, SCREEN_HEIGHT)))
-        {
-            Console.WriteLine("Utanför höger");
-        }
+        
         _invulnTimer += dt;
         ShootTimer += dt;
+        if (Keyboard.IsKeyPressed(I)) OnCollision(scene);
     }
 
     public override void Render(RenderTarget target)

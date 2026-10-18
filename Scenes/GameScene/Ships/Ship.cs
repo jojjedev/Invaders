@@ -6,9 +6,6 @@ namespace Invaders;
 
 public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamageable, IInteractable
 {
-    private Vector2f _spawnPosition;
-    private float _originalSpeed;
-    protected Vector2f Direction;
     // Constructor
     protected Ship() : base("sheet") { }
     
@@ -30,25 +27,15 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
             scene.InteractableEntities.Add(Affiliation, new List<Entity>());
         }
         scene.InteractableEntities[Affiliation].Add(this);
-        _spawnPosition = Position;
-        _originalSpeed = Speed;
     }
-
-    protected override void OnCollision(Scene scene)
-    {
-        base.OnCollision(scene);
-        
-    }
-
     public virtual void Move(float dt) { }
 
     public virtual bool IsOutOfBounds()
     {
-        return
-            GlobalBounds.Intersects(new FloatRect(SCREEN_WIDTH, 0, 1, SCREEN_HEIGHT)) ||
-            GlobalBounds.Intersects(new FloatRect(-1, 0, 1, SCREEN_HEIGHT)) ||
-            GlobalBounds.Intersects(new FloatRect(0, SCREEN_HEIGHT, 1, SCREEN_WIDTH)) ||
-            GlobalBounds.Intersects(new FloatRect(0, -1, 1, SCREEN_WIDTH));
+        return Position.X + LocalBounds.Width / 2f > SCREEN_WIDTH ||
+               Position.X - LocalBounds.Width / 2f < 0 ||
+               Position.Y + LocalBounds.Width / 2f > SCREEN_HEIGHT ||
+               Position.Y - LocalBounds.Width / 2f < 0;
     }
 
     public virtual void Shoot(Scene scene, Ship ship)

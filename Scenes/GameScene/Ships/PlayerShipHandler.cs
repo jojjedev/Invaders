@@ -23,9 +23,10 @@ public class PlayerShipHandler
         if (Keyboard.IsKeyPressed(D)) XDirection++;
         if (Keyboard.IsKeyPressed(W)) YDirection--;
         if (Keyboard.IsKeyPressed(S)) YDirection++;
-        Rotate(ship);
         if (XDirection != 0 || YDirection != 0)
             ChangeDirection(ship, XDirection, YDirection, dt);
+        Rotate(ship);
+
         
     }
     private void ChangeDirection(Ship ship, float x, float y, float dt)

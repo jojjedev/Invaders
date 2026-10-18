@@ -5,9 +5,7 @@ namespace Invaders;
 
 public sealed class GameScene : Scene
 {
-    
-    private PlayerShip _player;
-    private GameGUI _gui;
+    private EnemyShipSpawner _enemySpawner;
     public GameScene()
     {
         InteractableEntities = new Dictionary<Team, List<Entity>>()
@@ -16,22 +14,24 @@ public sealed class GameScene : Scene
             { Team.Player, new List<Entity>() } 
         };
         Background.SetColor(Color.Cyan);
-        _gui = new GameGUI();
-        _player = new PlayerShip();
+        GameGUI gui = new GameGUI();
+        PlayerShip player = new PlayerShip();
+        _enemySpawner = new EnemyShipSpawner(this);
         Spawn(Background);
-        Spawn(_gui);
-        Spawn(_player);
-
+        Spawn(gui);
+        Spawn(player);
+        
         Events.GameOver += OnGameOver;
     }
     private void OnGameOver(Scene scene)
     {
         //TODO: Stoppa alla rörelser, ladda in ruta med text så spelare kan skriva in sitt namn.
     }
-
     public override void UpdateAll(float dt)
     {
         base.UpdateAll(dt);
-        Events.CheckLoseHealthEvent(this);
+        _enemySpawner.Update(this, dt);
+        Events.CheckLoseHealthEvent(this);  
+        Events.CheckThresholdEvent();
     }
 }
