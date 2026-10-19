@@ -10,7 +10,7 @@ public sealed class PlayerShip : Ship
 {
     private float _invulnTimer;
     private readonly PlayerShipHandler _handler;
-    private readonly int _startHealth;
+    private const int StartHealth = 3;
     private bool _spacePressed;
     // Debug
 
@@ -20,8 +20,8 @@ public sealed class PlayerShip : Ship
         Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, LocalBounds.Height * 0.5f);
         Sprite.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f);
         Sprite.Rotation = Rotation;
-        _startHealth = 3;
-        Health = 3;
+        Health = StartHealth;
+        Speed = 400;
         ShotCooldown = 0.5f;
         _handler = new PlayerShipHandler();
     }
@@ -29,8 +29,7 @@ public sealed class PlayerShip : Ship
     public override void Create(Scene scene)
     {
         Affiliation = Team.Player;
-        Health = _startHealth;
-        Speed = 400;
+        
         scene.Events.LoseHealth += OnLoseHealth;
         base.Create(scene);
     }

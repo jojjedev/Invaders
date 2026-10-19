@@ -73,7 +73,7 @@ public abstract class Scene
         {
             Entity entity = InteractableEntities[Team.Player][i];
             if (entity.Dead) continue;
-            if (entity.GlobalBounds.Intersects(bounds))
+            if (entity.CustomBounds.Intersects(bounds))
             {
                 yield return entity;
             }
@@ -128,10 +128,10 @@ public abstract class Scene
     
     public void DebugShowHitboxes(Entity e, RenderTarget target)
     {
-        RectangleShape rectangle = new RectangleShape(new Vector2f(e.LocalBounds.Width, e.LocalBounds.Height));
+        RectangleShape rectangle = new RectangleShape(new Vector2f(e.CustomBounds.Width, e.CustomBounds.Height));
         rectangle.Position = e.Position;
         rectangle.Rotation = e.Rotation;
-        rectangle.Origin = new Vector2f(e.LocalBounds.Width * 0.5f, e.LocalBounds.Height * 0.5f);
+        rectangle.Origin = new Vector2f(e.CustomBounds.Width * 0.5f, e.CustomBounds.Height * 0.5f);
         rectangle.OutlineColor = Color.White;
         rectangle.OutlineThickness = 1;
         rectangle.FillColor = Color.Transparent;

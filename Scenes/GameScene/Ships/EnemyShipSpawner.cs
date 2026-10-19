@@ -52,8 +52,7 @@ public class EnemyShipSpawner
     {
         Random random = new Random();
         float spawnPos = random.Next(bounds.Width / 2, SCREEN_WIDTH - bounds.Width / 2);
-        Vector2f spawn = new Vector2f(spawnPos, bounds.Width);
-        spawn = new Vector2f(256, 100);
+        Vector2f spawn = new Vector2f(spawnPos, -bounds.Width / 2f);
         return spawn;
     }
     

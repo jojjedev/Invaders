@@ -21,8 +21,16 @@ public abstract class Entity : IOnScreenObject
         set => Sprite.Position = value;
     }    
     public virtual FloatRect LocalBounds => Sprite.GetLocalBounds();
-    public virtual FloatRect GlobalBounds => Sprite.Transform.TransformRect(LocalBounds);
-    public virtual int Rotation { get; set; }
+    public virtual FloatRect CustomBounds =>
+        new FloatRect(Sprite.Position,
+            new Vector2f(LocalBounds.Width, LocalBounds.Height)
+        );
+
+    public virtual float Rotation
+    {
+        get => Sprite.Rotation;
+        set => Sprite.Rotation = value;
+    }
     
 
     public virtual void Create(Scene scene) 
@@ -47,7 +55,7 @@ public abstract class Entity : IOnScreenObject
     {
         foreach (Entity e in scene.InteractableEntities[Team.Enemy])
         {
-            foreach (Entity teamPlayerEntity in scene.CollisionCheck(e.LocalBounds))
+            foreach (Entity teamPlayerEntity in scene.CollisionCheck(e.CustomBounds))
             {
                 teamPlayerEntity.OnCollision(scene);
             }

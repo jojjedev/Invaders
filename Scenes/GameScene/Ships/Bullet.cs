@@ -18,12 +18,12 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         };
         TeamTexture[ship.Affiliation].Invoke();
         Affiliation = ship.Affiliation;
-        Rotation = ship.Rotation;
+        Rotation = Affiliation == Team.Player ? ship.Rotation : ship.Rotation + 180;
         SetSpawnStats(ship, side);
     }
     public bool Invulnerable { get; set; }
     public Team Affiliation { get; set; }
-    public override int Rotation { get; set; }
+    public override float Rotation { get; set; }
 
     public override void Create(Scene scene)
     {

@@ -4,6 +4,8 @@ using SFML.Graphics;
 using static SFML.Window.Keyboard.Key;
 namespace Invaders;
 
+
+//TODO Lägg logik över grafiska representationen
 public class PlayerShipHandler
 {
     private float _invulnTimer;
@@ -13,7 +15,6 @@ public class PlayerShipHandler
     {
         if (Keyboard.IsKeyPressed(Left)) ship.Rotation -= 2;
         if (Keyboard.IsKeyPressed(Right)) ship.Rotation += 2;
-        ship.Sprite.Rotation = ship.Rotation;
     }
     public void Move(Ship ship, float dt)
     {
