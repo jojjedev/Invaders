@@ -29,6 +29,9 @@
       <PackageReference Include="CSFML" Version="2.5.0" />
       <PackageReference Include="SFML.Net" Version="2.5.0" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Interfaces\" />
+    </ItemGroup>
     
     
 </Project>

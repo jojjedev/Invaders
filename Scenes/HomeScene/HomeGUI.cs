@@ -7,7 +7,7 @@ namespace Invaders;
 
 public sealed class HomeGUI : GUI
 {
-    public HomeGUI(HomeScene scene) : base()
+    public HomeGUI(HomeScene scene)
     {
         Texts = new List<Text>();
         CreateObjects(scene);

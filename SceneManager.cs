@@ -24,7 +24,8 @@ public sealed class SceneManager
                 }
             }
         };
-        CurrentScene = _loaders[Home].Invoke();
+        // Decides starting Screen
+        CurrentScene = _loaders[Game].Invoke(); 
         CurrentScene.Events.SceneChange += LoadScene;
     }
 

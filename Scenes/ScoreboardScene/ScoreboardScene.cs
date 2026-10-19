@@ -5,13 +5,13 @@ using static SFML.Window.Keyboard.Key;
 
 namespace Invaders;
 
-public sealed class ScoreboardScene : Scene, IKeyCheck
+public sealed class ScoreboardScene : Scene
 {
     private ScoreboardGUI _gui;
     public ScoreboardScene() : base()
     {
         _gui = new ScoreboardGUI(this);
-        Background.Color = new Color(64, 173, 115);
+        Background.SetColor(new Color(64, 173, 115));
         Spawn(Background);
         Spawn(_gui);
     }

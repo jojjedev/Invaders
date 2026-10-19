@@ -8,10 +8,16 @@ public sealed class Background : Entity
     private static int _yPosition;
     private readonly IntRect _backgroundRect = new IntRect(0, 0, 256, 256);
     private float _timer = 1.2f;
+
     public Background() : base("darkPurple")
     {
-        _sprite.TextureRect = _backgroundRect;
-        _sprite.Origin = new Vector2f(128, 128);
+        Sprite.TextureRect = _backgroundRect;
+        Sprite.Origin = new Vector2f(128, 128);
+        DontClearOnLoad = true;
+    }
+    public void SetColor(Color color)
+    {
+        Sprite.Color = color;
     }
     public override void Update(Scene scene, float dt)
     {
@@ -32,8 +38,7 @@ public sealed class Background : Entity
         {
             for (int col = 0; col <= tilesX; col++)
             { 
-                _sprite.Position = 256 * new Vector2f(col, row) + new Vector2f(0, _yPosition);
-                
+                Sprite.Position = 256 * new Vector2f(col, row) + new Vector2f(0, _yPosition);
                 base.Render(target);
             }
         }

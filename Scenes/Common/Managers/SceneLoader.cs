@@ -13,7 +13,7 @@ public sealed class SceneLoader
         _loaders = new Dictionary<SceneName, Func<Scene>>
         {
             { Home, () => new HomeScene() },
-            { Game, () => new GameScene() },
+            { SceneName.Game, () => new GameScene() },
             { Scoreboard, () => new ScoreboardScene() }
         };
     }
