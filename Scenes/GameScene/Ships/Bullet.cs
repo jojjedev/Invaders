@@ -24,12 +24,24 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
     public bool Invulnerable { get; set; }
     public Team Affiliation { get; set; }
     public override float Rotation { get; set; }
+    
+    public FloatRect CollisionBounds =>
+        new FloatRect(Sprite.Position - Sprite.Origin,
+            new Vector2f(LocalBounds.Width, LocalBounds.Width)
+        );
 
+    public override FloatRect CustomBounds => CollisionBounds;
+
+    public bool ToBeDestroyed
+    {
+        get => Dead;
+        set => Dead = value;
+    }
     public override void Create(Scene scene)
     {
         if (!scene.InteractableEntities.ContainsKey(Affiliation))
         {
-            scene.InteractableEntities.Add(Affiliation, new List<Entity>());
+            scene.InteractableEntities.Add(Affiliation, new List<IInteractable>());
         }
         scene.InteractableEntities[Affiliation].Add(this);
         base.Create(scene);
@@ -38,12 +50,12 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
 
     public override void Destroy(Scene scene)
     {
-        base.Destroy(scene);
+        ToBeDestroyed = true;
     }
 
     private void SetSpawnStats(Ship ship, Side side)
     {
-        Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, LocalBounds.Height * 0.5f);
+        Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, 0);
         Sprite.Rotation = Rotation;
         Vector2f offset = new Vector2f(
             MathF.Cos(Sprite.Rotation  * Single.Pi / 180f) * ship.LocalBounds.Width / 3.5f,
@@ -85,18 +97,15 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
                Position.Y > SCREEN_HEIGHT + LocalBounds.Height ||
                Position.Y < 0 - LocalBounds.Height;
     }
-
+    
     public override void Update(Scene scene, float dt)
     {
         Move(dt);
         base.Update(scene, dt);
         if (IsOutOfBounds())
         {
-            Console.WriteLine("True");
             Destroy(scene);
         }
-
-        
     }
 }
 

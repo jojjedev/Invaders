@@ -18,16 +18,39 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     public bool IsDestroyed { get; set; }
     public bool Invulnerable { get; set; }
     public Team Affiliation { get; set; }
+    public bool HasAlreadyCollided { get; set; }
+
+    public FloatRect CollisionBounds =>
+        new FloatRect(Sprite.Position - Sprite.Origin,
+            new Vector2f(LocalBounds.Width, LocalBounds.Height)
+        );
+
+    public override FloatRect CustomBounds => CollisionBounds;
+
+    public bool ToBeDestroyed
+    {
+        get => Dead;
+        set => Dead = value;
+    }
+
     // Methods
     public override void Create(Scene scene)
     {
         base.Create(scene);
         if (!scene.InteractableEntities.ContainsKey(Affiliation))
         {
-            scene.InteractableEntities.Add(Affiliation, new List<Entity>());
+            scene.InteractableEntities.Add(Affiliation, new List<IInteractable>());
         }
         scene.InteractableEntities[Affiliation].Add(this);
     }
+
+    public override void Destroy(Scene scene)
+    {
+        ToBeDestroyed = true;
+    }
+
+    public virtual void OnCollision(Scene scene){}
+
     public virtual void Move(float dt) { }
 
     public virtual bool IsOutOfBounds()
@@ -44,7 +67,6 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
         Bullet rightShot = new Bullet(ship, Side.Right);
         scene.Spawn(leftShot);
         scene.Spawn(rightShot);
-        ShootTimer = 0; 
     }
     
     public virtual void DealDamage(IDamageable other)
@@ -61,5 +83,11 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     public virtual void Explode()
     {
         //TODO Ladda in Sprite för explosion på skeppets position
+    }
+
+    public override void Update(Scene scene, float dt)
+    {
+        HasAlreadyCollided = false;
+        base.Update(scene, dt);
     }
 }

@@ -9,12 +9,12 @@ namespace Invaders;
 
 public abstract class Scene
 {
-    private bool DEBUG = true; // TODO: TRUE = AKTIVE, FALSE = INAKTIVE. TA BORT INNAN INLÄMNING
+    private bool DEBUG = false; // TODO: TRUE = AKTIVE, FALSE = INAKTIVE. TA BORT INNAN INLÄMNING
     
     public readonly AssetManager Assets;
     public readonly SceneLoader Loader;
     public readonly EventManager Events;
-    public Dictionary<Team, List<Entity>> InteractableEntities;
+    public Dictionary<Team, List<IInteractable>> InteractableEntities;
     private List<IOnScreenObject> _objects;
     protected Background Background;
     protected bool KeyPressed;
@@ -60,25 +60,7 @@ public abstract class Scene
     }
     
     
-    // All IInteractables are Entities
-    /// <summary>
-    /// Each "Enemy" object is checking collisions with each object on team "Player"
-    /// </summary>
-    /// <param name="bounds"></param>
-    /// <returns></returns>
-    public IEnumerable<Entity> CollisionCheck(FloatRect bounds)
-    {
-        int lastObjOnTeamPlayer = InteractableEntities[Team.Player].Count - 1;
-        for (int i = lastObjOnTeamPlayer; i >= 0; i--)
-        {
-            Entity entity = InteractableEntities[Team.Player][i];
-            if (entity.Dead) continue;
-            if (entity.CustomBounds.Intersects(bounds))
-            {
-                yield return entity;
-            }
-        }
-    }
+    
     public virtual void UpdateAll(float dt)
     {
         for (int i = _objects.Count - 1; i >= 0; i--)
@@ -94,9 +76,11 @@ public abstract class Scene
                 screenObject.Destroy(this);
             }
         }
-
         Events.CheckSceneNameEvent();
         Timer += dt;
+
+        if (Keyboard.IsKeyPressed(B)) DEBUG = true;
+        else DEBUG = false;
     }
 
     public virtual void RenderAll(RenderTarget target)
@@ -118,19 +102,16 @@ public abstract class Scene
         {
             foreach (Entity entity in InteractableEntities[team])
             {
-                if (entity is IInteractable)
-                {
-                    DebugShowHitboxes(entity, target);
-                }
+                DebugShowHitboxes(entity, target);
             }
         }
     }
     
-    public void DebugShowHitboxes(Entity e, RenderTarget target)
+    private void DebugShowHitboxes(Entity e, RenderTarget target)
     {
         RectangleShape rectangle = new RectangleShape(new Vector2f(e.CustomBounds.Width, e.CustomBounds.Height));
         rectangle.Position = e.Position;
-        rectangle.Rotation = e.Rotation;
+       // rectangle.Rotation = e.Rotation;
         rectangle.Origin = new Vector2f(e.CustomBounds.Width * 0.5f, e.CustomBounds.Height * 0.5f);
         rectangle.OutlineColor = Color.White;
         rectangle.OutlineThickness = 1;

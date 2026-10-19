@@ -28,7 +28,7 @@ public class EnemyShipSpawner
         _state = "blue";
         _index = 0;
         _level = 1;
-        _spawnCd = 2 + 2 * MathF.Pow(0.95f, _level);
+        _spawnCd = 0 + 2 * MathF.Pow(0.95f, _level);
         scene.Events.ThresholdPassed += UpdateState;
     }
 
@@ -36,14 +36,15 @@ public class EnemyShipSpawner
     {
         scene.Events.ThresholdPassed -= UpdateState;
     }
-    public void SpawnShip(Scene scene)
+    private void SpawnShip(Scene scene)
     {
         EnemyShip newShip = new EnemyShip(
             _shipTextures[_state], 
             SetShipSpawn(), 
             SetHealth(), 
             SetSpeed(), 
-            SetShotCd()
+            SetShotCd(),
+            SetFireChance()
             );
         scene.Spawn(newShip);
     }
@@ -68,9 +69,13 @@ public class EnemyShipSpawner
 
     private float SetShotCd()
     {
-        return 0.5f + 0.5f * MathF.Pow(0.90f, _level);
+        return 0.5f + 0.25f * MathF.Pow(0.90f, _level);
     }
 
+    private float SetFireChance()
+    {
+        return MathF.Max(80, 30 + 5 * _level);
+    }
     private void UpdateState()
     {
         _index++;

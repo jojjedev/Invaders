@@ -42,11 +42,10 @@ public sealed class PlayerShip : Ship
 
     private void OnLoseHealth(Scene scene,int amount)
     {
-        Invulnerable = true;
         _invulnTimer = 0;
     }
 
-    protected override void OnCollision(Scene scene)
+    public override void OnCollision(Scene scene)
     {
         if (Invulnerable) return;
         Health--;
@@ -56,7 +55,12 @@ public sealed class PlayerShip : Ship
             scene.Events.PublishGameOver(scene);
             Destroy(scene);
         }
-        else scene.Events.PublishLoseHealth(1);
+        else
+        {
+            Invulnerable = true;
+            HasAlreadyCollided = true;
+            scene.Events.PublishLoseHealth(1);
+        }
         Console.WriteLine(Health);
     }
     
@@ -71,6 +75,7 @@ public sealed class PlayerShip : Ship
     public override void Shoot(Scene scene, Ship ship)
     {
         base.Shoot(scene, ship);
+        ShootTimer = 0;
         _spacePressed = true;
     }
 
@@ -87,7 +92,6 @@ public sealed class PlayerShip : Ship
         
         _invulnTimer += dt;
         ShootTimer += dt;
-        if (Keyboard.IsKeyPressed(I)) OnCollision(scene);
     }
 
     public override void Render(RenderTarget target)
