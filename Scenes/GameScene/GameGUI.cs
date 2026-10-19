@@ -1,9 +1,30 @@
+using SFML.System;
+using SFML.Graphics;
+
+
 namespace Invaders;
 
 public class GameGUI : GUI
 {
-    public GameGUI()
+    private int _score;
+    private int _health;
+    public GameGUI(GameScene scene)
     {
-        
+        Texts = new List<Text>();
+        CreateObjects(scene);
+        DefaultCharacterSize = 20;
+    }
+
+    private void CreateObjects(GameScene scene)
+    {
+        uint CharacterSize = DefaultCharacterSize;
+        Color color = DefaultColor;
+        Texts.Add(CreateText(scene,$"Score: {_score}", CharacterSize, color));
+        Texts.Add(CreateText(scene, $"Health: {_health}", CharacterSize, color));
+    }
+
+    private void GetCurrentHealth(PlayerShip player)
+    {
+        _health = player.Health;
     }
 }

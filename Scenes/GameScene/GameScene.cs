@@ -15,7 +15,7 @@ public sealed class GameScene : Scene
             { Team.Player, new List<IInteractable>() } 
         };
         Background.SetColor(Color.Cyan);
-        GameGUI gui = new GameGUI();
+        GameGUI gui = new GameGUI(this);
         PlayerShip player = new PlayerShip();
         _enemySpawner = new EnemyShipSpawner(this);
         Spawn(Background);

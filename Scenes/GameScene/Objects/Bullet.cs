@@ -30,7 +30,7 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
             new Vector2f(LocalBounds.Width, LocalBounds.Width)
         );
 
-    public override FloatRect CustomBounds => CollisionBounds;
+    public override FloatRect DebugBounds => CollisionBounds;
 
     public bool ToBeDestroyed
     {

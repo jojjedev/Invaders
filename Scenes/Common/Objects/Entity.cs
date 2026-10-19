@@ -12,7 +12,7 @@ public abstract class Entity : IOnScreenObject
         Sprite = new Sprite();
     }
 
-    public Sprite Sprite { get; }
+    protected Sprite Sprite { get; }
     public virtual bool Dead { get; set; }
     public bool DontClearOnLoad { get; set; }
     public virtual Vector2f Position
@@ -21,7 +21,7 @@ public abstract class Entity : IOnScreenObject
         set => Sprite.Position = value;
     }    
     public virtual FloatRect LocalBounds => Sprite.GetLocalBounds();
-    public virtual FloatRect CustomBounds { get; }
+    public virtual FloatRect DebugBounds { get; }
     
     public virtual float Rotation
     {

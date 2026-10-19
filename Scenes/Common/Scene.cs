@@ -109,10 +109,10 @@ public abstract class Scene
     
     private void DebugShowHitboxes(Entity e, RenderTarget target)
     {
-        RectangleShape rectangle = new RectangleShape(new Vector2f(e.CustomBounds.Width, e.CustomBounds.Height));
+        RectangleShape rectangle = new RectangleShape(new Vector2f(e.DebugBounds.Width, e.DebugBounds.Height));
         rectangle.Position = e.Position;
        // rectangle.Rotation = e.Rotation;
-        rectangle.Origin = new Vector2f(e.CustomBounds.Width * 0.5f, e.CustomBounds.Height * 0.5f);
+        rectangle.Origin = new Vector2f(e.DebugBounds.Width * 0.5f, e.DebugBounds.Height * 0.5f);
         rectangle.OutlineColor = Color.White;
         rectangle.OutlineThickness = 1;
         rectangle.FillColor = Color.Transparent;

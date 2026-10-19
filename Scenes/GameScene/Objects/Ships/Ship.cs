@@ -10,7 +10,7 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
     protected Ship() : base("sheet") { }
     
     // Properties
-    public int Health { get; set; }
+    public int Health { get; protected set; }
     public int Damage { get; set; }
     public float Speed { get; set; }
     protected float ShotCooldown { get; set; }
@@ -25,7 +25,7 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
             new Vector2f(LocalBounds.Width, LocalBounds.Height)
         );
 
-    public override FloatRect CustomBounds => CollisionBounds;
+    public override FloatRect DebugBounds => CollisionBounds;
 
     public bool ToBeDestroyed
     {
@@ -63,10 +63,8 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
 
     public virtual void Shoot(Scene scene, Ship ship)
     {
-        Bullet leftShot = new Bullet(ship, Side.Left);
-        Bullet rightShot = new Bullet(ship, Side.Right);
-        scene.Spawn(leftShot);
-        scene.Spawn(rightShot);
+        scene.Spawn(new Bullet(ship, Side.Left));
+        scene.Spawn(new Bullet(ship, Side.Right));
     }
     
     public virtual void DealDamage(IDamageable other)

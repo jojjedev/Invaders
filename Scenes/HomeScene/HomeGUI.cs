@@ -10,9 +10,9 @@ public sealed class HomeGUI : GUI
     public HomeGUI(HomeScene scene)
     {
         Texts = new List<Text>();
-        CreateObjects(scene);
+        CreateMenuTexts(scene);
     }
-    private void CreateObjects(HomeScene scene)
+    private void CreateMenuTexts(HomeScene scene)
     {
         uint CharacterSize = DefaultCharacterSize;
         Color color = DefaultColor;
