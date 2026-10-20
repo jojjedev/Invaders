@@ -10,10 +10,12 @@ public delegate void GameOverEvent(Scene scene);
 public sealed class EventManager
 {
     private int _healthLost = 0;
+    private int _scoreIncrease = 0;
     private SceneName _newScene = SceneName.Waiting;
     private bool _thresholdPassed;
     private bool _gameOver;
     public event ValueChangedEvent LoseHealth;
+    public event ValueChangedEvent IncreaseScore;
     public event ChangeSceneEvent SceneChange;
     public event ScoreThresholdEvent ThresholdPassed;
     public event GameOverEvent GameOver;
@@ -21,14 +23,20 @@ public sealed class EventManager
     public void PublishSceneChange(SceneName sceneName) => _newScene = sceneName;
     public void PublishThresholdEvent() => _thresholdPassed = true;
     public void PublishGameOver(Scene scene) => _gameOver = true;
-    
+    public void PublishScoreIncrease(int amount) => _scoreIncrease += amount;
 
-    public void CheckLoseHealthEvent(Scene scene)
+    public void CheckValueChangeEvent(Scene scene)
     {
         if (_healthLost != 0)
         {
             LoseHealth?.Invoke(scene, _healthLost);
             _healthLost = 0;
+        }
+
+        if (_scoreIncrease != 0)
+        {
+            IncreaseScore?.Invoke(scene, _scoreIncrease);
+            _scoreIncrease = 0;
         }
         
     }

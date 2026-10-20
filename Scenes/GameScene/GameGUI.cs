@@ -22,9 +22,14 @@ public class GameGUI : GUI
         Texts.Add(CreateText(scene,$"Score: {_score}", CharacterSize, color));
         Texts.Add(CreateText(scene, $"Health: {_health}", CharacterSize, color));
     }
-
-    private void GetCurrentHealth(PlayerShip player)
+    private void IncreaseScore()
     {
-        _health = player.Health;
+        _score++;
+        Console.WriteLine(_score);
+    }
+
+    public override void Update(Scene scene, float dt)
+    {
+        base.Update(scene, dt);
     }
 }

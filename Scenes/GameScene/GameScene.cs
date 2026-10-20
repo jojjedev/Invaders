@@ -93,7 +93,7 @@ public sealed class GameScene : Scene
         
         CheckAllCollisions();
         _enemySpawner.Update(this, dt);
-        Events.CheckLoseHealthEvent(this);  
+        Events.CheckValueChangeEvent(this);  
         Events.CheckThresholdEvent();
         if (Keyboard.IsKeyPressed(Keyboard.Key.R))
         {

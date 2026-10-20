@@ -33,7 +33,6 @@ public class PlayerShipHandler
     private void ChangeDirection(Ship ship, float x, float y, float dt)
     {
         Vector2f oldPos = ship.Position;
-        
         Vector2f velocity = new Vector2f(x, y) / MathF.Sqrt(x*x + y*y) * ship.Speed;
         Vector2f newPos = oldPos + velocity * dt;
         ship.Position = newPos;

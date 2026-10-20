@@ -51,7 +51,7 @@ public sealed class PlayerShip : Ship
         Health--;
         if (Health <= 0)
         {
-            Explode();
+            Explode(scene);
             scene.Events.PublishGameOver(scene);
             Destroy(scene);
         }

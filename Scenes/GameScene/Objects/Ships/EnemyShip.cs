@@ -90,7 +90,8 @@ public sealed class EnemyShip : Ship
         Health--;
         if (Health <= 0)
         {
-            Explode();
+            Explode(scene);
+            scene.Events.PublishScoreIncrease(50);
             Destroy(scene);
         }
         HasAlreadyCollided = true;

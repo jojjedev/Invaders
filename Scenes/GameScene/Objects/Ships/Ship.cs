@@ -4,7 +4,7 @@ using static Invaders.Constants;
 
 namespace Invaders;
 
-public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamageable, IInteractable
+public abstract class Ship : Entity, IMoveable, ICanShoot, IDamageable, IInteractable
 {
     // Constructor
     protected Ship() : base("sheet") { }
@@ -78,9 +78,9 @@ public abstract class Ship : Entity, IMoveable, IExplodeable, ICanShoot, IDamage
         //TODO Minska HP, om <= 0. Kalla på slutgiltig funktion och Destroy().
     }
 
-    public virtual void Explode()
+    public virtual void Explode(Scene scene)
     {
-        //TODO Ladda in Sprite för explosion på skeppets position
+        scene.Spawn(new Explosion(this));
     }
 
     public override void Update(Scene scene, float dt)
