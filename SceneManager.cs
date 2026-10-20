@@ -19,7 +19,7 @@ public sealed class SceneManager
             { Quit,  () =>
                 {
                     GameState = 0;
-                    CurrentScene?.ClearAll();
+                    CurrentScene?.ClearObjects();
                     return CurrentScene;
                 }
             }

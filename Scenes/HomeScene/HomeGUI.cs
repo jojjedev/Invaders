@@ -14,11 +14,11 @@ public sealed class HomeGUI : GUI
     }
     private void CreateMenuTexts(HomeScene scene)
     {
-        uint CharacterSize = DefaultCharacterSize;
+        uint characterSize = DefaultCharacterSize;
         Color color = DefaultColor;
-        Texts.Add(CreateText(scene, "New Game", CharacterSize, color));
-        Texts.Add(CreateText(scene, "Scoreboard", CharacterSize, color));
-        Texts.Add(CreateText(scene, "Quit", CharacterSize, color));
+        Texts.Add(CreateText(scene, "New Game", characterSize, color));
+        Texts.Add(CreateText(scene, "Scoreboard", characterSize, color));
+        Texts.Add(CreateText(scene, "Quit", characterSize, color));
         CurrentTarget = 0;
         Target();
     }

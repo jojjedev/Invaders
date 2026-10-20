@@ -48,6 +48,6 @@ public sealed class Explosion : Entity
         {
             GetTextureByIndex(GetIndex());
         }
-        else Destroy(scene);
+        else  Destroy(scene);
     }
 }

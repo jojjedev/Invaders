@@ -1,10 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
+using SFML.Window;
 
 namespace Invaders;
 
 public delegate void ChangeSceneEvent(SceneName sceneName);
 public delegate void ValueChangedEvent(Scene scene, int amount);
 
+public delegate void InputEvent(string input);
 public delegate void ScoreThresholdEvent();
 public delegate void GameOverEvent(Scene scene);
 public sealed class EventManager
@@ -14,17 +16,21 @@ public sealed class EventManager
     private SceneName _newScene = SceneName.Waiting;
     private bool _thresholdPassed;
     private bool _gameOver;
+    private string _input;
     public event ValueChangedEvent LoseHealth;
     public event ValueChangedEvent IncreaseScore;
     public event ChangeSceneEvent SceneChange;
     public event ScoreThresholdEvent ThresholdPassed;
     public event GameOverEvent GameOver;
+    public event InputEvent NewInput;
     public void PublishLoseHealth(int amount) => _healthLost += amount;
     public void PublishSceneChange(SceneName sceneName) => _newScene = sceneName;
     public void PublishThresholdEvent() => _thresholdPassed = true;
     public void PublishGameOver(Scene scene) => _gameOver = true;
     public void PublishScoreIncrease(int amount) => _scoreIncrease += amount;
-
+    public void PublishInputEvent(string input) => _input = input;
+    
+    
     public void CheckValueChangeEvent(Scene scene)
     {
         if (_healthLost != 0)
@@ -64,6 +70,15 @@ public sealed class EventManager
         {
             GameOver?.Invoke(scene);
             _gameOver = false;
+        }
+    }
+
+    public void CheckInputEvent()
+    {
+        if (_input != "")
+        {
+            NewInput?.Invoke(_input);
+            _input = "";
         }
     }
 }

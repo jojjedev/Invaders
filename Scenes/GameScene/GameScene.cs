@@ -7,6 +7,8 @@ namespace Invaders;
 public sealed class GameScene : Scene
 {
     private EnemyShipSpawner _enemySpawner;
+    private GameGUI _gui;
+    
     public GameScene()
     {
         InteractableEntities = new Dictionary<Team, List<IInteractable>>()
@@ -15,20 +17,33 @@ public sealed class GameScene : Scene
             { Team.Player, new List<IInteractable>() } 
         };
         Background.SetColor(Color.Cyan);
-        GameGUI gui = new GameGUI(this);
         PlayerShip player = new PlayerShip();
         _enemySpawner = new EnemyShipSpawner(this);
         Spawn(Background);
-        Spawn(gui);
         Spawn(player);
-        
+        _gui = new GameGUI(this);
+        Spawn(_gui);
+
         Events.GameOver += OnGameOver;
     }
     private void OnGameOver(Scene scene)
     {
-        //TODO: Stoppa alla rörelser, ladda in ruta med text så spelare kan skriva in sitt namn.
+        ClearAllInteractableEntities();
     }
-    
+
+    private void ClearAllInteractableEntities()
+    {
+        foreach (Team team in InteractableEntities.Keys)
+        {
+            foreach (IInteractable inter in InteractableEntities[team])
+            {
+                inter.ToBeDestroyed = true;
+            }
+        }
+
+        _enemySpawner.Dead = true;
+
+    }
     /// <summary>
     /// Each "Enemy" object is checking collisions with each object on team "Player"
     /// </summary>
@@ -90,11 +105,11 @@ public sealed class GameScene : Scene
             }
         }
 
-        
-        CheckAllCollisions();
-        _enemySpawner.Update(this, dt);
+        if (InteractableEntities.Keys.Count >= 2) CheckAllCollisions();
+        if (!_enemySpawner.Dead) _enemySpawner.Update(this, dt);
         Events.CheckValueChangeEvent(this);  
         Events.CheckThresholdEvent();
+        Events.CheckGameOverEvent(this);
         if (Keyboard.IsKeyPressed(Keyboard.Key.R))
         {
             PlayerShip player = new PlayerShip();

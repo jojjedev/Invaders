@@ -51,8 +51,6 @@ public abstract class Ship : Entity, IMoveable, ICanShoot, IDamageable, IInterac
 
     public virtual void OnCollision(Scene scene){}
 
-    public virtual void Move(float dt) { }
-
     public virtual bool IsOutOfBounds()
     {
         return Position.X + LocalBounds.Width / 2f > SCREEN_WIDTH ||
@@ -66,7 +64,9 @@ public abstract class Ship : Entity, IMoveable, ICanShoot, IDamageable, IInterac
         scene.Spawn(new Bullet(ship, Side.Left));
         scene.Spawn(new Bullet(ship, Side.Right));
     }
-    
+
+    public virtual void Move(float dt) { }
+
     public virtual void DealDamage(IDamageable other)
     {
         //TODO Ifall träff, kalla på denna. Tar bort HP från motståndare

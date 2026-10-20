@@ -87,7 +87,6 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         Vector2f newPos = Position;
         newPos += velocity * dt;
         Position = newPos;
-        
     }
 
     public bool IsOutOfBounds()

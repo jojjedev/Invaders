@@ -15,6 +15,7 @@ public class EnemyShipSpawner
     private int _index;
     private float _spawnCd;
     private float _spawnTimer = 0;
+    private readonly float _lowestSpawnCd = 0.5f;
     public EnemyShipSpawner(Scene scene)
     {
         _shipColors = new string[] { "blue", "green", "red", "black" };
@@ -28,12 +29,13 @@ public class EnemyShipSpawner
         _state = "blue";
         _index = 0;
         _level = 1;
-        _spawnCd = 0 + 2 * MathF.Pow(0.95f, _level);
+        _spawnCd = _lowestSpawnCd + 1 * MathF.Pow(0.95f, _level); 
         scene.Events.ThresholdPassed += UpdateState;
     }
-
+    public bool Dead { get; set; }
     public void Destroy(Scene scene)
     {
+        
         scene.Events.ThresholdPassed -= UpdateState;
     }
     private void SpawnShip(Scene scene)
@@ -47,6 +49,7 @@ public class EnemyShipSpawner
             SetFireChance()
             );
         scene.Spawn(newShip);
+        Console.WriteLine($"\nNew Ship at level {_level}\nHealth: {SetHealth()}\nSpeed: {SetSpeed()}\nShotCd: {SetShotCd()}\nFireChance: {SetFireChance()}");
     }
     
     private Vector2f SetShipSpawn()
@@ -64,7 +67,7 @@ public class EnemyShipSpawner
 
     private float SetSpeed()
     {
-        return 200 * MathF.Pow(1.10f, _level);
+        return MathF.Min(MathF.Pow(-_level, 2) + 40 * _level + 300, 800);
     }
 
     private float SetShotCd()
@@ -80,6 +83,7 @@ public class EnemyShipSpawner
     {
         _index++;
         _state = _shipColors[_index % 4];
+        
     if (_state == "blue") _level++;
     }
 

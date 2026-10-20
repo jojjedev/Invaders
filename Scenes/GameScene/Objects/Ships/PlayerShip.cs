@@ -49,9 +49,11 @@ public sealed class PlayerShip : Ship
     {
         if (Invulnerable) return;
         Health--;
+        scene.Events.PublishLoseHealth(1);
         if (Health <= 0)
         {
             Explode(scene);
+            scene.Events.PublishLoseHealth(1);
             scene.Events.PublishGameOver(scene);
             Destroy(scene);
         }
@@ -59,7 +61,6 @@ public sealed class PlayerShip : Ship
         {
             Invulnerable = true;
             HasAlreadyCollided = true;
-            scene.Events.PublishLoseHealth(1);
         }
         Console.WriteLine(Health);
     }
@@ -92,6 +93,7 @@ public sealed class PlayerShip : Ship
         
         _invulnTimer += dt;
         ShootTimer += dt;
+        
     }
 
     public override void Render(RenderTarget target)

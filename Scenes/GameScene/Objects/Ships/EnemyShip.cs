@@ -57,6 +57,7 @@ public sealed class EnemyShip : Ship
         }
     }
 
+    //TODO: Om tid över, kolla på att fixa random direction och isåfall också fixa reflect så det passar.
     private Vector2f RandomDirection()
     {
         Random random = new Random();

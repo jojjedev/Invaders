@@ -16,6 +16,7 @@ class Program
         {
             SceneManager sceneManager = new SceneManager();
             window.Closed += (o, e) => window.Close();
+            window.TextEntered += (o, e) => sceneManager.CurrentScene.Events.PublishInputEvent(e.Unicode); 
             window.SetFramerateLimit(60);
             Clock clock = new Clock();
             

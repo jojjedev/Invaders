@@ -48,9 +48,9 @@ public abstract class Scene
             }
         }
     }
-    public void ClearAll()
+    public void ClearObjects()
     {
-        for (int i = 0; i < _objects.Count; i++)
+        for (int i = _objects.Count - 1; i >= 0 ; i--)
         {
             IOnScreenObject onScreenObject = _objects[i];
             onScreenObject.DontClearOnLoad = false;
@@ -59,7 +59,22 @@ public abstract class Scene
         }
     }
     
-    
+    public bool FindByType<T>(out T found) where T : IInteractable
+    {
+        foreach (Team team in InteractableEntities.Keys)
+        {
+            foreach (IInteractable inter in InteractableEntities[team])
+            {
+                if (!inter.ToBeDestroyed && inter is T typed)
+                {
+                    found = typed;
+                    return true;
+                }
+            }
+        }
+        found = default(T);
+        return false;
+    }
     
     public virtual void UpdateAll(float dt)
     {
