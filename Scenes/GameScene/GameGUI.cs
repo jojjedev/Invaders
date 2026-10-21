@@ -103,6 +103,7 @@ public class GameGUI : GUI
         {
             if (_inputName.Length != 0) _inputName = _inputName.Substring(0, _inputName.Length - 1);
         }
+        else if (input == ",") return;
         else if (_inputName.Length <= 12)
         {
             _inputName += input;

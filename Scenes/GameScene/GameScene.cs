@@ -16,7 +16,6 @@ public sealed class GameScene : Scene
             { Team.Enemy , new List<IInteractable>() },
             { Team.Player, new List<IInteractable>() } 
         };
-        Background.SetColor(Color.Cyan);
         PlayerShip player = new PlayerShip();
         _enemySpawner = new EnemyShipSpawner(this);
         Spawn(Background);
@@ -52,19 +51,23 @@ public sealed class GameScene : Scene
     /// <returns></returns>
     private IEnumerable<IInteractable> CollisionCheck(IInteractable interactable)
     {
-        Team otherTeam;
-        if (interactable.Affiliation == Team.Enemy) otherTeam = Team.Player;
-        else otherTeam = Team.Enemy;
-        int lastObjOnOtherPlayer = InteractableEntities[otherTeam].Count - 1;
-        for (int i = lastObjOnOtherPlayer; i >= 0; i--)
+        Team[] teams = Enum.GetValues<Team>();
+        foreach (Team team in teams)
         {
-            IInteractable otherInter = InteractableEntities[otherTeam][i];
-            if (otherInter.ToBeDestroyed) continue;
-            //TODO: Cirkelkollision mellan olika skepp.
-            if (otherInter.CollisionBounds.Intersects(interactable.CollisionBounds))
+            if (interactable.Affiliation != team)
             {
-                yield return otherInter;
-            }
+                Team otherTeam = team;
+                int lastObjOnOtherPlayer = InteractableEntities[otherTeam].Count - 1;
+                for (int i = lastObjOnOtherPlayer; i >= 0; i--)
+                {
+                    IInteractable otherInter = InteractableEntities[otherTeam][i];
+                    if (otherInter.ToBeDestroyed) continue;
+                    if (otherInter.CollisionBounds.Intersects(interactable.CollisionBounds))
+                    {
+                        yield return otherInter;
+                    }
+                }
+            } 
         }
     }
     /// <summary>
