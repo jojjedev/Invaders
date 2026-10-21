@@ -103,17 +103,10 @@ public class GameGUI : GUI
         {
             if (_inputName.Length != 0) _inputName = _inputName.Substring(0, _inputName.Length - 1);
         }
-
-        if (input == "\n" || input == "\r\n")
-        {
-            SaveScore();
-            _loadScene = true;
-        }
         else if (_inputName.Length <= 12)
         {
             _inputName += input;
         }
-        
     }
 
     private void SaveScore()
@@ -130,7 +123,7 @@ public class GameGUI : GUI
 
         string fileContents = "";
         if (File.Exists(fileMain)) fileContents = File.ReadAllText(fileMain);
-        fileContents += $"\n{_inputName.Trim()},{Score}";
+        fileContents += $"{_inputName.Trim()},{Score}\n";
         File.WriteAllText(fileMain, fileContents, Encoding.UTF8);
     }
     public override void Update(Scene scene, float dt)
@@ -166,7 +159,12 @@ public class GameGUI : GUI
         {
             scene.Events.CheckInputEvent();
             Texts[1].DisplayedString = _inputName;
-            
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Enter))
+            {
+                SaveScore();
+                _loadScene = true;
+            }
+            if (_loadScene) scene.Events.PublishSceneChange(SceneName.Scoreboard);
         }
     }
 

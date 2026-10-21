@@ -19,7 +19,7 @@ public sealed class ScoreboardGUI : GUI
         _scores = new Dictionary<Text, Text[]>();
         DefaultCharacterSize = 32;
         _scoreColor = new Color(168, 154, 226);
-        CreateScoreboard();
+        CreateAll();
     }
 
     private void CreateTitleAndBack()
@@ -37,33 +37,66 @@ public sealed class ScoreboardGUI : GUI
         Target();
     }
 
+    private void CreateAll()
+    {
+        CreateTitleAndBack();
+        CreateScoreboard();
+    }
+
     private void CreateScoreboard()
     {
-        uint characterSize = DefaultCharacterSize;
-        
-        CreateTitleAndBack();
-        for (int i = 1; i <= 10; i++)
+        Text[] placements = new Text[10];
+        List<Text[]> storedScores = StoreHighScore();
+        for (int i = 0; i <= placements.Length -1; i++)
         {
-            _scores[CreateText(_scene, $"{i}.", characterSize, _scoreColor)] =
-                StoreHighScore();
-
+            placements[i] = CreateText(_scene, $"{i + 1}", DefaultCharacterSize, _scoreColor);
+            if (!(i > storedScores.Count - 1))
+            {
+                _scores[placements[i]] = storedScores[i];
+            }
         }
-    }
-
-
-    private Text[] StoreHighScore()
-    {
-        string name = "a";
-        string score = "2";
         
-        Text[] playerScore = new Text[]
-        {
-            CreateText(_scene, name, DefaultCharacterSize, _scoreColor),             
-            CreateText(_scene, score, DefaultCharacterSize, _scoreColor)
-        };
-        return playerScore;
     }
 
+    private List<Text[]> StoreHighScore()
+    {
+        string currentDir = Directory.GetCurrentDirectory();
+
+        string fileMain = "HighScore/highscore.txt";
+        string fileIfDebug = "../../../HighScore/highscore.txt";
+
+        if (currentDir.Substring(currentDir.Length - 7, 7) == "net10.0")
+        { 
+            fileMain = "../../../HighScore/highscore.txt";
+        }
+
+        string[] fileContents = new string[0];
+        if (File.Exists(fileMain)) fileContents = File.ReadAllLines(fileMain);
+        
+        List<Text[]> playerScores = new List<Text[]>();
+
+        foreach (string line in fileContents)
+        {
+            string[] splitLine = line.Split(",");
+            string name = splitLine[0];
+            string score = splitLine[1];
+            Text[] playerScore = new Text[]
+            {
+                CreateText(_scene, name, DefaultCharacterSize, _scoreColor),             
+                CreateText(_scene, score, DefaultCharacterSize, _scoreColor)
+            };
+            playerScores.Add(playerScore);
+        }
+
+        playerScores = playerScores.OrderByDescending(e => GetScore(e)).ToList();
+        
+        return playerScores;
+    }
+    private int GetScore(Text[] entry)
+    {
+        int num = int.Parse(entry[1].DisplayedString);
+        return num;
+    }
     public override int Target()
     {
         Text target = Texts[CurrentTarget];

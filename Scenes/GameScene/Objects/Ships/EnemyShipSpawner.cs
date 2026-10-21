@@ -35,7 +35,6 @@ public class EnemyShipSpawner
     public bool Dead { get; set; }
     public void Destroy(Scene scene)
     {
-        
         scene.Events.ThresholdPassed -= UpdateState;
     }
     private void SpawnShip(Scene scene)

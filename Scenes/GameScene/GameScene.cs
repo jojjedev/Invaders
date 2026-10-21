@@ -29,6 +29,7 @@ public sealed class GameScene : Scene
     private void OnGameOver(Scene scene)
     {
         ClearAllInteractableEntities();
+        
     }
 
     private void ClearAllInteractableEntities()
@@ -41,8 +42,8 @@ public sealed class GameScene : Scene
             }
         }
 
-        _enemySpawner.Dead = true;
-
+        _enemySpawner.Dead = true; 
+        _enemySpawner.Destroy(this);
     }
     /// <summary>
     /// Each "Enemy" object is checking collisions with each object on team "Player"
