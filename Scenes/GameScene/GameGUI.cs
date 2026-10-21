@@ -1,8 +1,10 @@
+using System.Reflection.Metadata.Ecma335;
+using System.Text;
 using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
 using static Invaders.Constants;
-
+using System.IO;
 
 namespace Invaders;
 
@@ -13,15 +15,16 @@ public class GameGUI : GUI
     private float ScoreTimer;
     private const float ScoreInterval = 0.1f;
     private float _colorTimer;
-    private bool _gameOver;
-    private string _inputName;
-    private char[] _charArray = new char[] { '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_' };
-    public GameGUI(GameScene scene)
+    private bool _gameOver, _loadScene;
+    private string _inputName = "";
+    private Scene currentScene;
+    public GameGUI(Scene scene)
     {
+        currentScene = scene;
         Texts = new List<Text>();
         DefaultCharacterSize = 20;
         DefaultColor = Color.White;
-        CreateObjects(scene);
+        CreateObjects();
         scene.Events.IncreaseScore += OnScoreIncrease;
         scene.Events.GameOver += CreateEndScene;
         scene.Events.NewInput += PlayerInput;
@@ -32,14 +35,14 @@ public class GameGUI : GUI
         base.Destroy(scene);
         scene.Events.IncreaseScore -= OnScoreIncrease;
     }
-    private void CreateObjects(GameScene scene)
+    private void CreateObjects()
     {
-        if (scene.FindByType(out PlayerShip ship))
+        if (currentScene.FindByType(out PlayerShip ship))
         {
             Console.WriteLine("Found");
             Color color = DefaultColor;
-            Texts.Add(CreateText(scene,$"Score: {Score}", DefaultCharacterSize, color));
-            Texts.Add(CreateText(scene, $"Health: {ship.Health}", DefaultCharacterSize, color));
+            Texts.Add(CreateText(currentScene,$"Score: {Score}", DefaultCharacterSize, color));
+            Texts.Add(CreateText(currentScene, $"Health: {ship.Health}", DefaultCharacterSize, color));
             SetTextsPosition();
         };
 
@@ -82,54 +85,54 @@ public class GameGUI : GUI
     {
         _gameOver = true;
         Texts.Clear();
-        Text gameOverText = CreateText(scene, $"Game over!\nYour score is\n{Score}", 45, DefaultColor);
+        Text gameOverText = CreateText(currentScene, $"Game over!\nYour score is\n{Score}\nEnter your name", 45, DefaultColor);
         Texts.Add(gameOverText);
         gameOverText.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f);
         gameOverText.Origin = new Vector2f(gameOverText.GetLocalBounds().Width / 2f,
             gameOverText.GetLocalBounds().Height / 2f);
         
-        Text inputText = CreateText(scene,_inputName, 45, DefaultColor);
+        Text inputText = CreateText(currentScene,_inputName, 45, DefaultColor);
         Texts.Add(inputText);
-        inputText.Position = new Vector2f(50, 800);
-        inputText.Origin = new Vector2f(inputText.GetLocalBounds().Width / 2f,
-            inputText.GetLocalBounds().Height / 2f);
+        inputText.Position = new Vector2f(SCREEN_WIDTH / 2f - 6.5f * 25, 800);
+        inputText.Origin = new Vector2f(0, inputText.GetLocalBounds().Height / 2f);
     }
-
+    
     private void PlayerInput(string input)
     {
-        if (char.TryParse(input, out char newInput))
+        if (input == "\b")
         {
-            for (int i = 0; i < _charArray.Length; i++)
-            {
-                if (_charArray[i] == '_' && newInput != '\b')
-                {
-                    _charArray[i] = newInput;
-                    _inputName = new string(_charArray);
-                    return;
-                }
-
-                if (newInput == '\b')
-                {
-
-                    if (_charArray[i] == '_' && i != 0)
-                    {
-                        _charArray[i - 1] = '_';
-                        _inputName = new string(_charArray);
-                        return;
-                    }
-
-                    if (i == _charArray.Length - 1)
-                    {
-                        _charArray[i] = '_';
-                        _inputName = new string(_charArray);
-                        return;
-                    }
-                }
-            }
+            if (_inputName.Length != 0) _inputName = _inputName.Substring(0, _inputName.Length - 1);
         }
-        else _inputName = new string(_charArray);
+
+        if (input == "\n" || input == "\r\n")
+        {
+            SaveScore();
+            _loadScene = true;
+        }
+        else if (_inputName.Length <= 12)
+        {
+            _inputName += input;
+        }
+        
     }
 
+    private void SaveScore()
+    {
+        string currentDir = Directory.GetCurrentDirectory();
+
+        string fileMain = "HighScore/highscore.txt";
+        string fileIfDebug = "../../../HighScore/highscore.txt";
+
+        if (currentDir.Substring(currentDir.Length - 7, 7) == "net10.0")
+        { 
+            fileMain = "../../../HighScore/highscore.txt";
+        }
+
+        string fileContents = "";
+        if (File.Exists(fileMain)) fileContents = File.ReadAllText(fileMain);
+        fileContents += $"\n{_inputName.Trim()},{Score}";
+        File.WriteAllText(fileMain, fileContents, Encoding.UTF8);
+    }
     public override void Update(Scene scene, float dt)
     {
         base.Update(scene, dt);
@@ -163,6 +166,7 @@ public class GameGUI : GUI
         {
             scene.Events.CheckInputEvent();
             Texts[1].DisplayedString = _inputName;
+            
         }
     }
 

@@ -5,7 +5,7 @@ namespace Invaders;
 public abstract class Constants
 {
     public const int SCREEN_WIDTH = 512;
-    public const int SCREEN_HEIGHT = 1024;
+    public const int SCREEN_HEIGHT = 900;
     public static readonly IntRect BluePlayerShipRect = new IntRect(212, 941, 98, 75);
     public static readonly IntRect GreenPlayerShipRect = new IntRect(238, 377, 98, 75);
     public static readonly IntRect PlayerBulletRect = new IntRect(849, 310, 9, 54);

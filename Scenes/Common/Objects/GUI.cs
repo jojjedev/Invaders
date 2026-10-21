@@ -14,7 +14,7 @@ public abstract class GUI : IOnScreenObject
     protected virtual Text CreateText(Scene scene, string text, uint characterSize, Color color)
     {
         Text newText = new Text();
-        newText.Font = scene.Assets.LoadFont("kenvector_future_thin");
+        newText.Font = scene.Assets.LoadFont("LTBinaryNeue-Bold");
         newText.CharacterSize = characterSize;
         newText.DisplayedString = text;
         newText.FillColor = color;

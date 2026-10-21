@@ -11,50 +11,55 @@ public sealed class ScoreboardGUI : GUI
 {
     private Dictionary<Text, Text[]> _scores;
     private Color _scoreColor;
-    public ScoreboardGUI(ScoreboardScene scene) : base()
+    private Scene _scene;
+    public ScoreboardGUI(Scene scene) : base()
     {
+        _scene = scene;
         Texts = new List<Text>();
         _scores = new Dictionary<Text, Text[]>();
         DefaultCharacterSize = 32;
         _scoreColor = new Color(168, 154, 226);
-        CreateScoreboard(scene);
+        CreateScoreboard();
     }
 
-    private void CreateTitleAndBack(ScoreboardScene scene)
+    private void CreateTitleAndBack()
     {
-        Text title = CreateText(scene, "Scoreboard", 50, Color.Cyan);
+        Text title = CreateText(_scene, "Scoreboard", 50, Color.Cyan);
         FloatRect titleBounds = title.GetGlobalBounds();
         title.Origin = new Vector2f(titleBounds.Width * 0.5f, titleBounds.Height * 0.5f);
         title.Position = new Vector2f(256, titleBounds.Height * 2f);
         Texts.Add(title);
-        Text newGame = CreateText(scene, "New Game", 40, DefaultColor);
+        Text newGame = CreateText(_scene, "New Game", 40, DefaultColor);
         Texts.Add(newGame); // Index 1
-        Text back = CreateText(scene, "Back", 40, DefaultColor);
+        Text back = CreateText(_scene, "Menu", 40, DefaultColor);
         Texts.Add(back); // Index 2
-        CurrentTarget = 1; // Sätter target på "Back" by default.
+        CurrentTarget = 1; // Sätter target på "New Game" by default.
         Target();
     }
 
-    private void CreateScoreboard(ScoreboardScene scene)
+    private void CreateScoreboard()
     {
         uint characterSize = DefaultCharacterSize;
-        CreateTitleAndBack(scene);
+        
+        CreateTitleAndBack();
         for (int i = 1; i <= 10; i++)
         {
-            _scores[CreateText(scene, $"{i}.", characterSize, _scoreColor)] =
-                StoreHighScore(scene, "Johan", $"{i * 200}");
-            // TODO: Input name ska komma från en funktion som frågar spelaren om sitt namn.
+            _scores[CreateText(_scene, $"{i}.", characterSize, _scoreColor)] =
+                StoreHighScore();
+
         }
     }
 
 
-    public Text[] StoreHighScore(Scene scene, string name, string score)
+    private Text[] StoreHighScore()
     {
+        string name = "a";
+        string score = "2";
+        
         Text[] playerScore = new Text[]
         {
-            CreateText(scene, name, DefaultCharacterSize, _scoreColor),             
-            CreateText(scene, score, DefaultCharacterSize, _scoreColor)
-
+            CreateText(_scene, name, DefaultCharacterSize, _scoreColor),             
+            CreateText(_scene, score, DefaultCharacterSize, _scoreColor)
         };
         return playerScore;
     }
@@ -91,14 +96,14 @@ public sealed class ScoreboardGUI : GUI
             Text number = pair.Key;
             FloatRect numberBounds = number.GetGlobalBounds();
             number.Origin = new Vector2f(numberBounds.Width * 0.5f, numberBounds.Height * 0.5f);
-            number.Position = new Vector2f(30, 4 * numberBounds.Height + 3 * numberBounds.Height * placement);
+            number.Position = new Vector2f(0.06f * SCREEN_WIDTH, 4 * numberBounds.Height + 3 * numberBounds.Height * placement);
             target.Draw(number);
 
             Text[] playerScore = pair.Value;
             Text name = playerScore[0];
             FloatRect nameBounds = playerScore[0].GetGlobalBounds();
             name.Origin = new Vector2f(0, nameBounds.Height * 0.5f);
-            name.Position = new Vector2f(92, number.Position.Y);
+            name.Position = new Vector2f(0.18f * SCREEN_WIDTH, number.Position.Y);
             
             Text score = playerScore[1];
             FloatRect scoreBounds = playerScore[1].GetGlobalBounds();
@@ -120,7 +125,7 @@ public sealed class ScoreboardGUI : GUI
             Text text = Texts[i];
             FloatRect bounds = text.GetGlobalBounds();
             text.Origin = new Vector2f(bounds.Width * 0.5f, bounds.Height * 0.5f);
-            text.Position = new Vector2f(256, 800 + 2f * bounds.Height * i);
+            text.Position = new Vector2f(256, SCREEN_HEIGHT - bounds.Height * 4.5f + 1.5f * bounds.Height * i);
             target.Draw(text);
         }
     }

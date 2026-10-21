@@ -2,7 +2,7 @@
 using SFML.System;
 using SFML.Window;
 using static SFML.Window.Keyboard.Key;
-
+using static Invaders.Constants;
 namespace Invaders;
 
 public sealed class HomeGUI : GUI
@@ -51,14 +51,8 @@ public sealed class HomeGUI : GUI
             Text text = Texts[i];
             FloatRect bounds = text.GetGlobalBounds();
             text.Origin = new Vector2f(bounds.Width * 0.5f, bounds.Height * 0.5f);
-            text.Position = new Vector2f(256, 512 + 2f * bounds.Height * (i - 1));
+            text.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f + 2f * bounds.Height * (i - 1));
             target.Draw(text);
         }
-    }
-
-    public override void Update(Scene scene, float dt)
-    {
-        base.Update(scene, dt);
-        
     }
 }
