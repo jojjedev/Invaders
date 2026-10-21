@@ -12,18 +12,16 @@ public abstract class Scene
     private bool DEBUG = false; // TODO: TRUE = AKTIVE, FALSE = INAKTIVE. TA BORT INNAN INLÄMNING
     
     public readonly AssetManager Assets;
-    public readonly SceneLoader Loader;
     public readonly EventManager Events;
-    public Dictionary<Team, List<IInteractable>> InteractableEntities;
-    private List<IOnScreenObject> _objects;
-    protected Background Background;
+    private readonly List<IOnScreenObject> _objects;
+    protected Dictionary<Team, List<IInteractable>> InteractableEntities;
+    protected readonly Background Background;
     protected bool KeyPressed;
     protected float Timer;
 
     protected Scene()
     {
         Assets = new AssetManager();
-        Loader = new SceneLoader();
         Events = new EventManager();
         _objects = new List<IOnScreenObject>();
         Background = new Background();
@@ -34,6 +32,15 @@ public abstract class Scene
     {
         _objects.Add(onScreenObject);
         onScreenObject.Create(this);
+        if (onScreenObject is IInteractable)
+        {
+            IInteractable inter = (IInteractable)onScreenObject;
+            if (!InteractableEntities.ContainsKey(inter.Affiliation))
+            {
+                InteractableEntities.Add(inter.Affiliation, new List<IInteractable>());
+            }
+            InteractableEntities[inter.Affiliation].Add(inter);
+        }
     }
     
     public virtual void Clear()

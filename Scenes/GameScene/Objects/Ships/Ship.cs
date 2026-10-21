@@ -1,21 +1,20 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using static Invaders.Constants;
 
 namespace Invaders;
 
-public abstract class Ship : Entity, IMoveable, ICanShoot, IDamageable, IInteractable
+public abstract class Ship : Entity, IMoveable, IInteractable
 {
     // Constructor
     protected Ship() : base("sheet") { }
     
     // Properties
     public int Health { get; protected set; }
-    public int Damage { get; set; }
     public float Speed { get; set; }
     protected float ShotCooldown { get; set; }
     protected float ShootTimer { get; set; }
-    public bool IsDestroyed { get; set; }
     public bool Invulnerable { get; set; }
     public Team Affiliation { get; set; }
     public bool HasAlreadyCollided { get; set; }
@@ -34,22 +33,17 @@ public abstract class Ship : Entity, IMoveable, ICanShoot, IDamageable, IInterac
     }
 
     // Methods
-    public override void Create(Scene scene)
-    {
-        base.Create(scene);
-        if (!scene.InteractableEntities.ContainsKey(Affiliation))
-        {
-            scene.InteractableEntities.Add(Affiliation, new List<IInteractable>());
-        }
-        scene.InteractableEntities[Affiliation].Add(this);
-    }
 
     public override void Destroy(Scene scene)
     {
         ToBeDestroyed = true;
     }
 
-    public virtual void OnCollision(Scene scene){}
+    public virtual void OnCollision()
+    {
+        if (HasAlreadyCollided) return;
+        HasAlreadyCollided = true;
+    }
 
     public virtual bool IsOutOfBounds()
     {
@@ -66,17 +60,7 @@ public abstract class Ship : Entity, IMoveable, ICanShoot, IDamageable, IInterac
     }
 
     public virtual void Move(float dt) { }
-
-    public virtual void DealDamage(IDamageable other)
-    {
-        //TODO Ifall träff, kalla på denna. Tar bort HP från motståndare
-    }
-
-
-    public virtual void TakeDamage(int amount)
-    {
-        //TODO Minska HP, om <= 0. Kalla på slutgiltig funktion och Destroy().
-    }
+    
 
     public virtual void Explode(Scene scene)
     {

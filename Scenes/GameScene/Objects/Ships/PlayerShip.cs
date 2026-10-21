@@ -40,27 +40,26 @@ public sealed class PlayerShip : Ship
         scene.Events.LoseHealth -= OnLoseHealth;
     }
 
-    private void OnLoseHealth(Scene scene,int amount)
+    private void OnLoseHealth(int amount)
     {
-        _invulnTimer = 0;
     }
 
-    public override void OnCollision(Scene scene)
+    public override void OnCollision()
     {
-        if (Invulnerable) return;
+        base.OnCollision();
         Health--;
-        scene.Events.PublishLoseHealth(1);
+        CurrentScene.Events.PublishLoseHealth(1);
         if (Health <= 0)
         {
-            Explode(scene);
-            scene.Events.PublishLoseHealth(1);
-            scene.Events.PublishGameOver(scene);
-            Destroy(scene);
+            Explode(CurrentScene);
+            CurrentScene.Events.PublishLoseHealth(1);
+            CurrentScene.Events.PublishGameOver(CurrentScene);
+            Destroy(CurrentScene);
         }
         else
         {
             Invulnerable = true;
-            HasAlreadyCollided = true;
+            _invulnTimer = 0;
         }
         Console.WriteLine(Health);
     }

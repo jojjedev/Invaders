@@ -25,9 +25,9 @@ public class GameGUI : GUI
         DefaultCharacterSize = 20;
         DefaultColor = Color.White;
         CreateObjects();
-        scene.Events.IncreaseScore += OnScoreIncrease;
-        scene.Events.GameOver += CreateEndScene;
-        scene.Events.NewInput += PlayerInput;
+        currentScene.Events.IncreaseScore += OnScoreIncrease;
+        currentScene.Events.GameOver += CreateEndScene;
+        currentScene.Events.NewInput += PlayerInput;
     }
     private int Score { get; set; }
     public override void Destroy(Scene scene)
@@ -52,7 +52,7 @@ public class GameGUI : GUI
         Score++;
         _thresholdTracker++;
     }
-    private void OnScoreIncrease(Scene scene, int amount)
+    private void OnScoreIncrease(int amount)
     {
         Score += amount;
         _thresholdTracker += amount;
@@ -103,8 +103,7 @@ public class GameGUI : GUI
         {
             if (_inputName.Length != 0) _inputName = _inputName.Substring(0, _inputName.Length - 1);
         }
-        else if (input == ",") return;
-        else if (_inputName.Length <= 12)
+        else if (_inputName.Length <= 12 && input != ",")
         {
             _inputName += input;
         }

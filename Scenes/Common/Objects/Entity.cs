@@ -6,6 +6,8 @@ namespace Invaders;
 public abstract class Entity : IOnScreenObject
 {
     private readonly string _textureName;
+    protected Scene CurrentScene;
+    
     protected Entity(string textureName)
     {
         this._textureName = textureName;
@@ -30,17 +32,16 @@ public abstract class Entity : IOnScreenObject
     }
     
 
-    public virtual void Create(Scene scene) 
+    public virtual void Create(Scene scene)
     {
-        Sprite.Texture = scene.Assets.LoadTexture(_textureName);
+        CurrentScene = scene;
+        Sprite.Texture = CurrentScene.Assets.LoadTexture(_textureName);
     }
 
     public virtual void Destroy(Scene scene)
     {
         Dead = true;
     }
-
-    
     
     public virtual void Update(Scene scene, float dt)
     {

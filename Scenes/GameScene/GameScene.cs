@@ -82,15 +82,15 @@ public sealed class GameScene : Scene
         {
             foreach (IInteractable e in InteractableEntities[team])
             {
-                if (!e.Invulnerable)
+                foreach (IInteractable otherTeamInteractable in CollisionCheck(e))
                 {
-                    foreach (IInteractable otherTeamInteractable in CollisionCheck(e))
+                    if (e is Bullet && otherTeamInteractable is Bullet) continue;
+                    if (!e.Invulnerable && !otherTeamInteractable.Invulnerable)
                     {
-                        otherTeamInteractable.OnCollision(this);
-                        if (e is Bullet && otherTeamInteractable is Ship) e.ToBeDestroyed = true;
-                    }    
+                        otherTeamInteractable.OnCollision();
+                        e.OnCollision();
+                    }
                 }
-                
             }
         }
     }
@@ -111,7 +111,7 @@ public sealed class GameScene : Scene
 
         if (InteractableEntities.Keys.Count >= 2) CheckAllCollisions();
         if (!_enemySpawner.Dead) _enemySpawner.Update(this, dt);
-        Events.CheckValueChangeEvent(this);  
+        Events.CheckValueChangeEvent();  
         Events.CheckThresholdEvent();
         Events.CheckGameOverEvent(this);
         if (Keyboard.IsKeyPressed(Keyboard.Key.R))

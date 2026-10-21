@@ -22,6 +22,7 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         SetSpawnStats(ship, side);
     }
     public bool Invulnerable { get; set; }
+    public bool HasAlreadyCollided { get; set; }
     public Team Affiliation { get; set; }
     public override float Rotation { get; set; }
     
@@ -37,22 +38,18 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         get => Dead;
         set => Dead = value;
     }
-    public override void Create(Scene scene)
+
+    public void OnCollision()
     {
-        if (!scene.InteractableEntities.ContainsKey(Affiliation))
-        {
-            scene.InteractableEntities.Add(Affiliation, new List<IInteractable>());
-        }
-        scene.InteractableEntities[Affiliation].Add(this);
-        base.Create(scene);
-        
+        Invulnerable = true;
+        ToBeDestroyed = true;
     }
 
     public override void Destroy(Scene scene)
     {
         ToBeDestroyed = true;
     }
-
+    
     private void SetSpawnStats(Ship ship, Side side)
     {
         Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, 0);

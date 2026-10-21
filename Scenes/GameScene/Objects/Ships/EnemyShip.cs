@@ -86,16 +86,17 @@ public sealed class EnemyShip : Ship
             Position.Y - LocalBounds.Width / 2f > SCREEN_HEIGHT;
     }
 
-    public override void OnCollision(Scene scene)
+    public override void OnCollision()
     {
+        base.OnCollision();
         Health--;
+        Console.WriteLine("Took damage");
         if (Health <= 0)
         {
-            Explode(scene);
-            scene.Events.PublishScoreIncrease(50);
-            Destroy(scene);
+            Explode(CurrentScene);
+            CurrentScene.Events.PublishScoreIncrease(50);
+            Destroy(CurrentScene);
         }
-        HasAlreadyCollided = true;
     }
 
     public override void Update(Scene scene, float dt)

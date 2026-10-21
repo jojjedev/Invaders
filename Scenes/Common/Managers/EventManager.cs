@@ -4,7 +4,7 @@ using SFML.Window;
 namespace Invaders;
 
 public delegate void ChangeSceneEvent(SceneName sceneName);
-public delegate void ValueChangedEvent(Scene scene, int amount);
+public delegate void ValueChangedEvent(int amount);
 
 public delegate void InputEvent(string input);
 public delegate void ScoreThresholdEvent();
@@ -31,17 +31,17 @@ public sealed class EventManager
     public void PublishInputEvent(string input) => _input = input;
     
     
-    public void CheckValueChangeEvent(Scene scene)
+    public void CheckValueChangeEvent()
     {
         if (_healthLost != 0)
         {
-            LoseHealth?.Invoke(scene, _healthLost);
+            LoseHealth?.Invoke(_healthLost);
             _healthLost = 0;
         }
 
         if (_scoreIncrease != 0)
         {
-            IncreaseScore?.Invoke(scene, _scoreIncrease);
+            IncreaseScore?.Invoke(_scoreIncrease);
             _scoreIncrease = 0;
         }
         

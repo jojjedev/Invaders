@@ -48,7 +48,6 @@ public class EnemyShipSpawner
             SetFireChance()
             );
         scene.Spawn(newShip);
-        Console.WriteLine($"\nNew Ship at level {_level}\nHealth: {SetHealth()}\nSpeed: {SetSpeed()}\nShotCd: {SetShotCd()}\nFireChance: {SetFireChance()}");
     }
     
     private Vector2f SetShipSpawn()
