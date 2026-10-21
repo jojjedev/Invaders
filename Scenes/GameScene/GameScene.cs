@@ -6,9 +6,8 @@ namespace Invaders;
 
 public sealed class GameScene : Scene
 {
-    private EnemyShipSpawner _enemySpawner;
-    private GameGUI _gui;
-    
+    private readonly EnemyShipSpawner _enemySpawner;
+
     public GameScene()
     {
         InteractableEntities = new Dictionary<Team, List<IInteractable>>()
@@ -20,12 +19,12 @@ public sealed class GameScene : Scene
         _enemySpawner = new EnemyShipSpawner(this);
         Spawn(Background);
         Spawn(player);
-        _gui = new GameGUI(this);
-        Spawn(_gui);
+        GameGUI gui = new GameGUI(this);
+        Spawn(gui);
 
         Events.GameOver += OnGameOver;
     }
-    private void OnGameOver(Scene scene)
+    private void OnGameOver()
     {
         ClearAllInteractableEntities();
         
@@ -42,10 +41,11 @@ public sealed class GameScene : Scene
         }
 
         _enemySpawner.Dead = true; 
-        _enemySpawner.Destroy(this);
+        _enemySpawner.Destroy();
     }
     /// <summary>
-    /// Each "Enemy" object is checking collisions with each object on team "Player"
+    /// Each interactable object is checking collisions with each Team and gets added to the returned collection of objects
+    /// that has collided.
     /// </summary>
     /// <param name="bounds"></param>
     /// <returns></returns>
@@ -71,7 +71,7 @@ public sealed class GameScene : Scene
         }
     }
     /// <summary>
-    /// For each entity in each Team, search for collisions with objects of the other team. If the other entity
+    /// For each entity in each Team, search for collisions with objects of the other teams. If the other entity
     /// is not marked as ToBeDestroyed, call that entity's collision handling function.
     /// </summary>
     /// <param name="scene"></param>
@@ -110,15 +110,9 @@ public sealed class GameScene : Scene
         }
 
         if (InteractableEntities.Keys.Count >= 2) CheckAllCollisions();
-        if (!_enemySpawner.Dead) _enemySpawner.Update(this, dt);
+        if (!_enemySpawner.Dead) _enemySpawner.Update(dt);
         Events.CheckValueChangeEvent();  
         Events.CheckThresholdEvent();
-        Events.CheckGameOverEvent(this);
-        if (Keyboard.IsKeyPressed(Keyboard.Key.R))
-        {
-            PlayerShip player = new PlayerShip();
-            Spawn(player);
-        }
-            
+        Events.CheckGameOverEvent();
     }
 }

@@ -7,17 +7,18 @@ namespace Invaders;
 
 public class EnemyShipSpawner
 {
-    private IntRect bounds = new IntRect(0, 0, BlueEnemyShipRect.Width, BlueEnemyShipRect.Height);
-    private readonly string[] _shipColors;
-    private Dictionary<string, IntRect> _shipTextures;
     private string _state;
-    private int _level;
-    private int _index;
-    private float _spawnCd;
+    private int _level, _index;
     private float _spawnTimer = 0;
-    private readonly float _lowestSpawnCd = 0.5f;
+    private readonly IntRect _bounds = new IntRect(0, 0, BlueEnemyShipRect.Width, BlueEnemyShipRect.Height);
+    private readonly string[] _shipColors;
+    private readonly Dictionary<string, IntRect> _shipTextures;
+    private readonly float _spawnCd;
+    private const float LowestSpawnCd = 0.5f;
+    private readonly Scene _currentScene;
     public EnemyShipSpawner(Scene scene)
     {
+        _currentScene = scene;
         _shipColors = new string[] { "blue", "green", "red", "black" };
         _shipTextures = new Dictionary<string, IntRect>
         {
@@ -29,15 +30,15 @@ public class EnemyShipSpawner
         _state = "blue";
         _index = 0;
         _level = 1;
-        _spawnCd = _lowestSpawnCd + 1 * MathF.Pow(0.95f, _level); 
-        scene.Events.ThresholdPassed += UpdateState;
+        _spawnCd = LowestSpawnCd + 1 * MathF.Pow(0.95f, _level); 
+        _currentScene.Events.ThresholdPassed += UpdateState;
     }
     public bool Dead { get; set; }
-    public void Destroy(Scene scene)
+    public void Destroy()
     {
-        scene.Events.ThresholdPassed -= UpdateState;
+        _currentScene.Events.ThresholdPassed -= UpdateState;
     }
-    private void SpawnShip(Scene scene)
+    private void SpawnShip()
     {
         EnemyShip newShip = new EnemyShip(
             _shipTextures[_state], 
@@ -47,14 +48,14 @@ public class EnemyShipSpawner
             SetShotCd(),
             SetFireChance()
             );
-        scene.Spawn(newShip);
+        _currentScene.Spawn(newShip);
     }
     
     private Vector2f SetShipSpawn()
     {
         Random random = new Random();
-        float spawnPos = random.Next(bounds.Width / 2, SCREEN_WIDTH - bounds.Width / 2);
-        Vector2f spawn = new Vector2f(spawnPos, -bounds.Width / 2f);
+        float spawnPos = random.Next(_bounds.Width / 2, SCREEN_WIDTH - _bounds.Width / 2);
+        Vector2f spawn = new Vector2f(spawnPos, -_bounds.Width / 2f);
         return spawn;
     }
     
@@ -85,12 +86,12 @@ public class EnemyShipSpawner
     if (_state == "blue") _level++;
     }
 
-    public void Update(Scene scene, float dt)
+    public void Update(float dt)
     {
         _spawnTimer += dt;
         if (_spawnTimer > _spawnCd)
         {
-            SpawnShip(scene);
+            SpawnShip();
             _spawnTimer = 0;
         }
     }

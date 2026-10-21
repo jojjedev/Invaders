@@ -15,7 +15,7 @@ public sealed class ScoreboardScene : Scene
         Spawn(Background);
         Spawn(_gui);
     }
-    protected override void LoadNextScene(int target)
+    private void LoadNextScene(int target)
     {
         Clear();
         switch (target)
@@ -28,7 +28,7 @@ public sealed class ScoreboardScene : Scene
                 break;
         }
     }
-    public void IsAnyKeyPressed()
+    private void IsAnyKeyPressed()
     {
         if (Keyboard.IsKeyPressed(Down) ||
             Keyboard.IsKeyPressed(S) ||

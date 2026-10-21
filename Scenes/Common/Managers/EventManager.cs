@@ -8,7 +8,7 @@ public delegate void ValueChangedEvent(int amount);
 
 public delegate void InputEvent(string input);
 public delegate void ScoreThresholdEvent();
-public delegate void GameOverEvent(Scene scene);
+public delegate void GameOverEvent();
 public sealed class EventManager
 {
     private int _healthLost = 0;
@@ -64,11 +64,11 @@ public sealed class EventManager
         }
     }
 
-    public void CheckGameOverEvent(Scene scene)
+    public void CheckGameOverEvent()
     {
         if (_gameOver)
         {
-            GameOver?.Invoke(scene);
+            GameOver?.Invoke();
             _gameOver = false;
         }
     }

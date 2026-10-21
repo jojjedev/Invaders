@@ -10,7 +10,7 @@ namespace Invaders;
 
 public sealed class HomeScene : Scene
 {
-    private HomeGUI _gui;
+    private readonly HomeGUI _gui;
     public HomeScene()
     {
         _gui = new HomeGUI(this);
@@ -18,7 +18,7 @@ public sealed class HomeScene : Scene
         Spawn(_gui);
 
     }
-    protected override void LoadNextScene(int target)
+    private void LoadNextScene(int target)
     {
         Clear();
         switch (target)
@@ -34,7 +34,7 @@ public sealed class HomeScene : Scene
                 break;
         }
     }
-    public void IsAnyKeyPressed()
+    private void IsAnyKeyPressed()
     {
         if (Keyboard.IsKeyPressed(Down) ||
             Keyboard.IsKeyPressed(S) ||

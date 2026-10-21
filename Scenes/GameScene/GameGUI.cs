@@ -81,7 +81,7 @@ public class GameGUI : GUI
         return false;
     }
 
-    private void CreateEndScene(Scene scene)
+    private void CreateEndScene()
     {
         _gameOver = true;
         Texts.Clear();

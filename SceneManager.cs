@@ -5,7 +5,7 @@ namespace Invaders;
 public sealed class SceneManager
 {
     public Scene CurrentScene;
-    public int GameState = 1; // TODO: Kolla över om det behöver vara en int
+    public int GameState = 1;
     private readonly Dictionary<SceneName, Func<Scene>> _loaders;
 
     public SceneManager()
@@ -15,7 +15,6 @@ public sealed class SceneManager
             { Home, () => new HomeScene() },
             { Game, () => new GameScene() },
             { Scoreboard, () => new ScoreboardScene() },
-            { Waiting, () => CurrentScene},
             { Quit,  () =>
                 {
                     GameState = 0;

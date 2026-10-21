@@ -26,7 +26,6 @@ public abstract class Scene
         _objects = new List<IOnScreenObject>();
         Background = new Background();
     }
-    protected virtual void LoadNextScene(int target){}
     
     public virtual void Spawn(IOnScreenObject onScreenObject)
     {
@@ -43,7 +42,7 @@ public abstract class Scene
         }
     }
     
-    public virtual void Clear()
+    protected virtual void Clear()
     {
         for (int i = _objects.Count - 1; i >= 0; i--)
         {
