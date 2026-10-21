@@ -53,18 +53,19 @@ public abstract class Ship : Entity, IMoveable, IInteractable
                Position.Y - LocalBounds.Width / 2f < 0;
     }
 
-    public virtual void Shoot(Scene scene, Ship ship)
+    protected virtual void Shoot(Ship ship)
     {
-        scene.Spawn(new Bullet(ship, Side.Left));
-        scene.Spawn(new Bullet(ship, Side.Right));
+        CurrentScene.Spawn(new Bullet(ship, Side.Left));
+        CurrentScene.Spawn(new Bullet(ship, Side.Right));
     }
 
     public virtual void Move(float dt) { }
     
 
-    public virtual void Explode(Scene scene)
+    protected virtual void Explode()
     {
-        scene.Spawn(new Explosion(this));
+        CurrentScene.Spawn(new Explosion(this));
+        CurrentScene.Assets.PlaySound("explosionCrunch_000", 25, false);
     }
 
     public override void Update(Scene scene, float dt)

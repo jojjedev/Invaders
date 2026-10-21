@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using static SFML.Window.Keyboard.Key;
@@ -7,18 +8,20 @@ namespace Invaders;
 
 public sealed class HomeGUI : GUI
 {
-    public HomeGUI(HomeScene scene)
+    private Scene _currentScene;
+    public HomeGUI(Scene scene)
     {
+        _currentScene = scene;
         Texts = new List<Text>();
-        CreateMenuTexts(scene);
+        CreateMenuTexts();
     }
-    private void CreateMenuTexts(HomeScene scene)
+    private void CreateMenuTexts()
     {
         uint characterSize = DefaultCharacterSize;
         Color color = DefaultColor;
-        Texts.Add(CreateText(scene, "New Game", characterSize, color));
-        Texts.Add(CreateText(scene, "Scoreboard", characterSize, color));
-        Texts.Add(CreateText(scene, "Quit", characterSize, color));
+        Texts.Add(CreateText(_currentScene, "New Game", characterSize, color));
+        Texts.Add(CreateText(_currentScene, "Scoreboard", characterSize, color));
+        Texts.Add(CreateText(_currentScene, "Quit", characterSize, color));
         CurrentTarget = 0;
         Target();
     }
@@ -32,6 +35,7 @@ public sealed class HomeGUI : GUI
             CurrentTarget++;
             if (CurrentTarget == Texts.Count) CurrentTarget = 0;
             Target();
+            PlayChangeTargetSound();
         }
         if (Keyboard.IsKeyPressed(Up) || Keyboard.IsKeyPressed(W))
         {
@@ -40,10 +44,17 @@ public sealed class HomeGUI : GUI
             CurrentTarget--;
             if (CurrentTarget == -1) CurrentTarget = Texts.Count - 1;
             Target();
+            PlayChangeTargetSound();
         }
-
+        
     }
 
+    private void PlayChangeTargetSound()
+    {
+        Sound sound = _currentScene.Assets.LoadAudio("select_002");
+        sound.Volume = 25;
+        sound.Play();
+    }
     public override void Render(RenderTarget target)
     {
         for (int i = 0; i < Texts.Count; i++)

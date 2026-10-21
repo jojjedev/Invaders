@@ -90,12 +90,15 @@ public sealed class EnemyShip : Ship
     {
         base.OnCollision();
         Health--;
-        Console.WriteLine("Took damage");
         if (Health <= 0)
         {
-            Explode(CurrentScene);
+            Explode();
             CurrentScene.Events.PublishScoreIncrease(50);
             Destroy(CurrentScene);
+        }
+        else
+        {
+            CurrentScene.Assets.PlaySound("laserSmall_000", 25, false);
         }
     }
 
@@ -107,7 +110,7 @@ public sealed class EnemyShip : Ship
         if (ShootTimer > ShotCooldown)
         {
             Random random = new Random();
-            if (random.Next(0,100) <= _fireChance) Shoot(scene, this);
+            if (random.Next(0,100) <= _fireChance) Shoot(this);
             ShootTimer = 0;
         }
     }

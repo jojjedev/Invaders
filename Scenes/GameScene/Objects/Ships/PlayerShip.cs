@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using static Invaders.Constants;
@@ -42,6 +43,7 @@ public sealed class PlayerShip : Ship
 
     private void OnLoseHealth(int amount)
     {
+        CurrentScene.Assets.PlaySound("sfx_twoTone", 100, false);
     }
 
     public override void OnCollision()
@@ -51,7 +53,7 @@ public sealed class PlayerShip : Ship
         CurrentScene.Events.PublishLoseHealth(1);
         if (Health <= 0)
         {
-            Explode(CurrentScene);
+            Explode();
             CurrentScene.Events.PublishLoseHealth(1);
             CurrentScene.Events.PublishGameOver(CurrentScene);
             Destroy(CurrentScene);
@@ -61,7 +63,6 @@ public sealed class PlayerShip : Ship
             Invulnerable = true;
             _invulnTimer = 0;
         }
-        Console.WriteLine(Health);
     }
     
 
@@ -72,9 +73,9 @@ public sealed class PlayerShip : Ship
         else Sprite.Color = new Color(255, 255, 255);
     }
 
-    public override void Shoot(Scene scene, Ship ship)
+    protected override void Shoot(Ship ship)
     {
-        base.Shoot(scene, ship);
+        base.Shoot(ship);
         ShootTimer = 0;
         _spacePressed = true;
     }
@@ -85,7 +86,7 @@ public sealed class PlayerShip : Ship
         _handler.Move(this, dt);
         if (Keyboard.IsKeyPressed(Space) && (ShootTimer > ShotCooldown || !_spacePressed))
         {
-            Shoot(scene, this);
+            Shoot( this);
         }
         if (!Keyboard.IsKeyPressed(Space)) _spacePressed = false;
         if (Invulnerable) InvulnCheck();

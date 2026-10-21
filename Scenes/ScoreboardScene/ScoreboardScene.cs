@@ -1,3 +1,4 @@
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 using static SFML.Window.Keyboard.Key;
@@ -14,10 +15,13 @@ public sealed class ScoreboardScene : Scene
         Background.SetColor(new Color(64, 173, 115));
         Spawn(Background);
         Spawn(_gui);
+        Assets.PlaySound("menu", 10, true);
     }
+    
     private void LoadNextScene(int target)
     {
         Clear();
+
         switch (target)
         {
             case 1:
@@ -25,6 +29,8 @@ public sealed class ScoreboardScene : Scene
                 break;
             case 2:
                 Events.PublishSceneChange(SceneName.Home);
+                Sound back = Assets.LoadAudio("select_006");
+                back.Play();
                 break;
         }
     }

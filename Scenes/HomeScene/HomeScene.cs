@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using SFML.Audio;
 using SFML.System;
 using SFML.Graphics;
 using SFML.Window;
@@ -16,21 +17,24 @@ public sealed class HomeScene : Scene
         _gui = new HomeGUI(this);
         Spawn(Background);
         Spawn(_gui);
-
+        Assets.PlaySound("menu", 10, true);
     }
+    
     private void LoadNextScene(int target)
     {
         Clear();
         switch (target)
         {
             case 0:
-                Events.PublishSceneChange(SceneName.Game);
+                Events.PublishSceneChange(Game);
                 break;
             case 1:
                 Events.PublishSceneChange(Scoreboard);
+                Assets.PlaySound("select_005", 100, false);
                 break;
             case 2:
                 Events.PublishSceneChange(Quit);
+                Assets.PlaySound("select_006", 100, false);
                 break;
         }
     }

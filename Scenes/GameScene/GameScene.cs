@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -21,13 +22,18 @@ public sealed class GameScene : Scene
         Spawn(player);
         GameGUI gui = new GameGUI(this);
         Spawn(gui);
-
+        Music(false);
         Events.GameOver += OnGameOver;
+    }
+    private void Music(bool onOff)
+    {
+        Sound music = Assets.PlaySound("battle", 3, true);
+        if (onOff) music.Dispose();
     }
     private void OnGameOver()
     {
         ClearAllInteractableEntities();
-        
+        Music(true);
     }
 
     private void ClearAllInteractableEntities()

@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 using static Invaders.Constants;
@@ -11,10 +12,10 @@ public sealed class ScoreboardGUI : GUI
 {
     private Dictionary<Text, Text[]> _scores;
     private Color _scoreColor;
-    private Scene _scene;
+    private Scene _currentScene;
     public ScoreboardGUI(Scene scene) : base()
     {
-        _scene = scene;
+        _currentScene = scene;
         Texts = new List<Text>();
         _scores = new Dictionary<Text, Text[]>();
         DefaultCharacterSize = 32;
@@ -24,14 +25,14 @@ public sealed class ScoreboardGUI : GUI
 
     private void CreateTitleAndBack()
     {
-        Text title = CreateText(_scene, "Scoreboard", 50, Color.Cyan);
+        Text title = CreateText(_currentScene, "Scoreboard", 50, Color.Cyan);
         FloatRect titleBounds = title.GetGlobalBounds();
         title.Origin = new Vector2f(titleBounds.Width * 0.5f, titleBounds.Height * 0.5f);
         title.Position = new Vector2f(256, titleBounds.Height * 2f);
         Texts.Add(title);
-        Text newGame = CreateText(_scene, "New Game", 40, DefaultColor);
+        Text newGame = CreateText(_currentScene, "New Game", 40, DefaultColor);
         Texts.Add(newGame); // Index 1
-        Text back = CreateText(_scene, "Menu", 40, DefaultColor);
+        Text back = CreateText(_currentScene, "Menu", 40, DefaultColor);
         Texts.Add(back); // Index 2
         CurrentTarget = 1; // Sätter target på "New Game" by default.
         Target();
@@ -49,7 +50,7 @@ public sealed class ScoreboardGUI : GUI
         List<Text[]> storedScores = StoreHighScore();
         for (int i = 0; i <= placements.Length -1; i++)
         {
-            placements[i] = CreateText(_scene, $"{i + 1}", DefaultCharacterSize, _scoreColor);
+            placements[i] = CreateText(_currentScene, $"{i + 1}", DefaultCharacterSize, _scoreColor);
             if (!(i > storedScores.Count - 1))
             {
                 _scores[placements[i]] = storedScores[i];
@@ -82,8 +83,8 @@ public sealed class ScoreboardGUI : GUI
             string score = splitLine[1];
             Text[] playerScore = new Text[]
             {
-                CreateText(_scene, name, DefaultCharacterSize, _scoreColor),             
-                CreateText(_scene, score, DefaultCharacterSize, _scoreColor)
+                CreateText(_currentScene, name, DefaultCharacterSize, _scoreColor),             
+                CreateText(_currentScene, score, DefaultCharacterSize, _scoreColor)
             };
             playerScores.Add(playerScore);
         }
@@ -116,6 +117,9 @@ public sealed class ScoreboardGUI : GUI
             Texts[CurrentTarget].FillColor = DefaultColor;
             CurrentTarget = CurrentTarget == 1 ? CurrentTarget = 2 : CurrentTarget = 1;
             Target();
+            Sound sound = _currentScene.Assets.LoadAudio("select_002");
+            sound.Volume = 25;
+            sound.Play();
         }
         
     }
