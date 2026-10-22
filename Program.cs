@@ -11,7 +11,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        // TODO Fixa inladdning av textures.
         using (var window = new RenderWindow(new VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Invaders"))
         {
             SceneManager sceneManager = new SceneManager();

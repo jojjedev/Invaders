@@ -12,7 +12,7 @@ public abstract class Ship : Entity, IInteractable
     
     // Properties
     public int Health { get; protected set; }
-    public float Speed { get; set; }
+    protected float Speed { get; set; }
     public Team Affiliation { get; set; }
     public bool Invulnerable { get; set; }
     protected float ShotCooldown { get; set; }

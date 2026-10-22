@@ -88,12 +88,11 @@ public sealed class EnemyShipSpawner
         _index++;
         _state = _shipColors[_index % 4];
         
-    if (_state == "blue")
-    {
-        _level++;
-        _spawnCd = UpdateSpawnCd();
-
-    }
+        if (_state == "blue")
+        {
+            _level++;
+            _spawnCd = UpdateSpawnCd();
+        }  
     }
 
     public void Update(float dt)

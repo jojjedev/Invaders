@@ -2,6 +2,8 @@ using System.Runtime.InteropServices;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
+using static SFML.Window.Keyboard;
+using static Invaders.Constants;
 
 namespace Invaders;
 
@@ -16,10 +18,11 @@ public sealed class GameScene : Scene
             { Team.Enemy , new List<IInteractable>() },
             { Team.Player, new List<IInteractable>() } 
         };
-        PlayerShip player = new PlayerShip();
+        InputConfig inputConfig1 = new InputConfig(Key.A, Key.D, Key.W, Key.S, Key.Q, Key.E, Key.Space);
+        PlayerShip player1 = new PlayerShip(inputConfig1, BluePlayerShipRect); // Kan göra samma sak för en ny spelare.
         _enemySpawner = new EnemyShipSpawner(this);
         Spawn(Background);
-        Spawn(player);
+        Spawn(player1);
         GameGUI gui = new GameGUI(this);
         Spawn(gui);
         Music(false);

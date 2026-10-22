@@ -2,7 +2,6 @@
 using SFML.Graphics;
 
 namespace Invaders;
-// Från Inlämning 4, Pacman. Gjord tillsammans med Gustav Hjertsson.
 public sealed class AssetManager
 {
     private readonly string _assetPath = "assets";

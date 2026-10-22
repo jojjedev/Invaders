@@ -10,23 +10,23 @@ namespace Invaders;
 public sealed class PlayerShip : Ship
 {
     private float _invulnTimer;
-    private readonly PlayerShipHandler _handler;
     private const int StartHealth = 3;
-    private bool _spacePressed;
+    private bool _shootPressed;
     private const int PlayerSpeed = 300;
     private const float PlayerShotCd = 0.5f;
-    private readonly Color InvulnColor = new Color(100, 100, 100);
+    private readonly Color _invulnColor = new Color(100, 100, 100);
+    private readonly InputConfig _inputConfig;
 
-    public PlayerShip()
+    public PlayerShip(InputConfig inputConfig, IntRect playerTexture)
     {
-        Sprite.TextureRect = BluePlayerShipRect;
+        Sprite.TextureRect = playerTexture;
         Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, LocalBounds.Height * 0.5f);
         Sprite.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT * 0.75f);
         Sprite.Rotation = Rotation;
         Health = StartHealth;
         Speed = PlayerSpeed;
         ShotCooldown = PlayerShotCd;
-        _handler = new PlayerShipHandler();
+        _inputConfig = inputConfig;
     }
 
     public override void Create(Scene scene)
@@ -70,7 +70,7 @@ public sealed class PlayerShip : Ship
     private void InvulnCheck()
     {
         Invulnerable = !(_invulnTimer > 1f);
-        if (Invulnerable) Sprite.Color = InvulnColor;
+        if (Invulnerable) Sprite.Color = _invulnColor;
         else Sprite.Color = Color.White;
     }
 
@@ -78,18 +78,42 @@ public sealed class PlayerShip : Ship
     {
         base.Shoot();
         ShootTimer = 0;
-        _spacePressed = true;
+        _shootPressed = true;
     }
-
+    private void Move(float dt)
+    {
+        int XDirection = 0;
+        int YDirection = 0;
+        if (Keyboard.IsKeyPressed(_inputConfig.Left)) XDirection--;
+        if (Keyboard.IsKeyPressed(_inputConfig.Right)) XDirection++;
+        if (Keyboard.IsKeyPressed(_inputConfig.Up)) YDirection--;
+        if (Keyboard.IsKeyPressed(_inputConfig.Down)) YDirection++;
+        if (XDirection != 0 || YDirection != 0)
+            ChangeDirection(XDirection, YDirection, dt);
+        Rotate();
+    }
+    private void Rotate()
+    {
+        if (Keyboard.IsKeyPressed(_inputConfig.RotateLeft)) Rotation -= 0.05f;
+        if (Keyboard.IsKeyPressed(_inputConfig.RotateRight)) Rotation += 0.05f;
+    }
+    private void ChangeDirection(float x, float y, float dt)
+    {
+        Vector2f oldPos = Position;
+        Vector2f velocity = new Vector2f(x, y) / MathF.Sqrt(x*x + y*y) * Speed;
+        Vector2f newPos = oldPos + velocity * dt;
+        Position = newPos;
+        if (IsOutOfBounds()) Position = oldPos;
+    }
     public override void Update(float dt)
     {
         base.Update(dt);
-        _handler.Move(this, dt);
-        if (Keyboard.IsKeyPressed(Space) && (ShootTimer > ShotCooldown || !_spacePressed))
+        Move(dt);
+        if (Keyboard.IsKeyPressed(_inputConfig.Shoot) && (ShootTimer > ShotCooldown || !_shootPressed))
         {
             Shoot();
         }
-        if (!Keyboard.IsKeyPressed(Space)) _spacePressed = false;
+        if (!Keyboard.IsKeyPressed(_inputConfig.Shoot)) _shootPressed = false;
         if (Invulnerable) InvulnCheck();
         
         _invulnTimer += dt;

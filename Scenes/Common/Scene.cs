@@ -132,7 +132,6 @@ public abstract class Scene
     {
         RectangleShape rectangle = new RectangleShape(new Vector2f(e.DebugBounds.Width, e.DebugBounds.Height));
         rectangle.Position = e.Position;
-       // rectangle.Rotation = e.Rotation;
         rectangle.Origin = new Vector2f(e.DebugBounds.Width * 0.5f, e.DebugBounds.Height * 0.5f);
         rectangle.OutlineColor = Color.White;
         rectangle.OutlineThickness = 1;
