@@ -34,14 +34,13 @@ public sealed class GameScene : Scene
         Sound music = Assets.PlaySound("battle", 3, true);
         if (onOff) music.Dispose();
     }
-    private void OnGameOver()
-    {
-        ClearAllInteractableEntities();
-    }
-
     private void OnSceneChange(SceneName name)
     {
         Music(true);
+    }
+    private void OnGameOver()
+    {
+        ClearAllInteractableEntities();
     }
 
     private void ClearAllInteractableEntities()

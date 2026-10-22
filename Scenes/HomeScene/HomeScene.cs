@@ -12,7 +12,7 @@ namespace Invaders;
 public sealed class HomeScene : Scene
 {
     private readonly HomeGUI _gui;
-    private Sound _music;
+    private readonly Sound _music;
     public HomeScene()
     {
         _gui = new HomeGUI(this);

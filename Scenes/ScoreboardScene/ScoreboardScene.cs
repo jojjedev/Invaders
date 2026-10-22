@@ -8,8 +8,8 @@ namespace Invaders;
 
 public sealed class ScoreboardScene : Scene
 {
-    private ScoreboardGUI _gui;
-    private Sound _music;
+    private readonly ScoreboardGUI _gui;
+    private readonly Sound _music;
     public ScoreboardScene() : base()
     {
         _gui = new ScoreboardGUI(this);
