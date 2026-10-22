@@ -13,8 +13,9 @@ public sealed class EnemyShipSpawner
     private readonly IntRect _bounds = new IntRect(0, 0, BlueEnemyShipRect.Width, BlueEnemyShipRect.Height);
     private readonly string[] _shipColors;
     private readonly Dictionary<string, IntRect> _shipTextures;
-    private readonly float _spawnCd;
+    private float _spawnCd;
     private const float LowestSpawnCd = 0.5f;
+    private const float InitialSpawnCd = 1.5f;
     private readonly GameScene _currentScene;
     public EnemyShipSpawner(GameScene scene)
     {
@@ -30,7 +31,7 @@ public sealed class EnemyShipSpawner
         _state = "blue";
         _index = 0;
         _level = 1;
-        _spawnCd = LowestSpawnCd + 1 * MathF.Pow(0.95f, _level); 
+        _spawnCd = InitialSpawnCd; 
         _currentScene.Events.ThresholdPassed += UpdateState;
     }
     public bool Dead { get; set; }
@@ -58,7 +59,11 @@ public sealed class EnemyShipSpawner
         Vector2f spawn = new Vector2f(spawnPos, -_bounds.Width / 2f);
         return spawn;
     }
-    
+
+    private float UpdateSpawnCd()
+    {
+        return LowestSpawnCd + 1 * MathF.Pow(0.95f, _level); 
+    }
     private int SetHealth()
     { 
         return 2 * _level;
@@ -83,7 +88,12 @@ public sealed class EnemyShipSpawner
         _index++;
         _state = _shipColors[_index % 4];
         
-    if (_state == "blue") _level++;
+    if (_state == "blue")
+    {
+        _level++;
+        _spawnCd = UpdateSpawnCd();
+
+    }
     }
 
     public void Update(float dt)

@@ -9,7 +9,7 @@ namespace Invaders;
 
 public abstract class Scene
 {
-    private bool DEBUG = false; // TODO: TRUE = AKTIVE, FALSE = INAKTIVE. TA BORT INNAN INLÄMNING
+    private bool DEBUG = false;
     
     public readonly AssetManager Assets;
     public readonly EventManager Events;

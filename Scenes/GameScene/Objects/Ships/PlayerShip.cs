@@ -13,7 +13,9 @@ public sealed class PlayerShip : Ship
     private readonly PlayerShipHandler _handler;
     private const int StartHealth = 3;
     private bool _spacePressed;
-    // Debug
+    private const int PlayerSpeed = 300;
+    private const float PlayerShotCd = 0.5f;
+    private readonly Color InvulnColor = new Color(100, 100, 100);
 
     public PlayerShip()
     {
@@ -22,8 +24,8 @@ public sealed class PlayerShip : Ship
         Sprite.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT * 0.75f);
         Sprite.Rotation = Rotation;
         Health = StartHealth;
-        Speed = 300;
-        ShotCooldown = 0.5f;
+        Speed = PlayerSpeed;
+        ShotCooldown = PlayerShotCd;
         _handler = new PlayerShipHandler();
     }
 
@@ -68,8 +70,8 @@ public sealed class PlayerShip : Ship
     private void InvulnCheck()
     {
         Invulnerable = !(_invulnTimer > 1f);
-        if (Invulnerable) Sprite.Color = new Color(100, 100, 100);
-        else Sprite.Color = new Color(255, 255, 255);
+        if (Invulnerable) Sprite.Color = InvulnColor;
+        else Sprite.Color = Color.White;
     }
 
     protected override void Shoot()
