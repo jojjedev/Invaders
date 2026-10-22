@@ -6,17 +6,10 @@ namespace Invaders;
 
 
 //TODO Lägg logik över grafiska representationen
-public class PlayerShipHandler
+public sealed class PlayerShipHandler
 {
-    private float _invulnTimer;
-    
     // MOVEMENT
-    private void Rotate(Ship ship)
-    {
-        if (Keyboard.IsKeyPressed(Left)) ship.Rotation -= 2;
-        if (Keyboard.IsKeyPressed(Right)) ship.Rotation += 2;
-    }
-    public void Move(Ship ship, float dt)
+    public void Move(PlayerShip ship, float dt)
     {
         int XDirection = 0;
         int YDirection = 0;
@@ -27,10 +20,13 @@ public class PlayerShipHandler
         if (XDirection != 0 || YDirection != 0)
             ChangeDirection(ship, XDirection, YDirection, dt);
         Rotate(ship);
-
-        
     }
-    private void ChangeDirection(Ship ship, float x, float y, float dt)
+    private void Rotate(PlayerShip ship)
+    {
+        if (Keyboard.IsKeyPressed(Left)) ship.Rotation -= 0.05f;
+        if (Keyboard.IsKeyPressed(Right)) ship.Rotation += 0.05f;
+    }
+    private void ChangeDirection(PlayerShip ship, float x, float y, float dt)
     {
         Vector2f oldPos = ship.Position;
         Vector2f velocity = new Vector2f(x, y) / MathF.Sqrt(x*x + y*y) * ship.Speed;

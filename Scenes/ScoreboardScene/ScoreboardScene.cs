@@ -9,19 +9,20 @@ namespace Invaders;
 public sealed class ScoreboardScene : Scene
 {
     private ScoreboardGUI _gui;
+    private Sound _music;
     public ScoreboardScene() : base()
     {
         _gui = new ScoreboardGUI(this);
         Background.SetColor(new Color(64, 173, 115));
         Spawn(Background);
         Spawn(_gui);
-        Assets.PlaySound("menu", 10, true);
+        _music = Assets.PlaySound("menu", 10, true);
     }
     
     private void LoadNextScene(int target)
     {
         Clear();
-
+        _music.Dispose();
         switch (target)
         {
             case 1:

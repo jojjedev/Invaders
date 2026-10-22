@@ -3,41 +3,38 @@ using SFML.System;
 using static Invaders.Constants;
 namespace Invaders;
 
-public sealed class Bullet : Entity, IMoveable, IInteractable
+public sealed class Bullet : Entity, IInteractable
 {
-    public Dictionary<Team, Func<IntRect>> TeamTexture;
     private Vector2f _direction;
     private float _speed;
 
     public Bullet(Ship ship, Side side) : base("sheet")
     {
-        TeamTexture = new Dictionary<Team, Func<IntRect>>()
+        Dictionary<Team, Func<IntRect>> teamTexture = new Dictionary<Team, Func<IntRect>>()
         {
             { Team.Player, () => Sprite.TextureRect = PlayerBulletRect },
             { Team.Enemy, () => Sprite.TextureRect = EnemyBulletRect }
         };
-        TeamTexture[ship.Affiliation].Invoke();
+        teamTexture[ship.Affiliation].Invoke();
         Affiliation = ship.Affiliation;
         Rotation = Affiliation == Team.Player ? ship.Rotation : ship.Rotation + 180;
         SetSpawnStats(ship, side);
     }
     public bool Invulnerable { get; set; }
-    public bool HasAlreadyCollided { get; set; }
     public Team Affiliation { get; set; }
-    public override float Rotation { get; set; }
-    
-    public FloatRect CollisionBounds =>
-        new FloatRect(Sprite.Position - Sprite.Origin,
-            new Vector2f(LocalBounds.Width, LocalBounds.Width)
-        );
-
-    public override FloatRect DebugBounds => CollisionBounds;
-
     public bool ToBeDestroyed
     {
         get => Dead;
         set => Dead = value;
     }
+   
+    public FloatRect CollisionBounds =>
+        new FloatRect(Sprite.Position - Sprite.Origin,
+            new Vector2f(LocalBounds.Width, LocalBounds.Width)
+        );
+    public override float Rotation { get; set; }
+    public override FloatRect DebugBounds => CollisionBounds;
+
 
     public void OnCollision()
     {
@@ -45,7 +42,7 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         ToBeDestroyed = true;
     }
 
-    public override void Destroy(Scene scene)
+    public override void Destroy()
     {
         ToBeDestroyed = true;
     }
@@ -74,11 +71,11 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
                 break;
         }
 
-        _speed = 1000;
+        _speed = 800;
         _direction = new Vector2f(MathF.Cos((Rotation - 90) * Single.Pi / 180f), MathF.Sin((Rotation - 90) * Single.Pi / 180f));
     }
 
-    public void Move(float dt)
+    private void Move(float dt)
     {
         Vector2f velocity = _direction * _speed;
         Vector2f newPos = Position;
@@ -86,21 +83,21 @@ public sealed class Bullet : Entity, IMoveable, IInteractable
         Position = newPos;
     }
 
-    public bool IsOutOfBounds()
+    private bool IsOutOfBounds()
     {
-        return Position.X > SCREEN_WIDTH + LocalBounds.Width ||
-               Position.X < 0 - LocalBounds.Width ||
-               Position.Y > SCREEN_HEIGHT + LocalBounds.Height ||
-               Position.Y < 0 - LocalBounds.Height;
+        return Position.X > SCREEN_WIDTH + LocalBounds.Width / 2f ||
+               Position.X < 0 - LocalBounds.Width / 2f ||
+               Position.Y > SCREEN_HEIGHT + LocalBounds.Height / 2f ||
+               Position.Y < 0 - LocalBounds.Height / 2f;
     }
     
-    public override void Update(Scene scene, float dt)
+    public override void Update(float dt)
     {
         Move(dt);
-        base.Update(scene, dt);
+        base.Update(dt);
         if (IsOutOfBounds())
         {
-            Destroy(scene);
+            Destroy();
         }
     }
 }

@@ -19,10 +19,10 @@ public sealed class PlayerShip : Ship
     {
         Sprite.TextureRect = BluePlayerShipRect;
         Sprite.Origin = new Vector2f(LocalBounds.Width * 0.5f, LocalBounds.Height * 0.5f);
-        Sprite.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f);
+        Sprite.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT * 0.75f);
         Sprite.Rotation = Rotation;
         Health = StartHealth;
-        Speed = 400;
+        Speed = 300;
         ShotCooldown = 0.5f;
         _handler = new PlayerShipHandler();
     }
@@ -35,10 +35,10 @@ public sealed class PlayerShip : Ship
         base.Create(scene);
     }
 
-    public override void Destroy(Scene scene)
+    public override void Destroy()
     {
-        base.Destroy(scene);
-        scene.Events.LoseHealth -= OnLoseHealth;
+        base.Destroy();
+        CurrentScene.Events.LoseHealth -= OnLoseHealth;
     }
 
     private void OnLoseHealth(int amount)
@@ -55,8 +55,8 @@ public sealed class PlayerShip : Ship
         {
             Explode();
             CurrentScene.Events.PublishLoseHealth(1);
-            CurrentScene.Events.PublishGameOver(CurrentScene);
-            Destroy(CurrentScene);
+            CurrentScene.Events.PublishGameOver();
+            Destroy();
         }
         else
         {
@@ -65,7 +65,6 @@ public sealed class PlayerShip : Ship
         }
     }
     
-
     private void InvulnCheck()
     {
         Invulnerable = !(_invulnTimer > 1f);
@@ -73,20 +72,20 @@ public sealed class PlayerShip : Ship
         else Sprite.Color = new Color(255, 255, 255);
     }
 
-    protected override void Shoot(Ship ship)
+    protected override void Shoot()
     {
-        base.Shoot(ship);
+        base.Shoot();
         ShootTimer = 0;
         _spacePressed = true;
     }
 
-    public override void Update(Scene scene, float dt)
+    public override void Update(float dt)
     {
-        base.Update(scene, dt);
+        base.Update(dt);
         _handler.Move(this, dt);
         if (Keyboard.IsKeyPressed(Space) && (ShootTimer > ShotCooldown || !_spacePressed))
         {
-            Shoot( this);
+            Shoot();
         }
         if (!Keyboard.IsKeyPressed(Space)) _spacePressed = false;
         if (Invulnerable) InvulnCheck();
@@ -96,8 +95,4 @@ public sealed class PlayerShip : Ship
         
     }
 
-    public override void Render(RenderTarget target)
-    {
-        base.Render(target);
-    }
 }

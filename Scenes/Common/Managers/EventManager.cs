@@ -5,29 +5,28 @@ namespace Invaders;
 
 public delegate void ChangeSceneEvent(SceneName sceneName);
 public delegate void ValueChangedEvent(int amount);
-
 public delegate void InputEvent(string input);
 public delegate void ScoreThresholdEvent();
 public delegate void GameOverEvent();
 public sealed class EventManager
 {
     private int _healthLost = 0;
-    private int _scoreIncrease = 0;
     private SceneName _newScene = SceneName.Waiting;
+    private int _scoreIncrease = 0;
     private bool _thresholdPassed;
     private bool _gameOver;
     private string _input;
     public event ValueChangedEvent LoseHealth;
-    public event ValueChangedEvent IncreaseScore;
     public event ChangeSceneEvent SceneChange;
+    public event ValueChangedEvent IncreaseScore;
     public event ScoreThresholdEvent ThresholdPassed;
     public event GameOverEvent GameOver;
     public event InputEvent NewInput;
     public void PublishLoseHealth(int amount) => _healthLost += amount;
     public void PublishSceneChange(SceneName sceneName) => _newScene = sceneName;
-    public void PublishThresholdEvent() => _thresholdPassed = true;
-    public void PublishGameOver(Scene scene) => _gameOver = true;
     public void PublishScoreIncrease(int amount) => _scoreIncrease += amount;
+    public void PublishThresholdEvent() => _thresholdPassed = true;
+    public void PublishGameOver() => _gameOver = true;
     public void PublishInputEvent(string input) => _input = input;
     
     

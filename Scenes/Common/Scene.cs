@@ -50,7 +50,7 @@ public abstract class Scene
             if (!onScreenObject.DontClearOnLoad)
             {
                 _objects.RemoveAt(i);
-                onScreenObject.Destroy(this);
+                onScreenObject.Destroy();
             }
         }
     }
@@ -61,7 +61,7 @@ public abstract class Scene
             IOnScreenObject onScreenObject = _objects[i];
             onScreenObject.DontClearOnLoad = false;
             _objects.RemoveAt(i);
-            onScreenObject.Destroy(this);
+            onScreenObject.Destroy();
         }
     }
     
@@ -86,7 +86,7 @@ public abstract class Scene
     {
         for (int i = _objects.Count - 1; i >= 0; i--)
         {
-            _objects[i].Update(this, dt);
+            _objects[i].Update( dt);
         }
         for (int i = 0; i < _objects.Count; i++)
         {
@@ -94,7 +94,7 @@ public abstract class Scene
             if (_objects[i].Dead)
             {
                 _objects.RemoveAt(i);
-                screenObject.Destroy(this);
+                screenObject.Destroy();
             }
         }
         Events.CheckSceneNameEvent();

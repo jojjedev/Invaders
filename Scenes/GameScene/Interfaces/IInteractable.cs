@@ -5,7 +5,6 @@ namespace Invaders;
 public interface IInteractable
 {
     public bool Invulnerable { get; set; }
-    public bool HasAlreadyCollided { get; set; }
     public Team Affiliation { get; set; }
     public bool ToBeDestroyed { get; set; }
     public FloatRect CollisionBounds { get;}

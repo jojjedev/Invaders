@@ -19,7 +19,7 @@ public sealed class Background : Entity
     {
         Sprite.Color = color;
     }
-    public override void Update(Scene scene, float dt)
+    public override void Update(float dt)
     {
         _timer += dt;
         if (_timer >= 1f/144f)

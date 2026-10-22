@@ -8,8 +8,8 @@ public sealed class AssetManager
     private readonly string _assetPath = "assets";
     private readonly Dictionary<string, Texture> _textures;
     private readonly Dictionary<string, Font> _fonts;
-    private readonly Dictionary<SoundBuffer, Sound> _sounds;
     private readonly Dictionary<string, SoundBuffer> _buffers;
+    private readonly Dictionary<SoundBuffer, Sound> _sounds;
     private readonly List<string> _availableBuffers;
     public AssetManager()
     {
@@ -48,7 +48,7 @@ public sealed class AssetManager
 
     public Sound LoadAudio(string name)
     {
-        if (_buffers.TryGetValue(name, out SoundBuffer found)) return _sounds[found];
+        if (_buffers.TryGetValue(name, out SoundBuffer? found)) return _sounds[found];
         SoundBuffer buffer = new SoundBuffer($"{_assetPath}/{name}.ogg");
         Sound sound = new Sound(buffer);
         _buffers.Add(name, buffer);

@@ -24,6 +24,7 @@ public sealed class GameScene : Scene
         Spawn(gui);
         Music(false);
         Events.GameOver += OnGameOver;
+        Events.SceneChange += OnSceneChange;
     }
     private void Music(bool onOff)
     {
@@ -33,6 +34,10 @@ public sealed class GameScene : Scene
     private void OnGameOver()
     {
         ClearAllInteractableEntities();
+    }
+
+    private void OnSceneChange(SceneName name)
+    {
         Music(true);
     }
 

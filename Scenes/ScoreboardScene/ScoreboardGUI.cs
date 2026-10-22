@@ -10,10 +10,10 @@ namespace Invaders;
 
 public sealed class ScoreboardGUI : GUI
 {
-    private Dictionary<Text, Text[]> _scores;
-    private Color _scoreColor;
-    private Scene _currentScene;
-    public ScoreboardGUI(Scene scene) : base()
+    private readonly Dictionary<Text, Text[]> _scores;
+    private readonly Color _scoreColor;
+    private readonly ScoreboardScene _currentScene;
+    public ScoreboardGUI(ScoreboardScene scene) : base()
     {
         _currentScene = scene;
         Texts = new List<Text>();
@@ -22,7 +22,11 @@ public sealed class ScoreboardGUI : GUI
         _scoreColor = new Color(168, 154, 226);
         CreateAll();
     }
-
+    private void CreateAll()
+    {
+        CreateTitleAndBack();
+        CreateScoreboard();
+    }
     private void CreateTitleAndBack()
     {
         Text title = CreateText(_currentScene, "Scoreboard", 50, Color.Cyan);
@@ -30,20 +34,11 @@ public sealed class ScoreboardGUI : GUI
         title.Origin = new Vector2f(titleBounds.Width * 0.5f, titleBounds.Height * 0.5f);
         title.Position = new Vector2f(256, titleBounds.Height * 2f);
         Texts.Add(title);
-        Text newGame = CreateText(_currentScene, "New Game", 40, DefaultColor);
-        Texts.Add(newGame); // Index 1
-        Text back = CreateText(_currentScene, "Menu", 40, DefaultColor);
-        Texts.Add(back); // Index 2
+        Texts.Add(CreateText(_currentScene, "New Game", 40, DefaultColor)); // Index 1
+        Texts.Add(CreateText(_currentScene, "Menu", 40, DefaultColor)); // Index 2
         CurrentTarget = 1; // Sätter target på "New Game" by default.
         Target();
     }
-
-    private void CreateAll()
-    {
-        CreateTitleAndBack();
-        CreateScoreboard();
-    }
-
     private void CreateScoreboard()
     {
         Text[] placements = new Text[10];
@@ -59,6 +54,29 @@ public sealed class ScoreboardGUI : GUI
         
     }
 
+    public override int Target()
+    {
+        Text target = Texts[CurrentTarget];
+        target.CharacterSize = 45;
+        target.FillColor = Color.White;
+        return Texts.IndexOf(target);
+    }
+    public override void UpdateTarget()
+    {
+        if (Keyboard.IsKeyPressed(Down) || 
+            Keyboard.IsKeyPressed(S) || 
+            Keyboard.IsKeyPressed(Up) || 
+            Keyboard.IsKeyPressed(W))
+        {
+            Texts[CurrentTarget].CharacterSize = 40;
+            Texts[CurrentTarget].FillColor = DefaultColor;
+            CurrentTarget = CurrentTarget == 1 ? CurrentTarget = 2 : CurrentTarget = 1;
+            Target();
+            _currentScene.Assets.PlaySound("select_002", 25, false);
+        }
+        
+    }
+    
     private List<Text[]> StoreHighScore()
     {
         string currentDir = Directory.GetCurrentDirectory();
@@ -97,31 +115,6 @@ public sealed class ScoreboardGUI : GUI
     {
         int num = int.Parse(entry[1].DisplayedString);
         return num;
-    }
-    public override int Target()
-    {
-        Text target = Texts[CurrentTarget];
-        target.CharacterSize = 45;
-        target.FillColor = Color.White;
-        return Texts.IndexOf(target);
-    }
-
-    public override void UpdateTarget()
-    {
-        if (Keyboard.IsKeyPressed(Down) || 
-            Keyboard.IsKeyPressed(S) || 
-            Keyboard.IsKeyPressed(Up) || 
-            Keyboard.IsKeyPressed(W))
-        {
-            Texts[CurrentTarget].CharacterSize = 40;
-            Texts[CurrentTarget].FillColor = DefaultColor;
-            CurrentTarget = CurrentTarget == 1 ? CurrentTarget = 2 : CurrentTarget = 1;
-            Target();
-            Sound sound = _currentScene.Assets.LoadAudio("select_002");
-            sound.Volume = 25;
-            sound.Play();
-        }
-        
     }
 
     public override void Render(RenderTarget target)

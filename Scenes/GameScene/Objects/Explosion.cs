@@ -6,10 +6,8 @@ namespace Invaders;
 public sealed class Explosion : Entity
 {
     private float _timer;
-    private float _duration;
-    private int _textureWidth;
-    private int _textureHeight;
-    private int _textureTilesCount;
+    private readonly float _duration;
+    private int _textureWidth, _textureHeight, _textureTilesCount;
     public Explosion(Entity entity) : base("explosion")
     {
         Position = entity.Position;
@@ -40,14 +38,14 @@ public sealed class Explosion : Entity
         
         return index;
     }
-    public override void Update(Scene scene, float dt)
+    public override void Update(float dt)
     {
-        base.Update(scene, dt);
+        base.Update(dt);
         _timer += dt;
         if (_timer < _duration)
         {
             GetTextureByIndex(GetIndex());
         }
-        else  Destroy(scene);
+        else  Destroy();
     }
 }

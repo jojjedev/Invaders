@@ -17,14 +17,13 @@ class Program
             SceneManager sceneManager = new SceneManager();
             window.Closed += (o, e) => window.Close();
             window.TextEntered += (o, e) => sceneManager.CurrentScene.Events.PublishInputEvent(e.Unicode); 
-            window.SetFramerateLimit(60);
             Clock clock = new Clock();
             
             while (window.IsOpen)
             {
                 window.DispatchEvents();
                 float dt = clock.Restart().AsSeconds();
-                dt = MathF.Min(dt, 0.01f); 
+                dt = MathF.Min(dt, 0.01f);
                 sceneManager.CurrentScene.UpdateAll(dt);
                 if (sceneManager.GameState != 1) window.Close();
                 window.Clear();

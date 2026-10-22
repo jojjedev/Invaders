@@ -8,7 +8,7 @@ namespace Invaders;
 public sealed class EnemyShip : Ship
 {
     private Vector2f _direction;
-    private float _fireChance;
+    private readonly float _fireChance;
     public EnemyShip(IntRect textureRect, Vector2f pos, int hp, float speed, float shotCd, float fireChance)
     {
         Sprite.TextureRect = textureRect;
@@ -57,7 +57,6 @@ public sealed class EnemyShip : Ship
         }
     }
 
-    //TODO: Om tid över, kolla på att fixa random direction och isåfall också fixa reflect så det passar.
     private Vector2f RandomDirection()
     {
         Random random = new Random();
@@ -94,7 +93,7 @@ public sealed class EnemyShip : Ship
         {
             Explode();
             CurrentScene.Events.PublishScoreIncrease(50);
-            Destroy(CurrentScene);
+            Destroy();
         }
         else
         {
@@ -102,15 +101,15 @@ public sealed class EnemyShip : Ship
         }
     }
 
-    public override void Update(Scene scene, float dt)
+    public override void Update(float dt)
     {
-        base.Update(scene, dt);
+        base.Update(dt);
         Move(dt);
         ShootTimer += dt;
         if (ShootTimer > ShotCooldown)
         {
             Random random = new Random();
-            if (random.Next(0,100) <= _fireChance) Shoot(this);
+            if (random.Next(0,100) <= _fireChance) Shoot();
             ShootTimer = 0;
         }
     }

@@ -8,8 +8,8 @@ namespace Invaders;
 
 public sealed class HomeGUI : GUI
 {
-    private Scene _currentScene;
-    public HomeGUI(Scene scene)
+    private readonly HomeScene _currentScene;
+    public HomeGUI(HomeScene scene)
     {
         _currentScene = scene;
         Texts = new List<Text>();

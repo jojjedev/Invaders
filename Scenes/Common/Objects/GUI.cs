@@ -11,6 +11,8 @@ public abstract class GUI : IOnScreenObject
     protected uint DefaultCharacterSize = 45;
     protected  Color DefaultColor = new Color(100,100,100);
 
+    public bool Dead { get; set; }
+    public bool DontClearOnLoad { get; set; }
     protected virtual Text CreateText(Scene scene, string text, uint characterSize, Color color)
     {
         Text newText = new Text();
@@ -29,11 +31,8 @@ public abstract class GUI : IOnScreenObject
         target.FillColor = Color.White;
         return Texts.IndexOf(target);
     }
-
-    public bool Dead { get; set; }
-    public bool DontClearOnLoad { get; set; }
     public virtual void Create(Scene scene) { }
-    public virtual void Destroy(Scene scene) { }
-    public virtual void Update(Scene scene, float dt) { }
+    public virtual void Destroy() { }
+    public virtual void Update(float dt) { }
     public virtual void Render(RenderTarget target) { }
 }

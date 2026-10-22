@@ -5,7 +5,7 @@ using static Invaders.Constants;
 
 namespace Invaders;
 
-public class EnemyShipSpawner
+public sealed class EnemyShipSpawner
 {
     private string _state;
     private int _level, _index;
@@ -15,8 +15,8 @@ public class EnemyShipSpawner
     private readonly Dictionary<string, IntRect> _shipTextures;
     private readonly float _spawnCd;
     private const float LowestSpawnCd = 0.5f;
-    private readonly Scene _currentScene;
-    public EnemyShipSpawner(Scene scene)
+    private readonly GameScene _currentScene;
+    public EnemyShipSpawner(GameScene scene)
     {
         _currentScene = scene;
         _shipColors = new string[] { "blue", "green", "red", "black" };
@@ -66,7 +66,7 @@ public class EnemyShipSpawner
 
     private float SetSpeed()
     {
-        return MathF.Min(MathF.Pow(-_level, 2) + 40 * _level + 300, 800);
+        return MathF.Min(MathF.Pow(-_level, 2) + 40 * _level + 200, 500);
     }
 
     private float SetShotCd()

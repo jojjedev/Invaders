@@ -11,38 +11,38 @@ namespace Invaders;
 public class GameGUI : GUI
 {
     private int _thresholdTracker;
-    private int _threshold = 250;
-    private float ScoreTimer;
+    private const int Threshold = 250;
+    private float _scoreTimer;
     private const float ScoreInterval = 0.1f;
     private float _colorTimer;
     private bool _gameOver, _loadScene;
     private string _inputName = "";
-    private Scene currentScene;
-    public GameGUI(Scene scene)
+    private readonly GameScene _currentScene;
+    public GameGUI(GameScene scene)
     {
-        currentScene = scene;
+        _currentScene = scene;
         Texts = new List<Text>();
         DefaultCharacterSize = 20;
         DefaultColor = Color.White;
         CreateObjects();
-        currentScene.Events.IncreaseScore += OnScoreIncrease;
-        currentScene.Events.GameOver += CreateEndScene;
-        currentScene.Events.NewInput += PlayerInput;
+        _currentScene.Events.IncreaseScore += OnScoreIncrease;
+        _currentScene.Events.GameOver += CreateEndScene;
+        _currentScene.Events.NewInput += PlayerInput;
     }
     private int Score { get; set; }
-    public override void Destroy(Scene scene)
+    public override void Destroy()
     {
-        base.Destroy(scene);
-        scene.Events.IncreaseScore -= OnScoreIncrease;
+        base.Destroy();
+        _currentScene.Events.IncreaseScore -= OnScoreIncrease;
     }
     private void CreateObjects()
     {
-        if (currentScene.FindByType(out PlayerShip ship))
+        if (_currentScene.FindByType(out PlayerShip ship))
         {
             Console.WriteLine("Found");
             Color color = DefaultColor;
-            Texts.Add(CreateText(currentScene,$"Score: {Score}", DefaultCharacterSize, color));
-            Texts.Add(CreateText(currentScene, $"Health: {ship.Health}", DefaultCharacterSize, color));
+            Texts.Add(CreateText(_currentScene,$"Score: {Score}", DefaultCharacterSize, color));
+            Texts.Add(CreateText(_currentScene, $"Health: {ship.Health}", DefaultCharacterSize, color));
             SetTextsPosition();
         };
 
@@ -72,12 +72,11 @@ public class GameGUI : GUI
     }
     private bool IsThresholdPassed()
     {
-        if (_thresholdTracker >= _threshold)
+        if (_thresholdTracker >= Threshold)
         {
-            _thresholdTracker -= _threshold;
+            _thresholdTracker -= Threshold;
             return true;
         }
-
         return false;
     }
 
@@ -85,13 +84,13 @@ public class GameGUI : GUI
     {
         _gameOver = true;
         Texts.Clear();
-        Text gameOverText = CreateText(currentScene, $"Game over!\nYour score is\n{Score}\nEnter your name", 45, DefaultColor);
+        Text gameOverText = CreateText(_currentScene, $"Game over!\nYour score is\n{Score}\nEnter your name", 45, DefaultColor);
         Texts.Add(gameOverText);
         gameOverText.Position = new Vector2f(SCREEN_WIDTH / 2f, SCREEN_HEIGHT / 2f);
         gameOverText.Origin = new Vector2f(gameOverText.GetLocalBounds().Width / 2f,
             gameOverText.GetLocalBounds().Height / 2f);
         
-        Text inputText = CreateText(currentScene,_inputName, 45, DefaultColor);
+        Text inputText = CreateText(_currentScene,_inputName, 45, DefaultColor);
         Texts.Add(inputText);
         inputText.Position = new Vector2f(SCREEN_WIDTH / 2f - 6.5f * 25, 800);
         inputText.Origin = new Vector2f(0, inputText.GetLocalBounds().Height / 2f);
@@ -126,17 +125,17 @@ public class GameGUI : GUI
         fileContents += $"{_inputName.Trim()},{Score}\n";
         File.WriteAllText(fileMain, fileContents, Encoding.UTF8);
     }
-    public override void Update(Scene scene, float dt)
+    public override void Update(float dt)
     {
-        base.Update(scene, dt);
+        base.Update(dt);
         if (!_gameOver)
         {
             Texts[0].DisplayedString = $"Score {Score}";
-            ScoreTimer += dt;
-            if (ScoreTimer > ScoreInterval)
+            _scoreTimer += dt;
+            if (_scoreTimer > ScoreInterval)
             {
                 PassiveScoreIncrease();
-                ScoreTimer = 0;
+                _scoreTimer = 0;
             }
 
             _colorTimer -= dt;
@@ -146,9 +145,9 @@ public class GameGUI : GUI
                 _colorTimer = 0;
             }
 
-            if (IsThresholdPassed()) scene.Events.PublishThresholdEvent();
+            if (IsThresholdPassed()) _currentScene.Events.PublishThresholdEvent();
 
-            if (scene.FindByType(out PlayerShip ship))
+            if (_currentScene.FindByType(out PlayerShip ship))
             {
                 Texts[1].DisplayedString = $"Health: {ship.Health}";
 
@@ -157,14 +156,14 @@ public class GameGUI : GUI
         }
         else
         {
-            scene.Events.CheckInputEvent();
+            _currentScene.Events.CheckInputEvent();
             Texts[1].DisplayedString = _inputName;
             if (Keyboard.IsKeyPressed(Keyboard.Key.Enter))
             {
                 SaveScore();
                 _loadScene = true;
             }
-            if (_loadScene) scene.Events.PublishSceneChange(SceneName.Scoreboard);
+            if (_loadScene) _currentScene.Events.PublishSceneChange(SceneName.Scoreboard);
         }
     }
 
